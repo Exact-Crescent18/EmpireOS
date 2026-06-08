@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empire OS — Daily Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Fragment+Mono:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#070709;--surface:#0f0f12;--card:#131318;--card2:#18181f;
+  --border:#1e1e28;--border2:#2a2a38;--text:#e8e8f0;--dim:#6b6b80;--muted:#3a3a4a;
+  --agent:#3b82f6;--laugher:#f43f5e;--bridge:#f59e0b;--invest:#10b981;--trade:#a78bfa;
+  --agent-dim:rgba(59,130,246,0.1);--laugher-dim:rgba(244,63,94,0.1);
+  --bridge-dim:rgba(245,158,11,0.1);--invest-dim:rgba(16,185,129,0.1);--trade-dim:rgba(167,139,250,0.1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:200;background:rgba(7,7,9,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:0;}
+.nav-logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:0.12em;color:var(--text);margin-right:28px;padding:15px 0;flex-shrink:0;}
+.nav-logo span{color:var(--invest);}
+.nav-tab{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);padding:17px 14px;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.18s;user-select:none;white-space:nowrap;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--invest);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.nav-btn{display:flex;align-items:center;gap:5px;border:none;border-radius:7px;font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:7px 13px;cursor:pointer;transition:opacity 0.15s;white-space:nowrap;flex-shrink:0;}
+.nav-btn:hover{opacity:0.82;}
+.add-task-btn{background:var(--invest);color:#000;}
+.goals-btn{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.goals-btn.active-panel{border-color:var(--bridge);color:var(--bridge);}
+.reset-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 12px;}
+.reset-dot{width:6px;height:6px;border-radius:50%;background:var(--invest);animation:breathe 2.5s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:0.35}}
+.reset-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.1em;}
+.reset-time{font-family:'Fragment Mono',monospace;font-size:13px;color:var(--text);letter-spacing:0.06em;}
+
+/* ── SLIDE PANELS (shared) ── */
+.slide-panel{position:fixed;top:53px;right:0;width:440px;max-width:100vw;max-height:calc(100vh - 53px);background:var(--card);border-left:1px solid var(--border2);border-bottom:1px solid var(--border2);border-bottom-left-radius:12px;box-shadow:-8px 8px 40px rgba(0,0,0,0.65);z-index:190;display:flex;flex-direction:column;transform:translateX(105%);opacity:0;transition:transform 0.28s cubic-bezier(0.4,0,0.2,1),opacity 0.22s ease;pointer-events:none;}
+.slide-panel.open{transform:translateX(0);opacity:1;pointer-events:all;}
+.backdrop{position:fixed;inset:0;z-index:180;background:rgba(0,0,0,0.38);opacity:0;pointer-events:none;transition:opacity 0.2s ease;}
+.backdrop.open{opacity:1;pointer-events:all;}
+.panel-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;}
+.panel-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;}
+.panel-hd::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--invest),var(--trade),var(--agent));}
+.panel-title{font-family:'Fragment Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);}
+.panel-sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.panel-close{background:none;border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-size:13px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+.panel-close:hover{border-color:#e05252;color:#e05252;}
+.panel-body{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+.panel-body::-webkit-scrollbar{width:4px;}
+.panel-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+
+/* ── GOALS PANEL ── */
+.goals-panel-body{padding:16px;}
+.gp-section{margin-bottom:20px;}
+.gp-sec-title{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.goal-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.goal-row:last-child{border-bottom:none;}
+.goal-icon{font-size:18px;flex-shrink:0;}
+.goal-info{flex:1;min-width:0;}
+.goal-name{font-size:12px;font-weight:600;color:var(--text);}
+.goal-unit{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-top:1px;}
+.goal-input-wrap{display:flex;align-items:center;gap:6px;}
+.goal-input{width:80px;background:var(--card2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Syne',sans-serif;font-size:16px;font-weight:800;padding:6px 10px;outline:none;text-align:center;transition:border-color 0.15s;}
+.goal-input:focus{border-color:var(--invest);}
+.goal-unit-lbl{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
+.goal-apply-btn{background:var(--invest);border:none;border-radius:6px;color:#000;font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:7px 12px;cursor:pointer;white-space:nowrap;transition:opacity 0.15s;}
+.goal-apply-btn:hover{opacity:0.85;}
+
+/* Availability grid */
+.avail-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.avail-day{border-radius:7px;overflow:hidden;border:1px solid var(--border);}
+.avail-day-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);padding:6px 0;text-align:center;background:var(--card2);}
+.avail-day.off .avail-day-name{color:var(--muted);}
+.avail-day.on .avail-day-name{color:var(--invest);}
+.avail-time-col{padding:6px 4px;display:flex;flex-direction:column;gap:4px;}
+.avail-select{width:100%;background:var(--card2);border:none;border-radius:4px;color:var(--text);font-family:'Fragment Mono',monospace;font-size:8px;padding:4px 3px;outline:none;cursor:pointer;text-align:center;}
+.avail-off-btn{width:100%;background:none;border:1px solid var(--border2);border-radius:4px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.06em;padding:4px;cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.avail-day.off .avail-off-btn{background:rgba(224,82,82,0.12);border-color:rgba(224,82,82,0.3);color:#e05252;}
+.avail-day.on .avail-off-btn{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:var(--invest);}
+
+.regen-btn{width:100%;background:linear-gradient(135deg,var(--invest),var(--trade));border:none;border-radius:8px;color:#000;font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;padding:11px;cursor:pointer;transition:opacity 0.15s;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.regen-btn:hover{opacity:0.88;}
+.regen-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.regen-spinner{width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;display:none;}
+.regen-btn.loading .regen-spinner{display:block;}
+.regen-btn.loading .regen-lbl::after{content:'…';}
+
+/* ── AI TASKS SECTION ── */
+.ai-section{margin-bottom:24px;}
+.ai-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ai-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.ai-name{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);}
+.ai-badge{margin-left:auto;font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;padding:3px 10px;border-radius:4px;}
+.ai-loading{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:4px;}
+.ai-load-dot{width:8px;height:8px;border-radius:50%;background:var(--invest);animation:blink 1.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:0.2}50%{opacity:1}}
+.ai-load-txt{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
+.ai-task-block{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:4px;}
+.ai-task-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;cursor:pointer;transition:background 0.15s;user-select:none;position:relative;}
+.ai-task-row:hover{background:var(--card2);}
+.ai-task-done .ai-task-row{background:rgba(16,185,129,0.04);}
+.ai-task-done .ai-t-text{text-decoration:line-through;color:var(--dim);}
+.ai-chk{width:19px;height:19px;border-radius:5px;border:1px solid var(--border2);background:var(--card2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:10px;color:transparent;font-weight:800;}
+.ai-task-done .ai-chk{background:var(--invest);border-color:var(--invest);color:#000;}
+.ai-t-body{flex:1;min-width:0;}
+.ai-t-text{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;}
+.ai-t-sub{font-size:11px;color:var(--dim);margin-top:2px;line-height:1.5;}
+.ai-t-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.ai-t-tag{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;}
+.ai-arr{font-size:10px;color:var(--dim);transition:transform 0.25s,color 0.15s;flex-shrink:0;padding-top:4px;padding-left:6px;margin-left:auto;}
+.ai-task-block.open .ai-arr{transform:rotate(180deg);color:var(--invest);}
+.ai-drawer{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1);background:#0b0b0e;}
+.ai-task-block.open .ai-drawer{max-height:600px;border-top:1px solid var(--border);}
+.ai-d-inner{padding:14px 16px 16px;font-size:12px;color:var(--dim);line-height:1.6;}
+.ai-d-inner ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.ai-d-inner ul li{display:flex;gap:8px;}
+.ai-d-inner ul li::before{content:'→';color:var(--invest);font-size:10px;flex-shrink:0;margin-top:3px;}
+.ai-d-inner ul li strong{color:var(--text);}
+.ai-goal-tag{display:inline-block;font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.08em;padding:2px 8px;border-radius:3px;background:var(--invest-dim);color:var(--invest);margin-bottom:8px;}
+
+/* ── VIEWS ── */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── DAILY OS ── */
+.daily-wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+
+/* GOAL CHIPS (top strip) */
+.goal-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:24px;}
+.gc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gc-c,#fff);}
+.gc:hover{border-color:var(--border2);}
+.gc-icon{font-size:16px;margin-bottom:3px;}
+.gc-name{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;}
+.gc-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;line-height:1;color:#fff;}
+.gc-unit{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--dim);margin-top:1px;}
+.gc-edit-hint{position:absolute;top:5px;right:7px;font-size:9px;color:var(--muted);opacity:0;transition:opacity 0.15s;}
+.gc:hover .gc-edit-hint{opacity:1;}
+
+/* HERO */
+.daily-hero{margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.daily-hero-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:0.95;letter-spacing:-0.02em;color:#fff;}
+.daily-hero-title span{color:var(--invest);}
+.daily-hero-sub{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-top:10px;}
+.hero-stats{display:flex;gap:8px;flex-wrap:wrap;}
+.h-stat{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:10px 14px;text-align:center;}
+.h-stat-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--invest);line-height:1;}
+.h-stat-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+
+/* RESET BAR */
+.reset-bar{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--invest);border-radius:8px;padding:10px 14px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.reset-bar-txt{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
+.reset-bar-txt strong{color:var(--invest);}
+.manual-btn{background:none;border:1px solid var(--border);border-radius:5px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all 0.15s;}
+.manual-btn:hover{border-color:var(--dim);color:var(--text);}
+
+/* PROGRESS */
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:24px;}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prog-lbl{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);}
+.prog-num{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--invest);}
+.prog-track{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--invest),var(--trade));border-radius:99px;width:0%;transition:width 0.4s ease;}
+.prog-msg{font-size:11px;color:var(--dim);margin-top:8px;}
+
+/* AVAIL BANNER */
+.avail-banner{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.avail-days{display:flex;gap:5px;flex-wrap:wrap;}
+.avail-day-chip{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);}
+.avail-day-chip.on{background:var(--invest-dim);border-color:rgba(16,185,129,0.3);color:var(--invest);}
+.avail-day-chip.off{background:rgba(224,82,82,0.08);border-color:rgba(224,82,82,0.2);color:#e05252;text-decoration:line-through;}
+.avail-edit-lnk{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.08em;margin-left:auto;cursor:pointer;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;}
+.avail-edit-lnk:hover{color:var(--text);}
+
+/* task sections */
+.os-section{margin-bottom:24px;}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sec-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.sec-name{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);}
+.sec-badge{margin-left:auto;font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;padding:3px 10px;border-radius:4px;}
+
+/* TASK MODAL (My Tasks) */
+.task-modal{position:fixed;top:53px;right:0;width:420px;max-width:100vw;max-height:calc(100vh - 53px);background:var(--card);border-left:1px solid var(--border2);border-bottom:1px solid var(--border2);border-bottom-left-radius:12px;box-shadow:-8px 8px 40px rgba(0,0,0,0.6);z-index:190;display:flex;flex-direction:column;transform:translateX(105%);opacity:0;transition:transform 0.28s cubic-bezier(0.4,0,0.2,1),opacity 0.22s ease;pointer-events:none;}
+.task-modal.open{transform:translateX(0);opacity:1;pointer-events:all;}
+.tm-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;}
+.tm-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;}
+.tm-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--invest),var(--trade),var(--agent));}
+.tm-title{font-family:'Fragment Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);}
+.tm-sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.tm-header-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tm-close{background:none;border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-size:13px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+.tm-close:hover{border-color:#e05252;color:#e05252;}
+.tm-form{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
+.tm-list{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+.tm-list::-webkit-scrollbar{width:4px;}
+.tm-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+.ca-toggle{display:flex;background:var(--card2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.ca-tog-btn{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);padding:5px 12px;cursor:pointer;border:none;background:none;transition:all 0.15s;user-select:none;}
+.ca-tog-btn.active{background:var(--invest);color:#000;font-weight:700;}
+.ca-text-input{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border-color 0.15s;}
+.ca-text-input::placeholder{color:var(--dim);}
+.ca-text-input:focus{border-color:var(--invest);}
+.ca-desc-input{resize:vertical;min-height:52px;line-height:1.5;font-size:12px !important;}
+.ca-bottom-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.ca-selects{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.ca-select{flex:1;min-width:100px;background:var(--card2);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.05em;padding:7px 8px;outline:none;cursor:pointer;transition:border-color 0.15s;}
+.ca-select:focus{border-color:var(--invest);}
+.ca-add-btn{background:var(--invest);border:none;border-radius:7px;color:#000;font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;padding:8px 16px;cursor:pointer;transition:opacity 0.15s;white-space:nowrap;flex-shrink:0;}
+.ca-add-btn:hover{opacity:0.85;}
+.ca-empty{padding:20px 16px;font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--muted);text-align:center;}
+.ct-item{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-top:1px solid var(--border);background:var(--card);transition:background 0.15s;}
+.ct-item:hover{background:var(--card2);}
+.ct-item.ct-done .ct-text{text-decoration:line-through;color:var(--dim);}
+.ct-chk{width:19px;height:19px;border-radius:5px;border:1px solid var(--border2);background:var(--card2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;font-size:10px;color:transparent;font-weight:800;}
+.ct-item.ct-done .ct-chk{background:var(--invest);border-color:var(--invest);color:#000;}
+.ct-body{flex:1;min-width:0;}
+.ct-text{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;}
+.ct-desc{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.5;white-space:pre-wrap;word-break:break-word;}
+.ct-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;align-items:center;}
+.ct-badge{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;}
+.ct-time{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--invest);letter-spacing:0.06em;}
+.ct-delete{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;padding:0 3px;line-height:1;transition:color 0.15s;flex-shrink:0;margin-top:1px;}
+.ct-delete:hover{color:#e05252;}
+.custom-inline-section{margin-top:3px;display:flex;flex-direction:column;gap:3px;}
+.ct-inline{display:flex;align-items:flex-start;gap:12px;padding:11px 15px;background:var(--card);border:1px solid var(--invest);border-radius:8px;position:relative;overflow:hidden;}
+.ct-inline::after{content:'ADDED';position:absolute;top:0;right:0;font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:0.1em;color:#000;background:var(--invest);padding:2px 7px;border-bottom-left-radius:5px;}
+.ct-inline.ct-done{border-color:rgba(16,185,129,0.25);background:rgba(16,185,129,0.04);}
+.ct-inline.ct-done .ct-text{text-decoration:line-through;color:var(--dim);}
+
+/* POWER GRID */
+.power-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.power-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px 13px;}
+.power-card.today-card{border-color:var(--bridge);background:rgba(245,158,11,0.05);}
+.pw-day{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.power-card.today-card .pw-day{color:var(--bridge);}
+.today-pip{background:var(--bridge);color:#000;font-size:8px;font-weight:700;letter-spacing:0.05em;padding:1px 6px;border-radius:3px;}
+.pw-task{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:3px;}
+.pw-note{font-size:11px;color:var(--dim);line-height:1.3;}
+
+/* WEEK STRIP */
+.week-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.wk-col{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 10px;}
+.wk-col.today-col{border-color:var(--agent);background:var(--agent-dim);}
+.wk-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.wk-col.today-col .wk-name{color:var(--agent);}
+.wk-task{font-size:11px;color:var(--dim);margin-bottom:4px;line-height:1.4;padding-left:8px;border-left:2px solid var(--border);}
+.wk-task.primary{color:var(--text);font-weight:600;border-left-color:var(--agent);}
+
+/* WEEKLY CARD */
+.weekly-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;}
+.weekly-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+.weekly-head-title{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);}
+.weekly-head-sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.weekly-body{padding:8px 12px;}
+
+/* CONTENT IDEAS */
+.ideas-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;}
+.ideas-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+.ideas-head-left .title{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);}
+.ideas-head-left .sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.refresh-btn{background:var(--laugher-dim);border:1px solid rgba(244,63,94,0.25);border-radius:5px;color:var(--laugher);font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all 0.15s;}
+.refresh-btn:hover{background:var(--laugher);color:#fff;}
+.ptabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.ptabs::-webkit-scrollbar{display:none;}
+.ptab{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;user-select:none;}
+.ptab.active{color:var(--laugher);border-bottom-color:var(--laugher);}
+.ideas-panel{display:none;padding:12px 14px;}
+.ideas-panel.active{display:block;}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.idea-card{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:12px;transition:border-color 0.15s;}
+.idea-card:hover{border-color:var(--border2);}
+.idea-num{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--dim);margin-bottom:4px;}
+.idea-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4;}
+.idea-hook{font-size:11px;color:var(--dim);line-height:1.5;font-style:italic;}
+.idea-fmt{display:inline-block;font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:7px;}
+
+/* ROADMAP */
+.roadmap-view{padding-bottom:60px;}
+.rm-hero{border-bottom:1px solid var(--border);padding:32px 36px 24px;position:relative;overflow:hidden;}
+.rm-hero::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(16,185,129,0.06) 0%,transparent 65%);pointer-events:none;}
+.rm-label{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--invest);margin-bottom:8px;}
+.rm-h1{font-family:'Syne',sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:800;line-height:0.9;letter-spacing:-0.02em;color:#fff;}
+.rm-h1 em{color:var(--invest);font-style:normal;}
+.rm-target{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;color:var(--invest);line-height:1;}
+.rm-target-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.14em;text-transform:uppercase;}
+.income-section{padding:24px 36px;border-bottom:1px solid var(--border);}
+.income-eyebrow{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+.income-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ic{background:var(--card);padding:14px 16px;}
+.ic-stream{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
+.ic-amt{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;}
+.ic-note{font-size:11px;color:var(--dim);margin-top:2px;}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);}
+.ph-col{border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.ph-col:last-child{border-right:none;}
+.ph-head{padding:18px 22px 14px;border-bottom:1px solid var(--border);position:relative;}
+.ph-head::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.ph-1 .ph-head::before{background:var(--agent);}
+.ph-2 .ph-head::before{background:var(--bridge);}
+.ph-3 .ph-head::before{background:var(--invest);}
+.ph-num{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);margin-bottom:2px;}
+.ph-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:0.02em;color:#fff;}
+.ph-pill{display:inline-block;font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-left:5px;vertical-align:middle;}
+.ph-dates{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px;}
+.ph-target{font-family:'Fragment Mono',monospace;font-size:11px;margin-top:4px;}
+.ph-1 .ph-target{color:var(--agent);}
+.ph-2 .ph-target{color:var(--bridge);}
+.ph-3 .ph-target{color:var(--invest);}
+.sched{padding:14px 20px;border-bottom:1px solid var(--border);}
+.sched-ttl{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.ts{display:flex;gap:10px;margin-bottom:7px;}
+.ts-t{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);min-width:38px;padding-top:2px;flex-shrink:0;}
+.ts-lbl{font-size:12px;font-weight:500;color:var(--text);line-height:1.3;}
+.ts-d{font-size:11px;color:var(--dim);margin-top:1px;line-height:1.3;}
+.es{color:var(--invest);font-size:9px;margin-left:3px;}
+.pris{padding:12px 20px;border-bottom:1px solid var(--border);}
+.pris-ttl{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.pr-row{display:flex;gap:8px;margin-bottom:7px;}
+.pr-dot{width:6px;height:6px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+.pr-body{font-size:11px;color:var(--dim);line-height:1.5;}
+.pr-body strong{color:var(--text);font-weight:600;display:block;font-size:12px;margin-bottom:1px;}
+.kpis{padding:12px 20px;}
+.kpis-ttl{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;}
+.kpi-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #111;}
+.kpi-row:last-child{border-bottom:none;}
+.kpi-lbl{font-size:11px;color:var(--dim);}
+.kpi-val{font-family:'Fragment Mono',monospace;font-size:11px;}
+.bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border);}
+.bot-panel{padding:24px 28px;border-right:1px solid var(--border);}
+.bot-panel:last-child{border-right:none;}
+.bot-panel h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--invest);margin-bottom:12px;}
+.bot-rule{display:flex;gap:10px;margin-bottom:11px;}
+.bot-num{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--invest);min-width:20px;padding-top:1px;flex-shrink:0;}
+.bot-body{font-size:11px;color:var(--dim);line-height:1.6;}
+.bot-body strong{color:var(--text);display:block;font-size:12px;}
+.ticker{background:var(--surface);border-top:1px solid var(--border);padding:8px 36px;display:flex;gap:28px;overflow-x:auto;scrollbar-width:none;}
+.ticker::-webkit-scrollbar{display:none;}
+.tick{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);white-space:nowrap;letter-spacing:0.06em;}
+.tick .g{color:var(--invest);}
+.tick .r{color:var(--laugher);}
+.tick .b{color:var(--agent);}
+.tick .a{color:var(--bridge);}
+.tick .p{color:var(--trade);}
+
+/* color utils */
+.c-agent{color:var(--agent);}
+.c-laugher{color:var(--laugher);}
+.c-bridge{color:var(--bridge);}
+.c-invest{color:var(--invest);}
+.c-trade{color:var(--trade);}
+
+@media(max-width:860px){
+  .goal-strip,.income-grid{grid-template-columns:repeat(3,1fr);}
+  .phases,.bottom{grid-template-columns:1fr;}
+  .ph-col{border-right:none;}
+  .bot-panel{border-right:none;border-bottom:1px solid var(--border);}
+  .income-section,.rm-hero{padding:18px 20px;}
+}
+@media(max-width:640px){
+  .power-grid{grid-template-columns:1fr 1fr;}
+  .idea-grid{grid-template-columns:1fr;}
+  .week-strip{grid-template-columns:repeat(3,1fr);}
+  .goal-strip{grid-template-columns:repeat(2,1fr);}
+  .nav{padding:0 12px;}
+  .nav-logo{font-size:14px;margin-right:12px;}
+  .nav-tab{padding:15px 9px;font-size:9px;}
+  .nav-btn{font-size:9px;padding:6px 10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">EMPIRE <span>OS</span></div>
+  <div class="nav-tab active" onclick="switchView('daily',this)">Daily OS</div>
+  <div class="nav-tab" onclick="switchView('roadmap',this)">90-Day Plan</div>
+  <div class="nav-right">
+    <button class="nav-btn goals-btn" id="goals-nav-btn" onclick="toggleGoalsPanel()">⚙ Goals &amp; Hours</button>
+    <button class="nav-btn add-task-btn" onclick="toggleTaskModal()" id="add-task-btn">+ My Tasks</button>
+    <div class="reset-pill">
+      <div class="reset-dot"></div>
+      <div>
+        <div class="reset-lbl">Resets in</div>
+        <div class="reset-time" id="countdown">--:--:--</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── GOALS & AVAILABILITY PANEL ── -->
+<div class="slide-panel" id="goals-panel" style="width:500px;">
+  <div class="panel-inner">
+    <div class="panel-hd">
+      <div>
+        <div class="panel-title">Goals &amp; Availability</div>
+        <div class="panel-sub">Set targets → AI rebuilds your daily tasks to match</div>
+      </div>
+      <button class="panel-close" onclick="closeGoalsPanel()">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="goals-panel-body">
+
+        <!-- GOALS -->
+        <div class="gp-section">
+          <div class="gp-sec-title">Pillar Goals</div>
+
+          <div class="goal-row">
+            <div class="goal-icon">🏠</div>
+            <div class="goal-info">
+              <div class="goal-name">RE Agent</div>
+              <div class="goal-unit">Closed deals per year</div>
+            </div>
+            <div class="goal-input-wrap">
+              <input class="goal-input" id="g-agent" type="number" min="1" max="200" value="12">
+              <span class="goal-unit-lbl">deals/yr</span>
+            </div>
+          </div>
+
+          <div class="goal-row">
+            <div class="goal-icon">😂</div>
+            <div class="goal-info">
+              <div class="goal-name">Laughder.com</div>
+              <div class="goal-unit">Total followers across platforms</div>
+            </div>
+            <div class="goal-input-wrap">
+              <input class="goal-input" id="g-laugher" type="number" min="0" value="10000" style="width:95px;">
+              <span class="goal-unit-lbl">followers</span>
+            </div>
+          </div>
+
+          <div class="goal-row">
+            <div class="goal-icon">🔗</div>
+            <div class="goal-info">
+              <div class="goal-name">ServiceBridge</div>
+              <div class="goal-unit">Leads delivered per month</div>
+            </div>
+            <div class="goal-input-wrap">
+              <input class="goal-input" id="g-bridge" type="number" min="0" value="100">
+              <span class="goal-unit-lbl">leads/mo</span>
+            </div>
+          </div>
+
+          <div class="goal-row">
+            <div class="goal-icon">🏢</div>
+            <div class="goal-info">
+              <div class="goal-name">RE Investing</div>
+              <div class="goal-unit">Acquisitions per year</div>
+            </div>
+            <div class="goal-input-wrap">
+              <input class="goal-input" id="g-invest" type="number" min="0" value="2">
+              <span class="goal-unit-lbl">deals/yr</span>
+            </div>
+          </div>
+
+          <div class="goal-row">
+            <div class="goal-icon">📈</div>
+            <div class="goal-info">
+              <div class="goal-name">Trading</div>
+              <div class="goal-unit">Monthly income target</div>
+            </div>
+            <div class="goal-input-wrap">
+              <span class="goal-unit-lbl">$</span>
+              <input class="goal-input" id="g-trade" type="number" min="0" value="2000" style="width:90px;">
+              <span class="goal-unit-lbl">/mo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AVAILABILITY -->
+        <div class="gp-section">
+          <div class="gp-sec-title">Weekly Availability</div>
+          <div class="avail-grid" id="avail-grid"></div>
+        </div>
+
+        <button class="regen-btn" id="regen-btn" onclick="regenerateTasks()">
+          <div class="regen-spinner" id="regen-spinner"></div>
+          <span class="regen-lbl" id="regen-lbl">✦ Regenerate Daily Tasks with AI</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="backdrop" id="goals-backdrop" onclick="closeGoalsPanel()"></div>
+
+<!-- ── MY TASKS PANEL ── -->
+<div class="task-modal" id="task-modal">
+  <div class="tm-inner">
+    <div class="tm-header">
+      <div>
+        <div class="tm-title">My Tasks</div>
+        <div class="tm-sub">Persists until checked off · never auto-resets</div>
+      </div>
+      <div class="tm-header-right">
+        <div class="ca-toggle">
+          <button class="ca-tog-btn active" id="tog-daily" onclick="setMode('daily')">Daily</button>
+          <button class="ca-tog-btn" id="tog-weekly" onclick="setMode('weekly')">Weekly</button>
+        </div>
+        <button class="tm-close" onclick="closeTaskModal()">✕</button>
+      </div>
+    </div>
+    <div class="tm-form">
+      <input class="ca-text-input" id="ca-input" type="text" placeholder="Task title — e.g. Call title company re: closing docs…" onkeydown="if(event.key==='Enter')document.getElementById('ca-desc').focus()">
+      <textarea class="ca-text-input ca-desc-input" id="ca-desc" placeholder="Description (optional) — context, numbers, what to say…" rows="2"></textarea>
+      <div class="ca-bottom-row">
+        <div class="ca-selects">
+          <select class="ca-select" id="ca-pillar">
+            <option value="agent">🏠 RE Agent</option>
+            <option value="invest">🏢 RE Investing</option>
+            <option value="bridge">🔗 ServiceBridge</option>
+            <option value="laugher">😂 Laughder</option>
+            <option value="trade">📈 Trading</option>
+            <option value="general">⚡ General</option>
+          </select>
+          <select class="ca-select" id="ca-time">
+            <option value="">Any time</option>
+            <option value="9am">9:00 AM</option>
+            <option value="10am">10:00 AM</option>
+            <option value="11am">11:00 AM</option>
+            <option value="12pm">12:00 PM</option>
+            <option value="1pm">1:00 PM</option>
+            <option value="2pm">2:00 PM</option>
+            <option value="3pm">3:00 PM</option>
+            <option value="4pm">4:00 PM</option>
+            <option value="5pm">5:00 PM</option>
+            <option value="contact">📞 Business hours</option>
+          </select>
+        </div>
+        <button class="ca-add-btn" onclick="addCustomTask()">+ Add</button>
+      </div>
+    </div>
+    <div class="tm-list" id="ca-list">
+      <div class="ca-empty" id="ca-empty">No tasks yet — add one above.</div>
+    </div>
+  </div>
+</div>
+<div class="backdrop" id="task-backdrop" onclick="closeTaskModal()"></div>
+
+<!-- ════════════════════════════════
+     DAILY OS VIEW
+════════════════════════════════ -->
+<div class="view active" id="view-daily">
+<div class="daily-wrap">
+
+  <!-- Goal chips -->
+  <div class="goal-strip" id="goal-strip">
+    <div class="gc" style="--gc-c:var(--agent)" onclick="toggleGoalsPanel()">
+      <div class="gc-edit-hint">✎</div>
+      <div class="gc-icon">🏠</div>
+      <div class="gc-name">RE Agent</div>
+      <div class="gc-val" id="gc-agent">12</div>
+      <div class="gc-unit">deals / year</div>
+    </div>
+    <div class="gc" style="--gc-c:var(--laugher)" onclick="toggleGoalsPanel()">
+      <div class="gc-edit-hint">✎</div>
+      <div class="gc-icon">😂</div>
+      <div class="gc-name">Laughder</div>
+      <div class="gc-val" id="gc-laugher">10K</div>
+      <div class="gc-unit">followers</div>
+    </div>
+    <div class="gc" style="--gc-c:var(--bridge)" onclick="toggleGoalsPanel()">
+      <div class="gc-edit-hint">✎</div>
+      <div class="gc-icon">🔗</div>
+      <div class="gc-name">ServiceBridge</div>
+      <div class="gc-val" id="gc-bridge">100</div>
+      <div class="gc-unit">leads / month</div>
+    </div>
+    <div class="gc" style="--gc-c:var(--invest)" onclick="toggleGoalsPanel()">
+      <div class="gc-edit-hint">✎</div>
+      <div class="gc-icon">🏢</div>
+      <div class="gc-name">RE Investing</div>
+      <div class="gc-val" id="gc-invest">2</div>
+      <div class="gc-unit">deals / year</div>
+    </div>
+    <div class="gc" style="--gc-c:var(--trade)" onclick="toggleGoalsPanel()">
+      <div class="gc-edit-hint">✎</div>
+      <div class="gc-icon">📈</div>
+      <div class="gc-name">Trading</div>
+      <div class="gc-val" id="gc-trade">$2K</div>
+      <div class="gc-unit">/ month</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="daily-hero">
+    <div>
+      <div class="daily-hero-title">Daily <span>Command</span><br>Center.</div>
+      <div class="daily-hero-sub">5 Pillars · Eugene, OR · Pacific Time</div>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-val" id="done-stat">0/0</div><div class="h-stat-lbl">Done Today</div></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--agent)" id="hs-agent">12</div><div class="h-stat-lbl">Agent Goal</div></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--invest)" id="hs-invest">2</div><div class="h-stat-lbl">Invest Goal</div></div>
+    </div>
+  </div>
+
+  <!-- Availability banner -->
+  <div class="avail-banner" id="avail-banner">
+    <div class="avail-days" id="avail-banner-days"></div>
+    <span class="avail-edit-lnk" onclick="toggleGoalsPanel()">Edit hours →</span>
+  </div>
+
+  <!-- Reset bar -->
+  <div class="reset-bar">
+    <div class="reset-bar-txt">Daily tasks reset at <strong>6:00 PM</strong> · Weekly tasks + content reset <strong>Sunday 6:00 PM</strong></div>
+    <button class="manual-btn" onclick="resetDaily()">↺ Reset</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="prog-card">
+    <div class="prog-top">
+      <div class="prog-lbl">Today's Progress</div>
+      <div class="prog-num" id="prog-count">0 / 0</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-msg" id="prog-msg">Tap any task to expand. Check the box to mark done.</div>
+  </div>
+
+  <!-- ── AI-GENERATED TASK SECTIONS ── -->
+  <div id="ai-tasks-container">
+    <!-- Populated by generateTasksHTML() -->
+  </div>
+
+  <!-- POWER HOUR -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(245,158,11,0.1)">⚡</div>
+      <span class="sec-name">Power Hour — This Week's Prospecting Focus</span>
+      <span class="sec-badge" style="background:var(--bridge-dim);color:var(--bridge)" id="power-hour-time-badge">10 AM · Daily</span>
+    </div>
+    <div class="power-grid" id="power-grid">
+      <div class="power-card" data-day="1"><div class="pw-day">Monday</div><div class="pw-task">SOI — call or text 5 past clients. Check in genuinely, no pitch.</div><div class="pw-note">1 referral conversation per week from this alone.</div></div>
+      <div class="power-card" data-day="2"><div class="pw-day">Tuesday</div><div class="pw-task">Farm outreach — 10 handwritten notes or door knock in target neighborhood.</div><div class="pw-note">Consistent presence = top of mind when they're ready.</div></div>
+      <div class="power-card" data-day="3"><div class="pw-day">Wednesday</div><div class="pw-task">Strategic partner call — attorney, CPA, lender (Oregon Pacific, WaFd, SELCO).</div><div class="pw-note">One strong partner = 5–10 deals/year on autopilot.</div></div>
+      <div class="power-card" data-day="4"><div class="pw-day">Thursday</div><div class="pw-task">Lead nurture — work through all inquiries from last 30 days. Tired landlord follow-ups.</div><div class="pw-note">Most agents stop at 2 follow-ups. You go 7–10.</div></div>
+      <div class="power-card" data-day="5"><div class="pw-day">Friday</div><div class="pw-task">CRM audit + online engagement. Reply to every comment and DM.</div><div class="pw-note">What gets tracked gets closed.</div></div>
+      <div class="power-card" data-day="0"><div class="pw-day">Weekend</div><div class="pw-task">Open house or REIA meetup. Show properties to investor buyers.</div><div class="pw-note">In-person trust-building. One open house = multiple leads.</div></div>
+    </div>
+  </div>
+
+  <!-- WEEKLY TASKS -->
+  <div class="weekly-card">
+    <div class="weekly-head">
+      <div>
+        <div class="weekly-head-title">Weekly Tasks</div>
+        <div class="weekly-head-sub">Resets every Sunday at 6:00 PM</div>
+      </div>
+      <span class="sec-badge" style="background:var(--invest-dim);color:var(--invest)" id="weekly-badge">0 / 6 done</span>
+    </div>
+    <div class="weekly-body">
+      <div class="custom-inline-section" id="slot-weekly" style="margin-bottom:4px;"></div>
+      <div id="weekly-tasks-list"><!-- rendered by JS --></div>
+    </div>
+  </div>
+
+  <!-- LAUGHDER CONTENT IDEAS -->
+  <div class="ideas-card">
+    <div class="ideas-head">
+      <div class="ideas-head-left">
+        <div class="title">Laughder — This Week's Comedy Ideas</div>
+        <div class="sub">Refreshes every Sunday at 6:00 PM</div>
+      </div>
+      <button class="refresh-btn" onclick="renderAllIdeas()">↺ New Ideas</button>
+    </div>
+    <div class="ptabs">
+      <div class="ptab active" onclick="switchTab(event,'reels')">📱 Reels / TikTok</div>
+      <div class="ptab" onclick="switchTab(event,'shorts')">▶ Shorts</div>
+      <div class="ptab" onclick="switchTab(event,'stories')">⚡ Stories</div>
+      <div class="ptab" onclick="switchTab(event,'collab')">🤝 Collabs</div>
+    </div>
+    <div class="ideas-panel active" id="panel-reels"><div class="idea-grid" id="grid-reels"></div></div>
+    <div class="ideas-panel" id="panel-shorts"><div class="idea-grid" id="grid-shorts"></div></div>
+    <div class="ideas-panel" id="panel-stories"><div class="idea-grid" id="grid-stories"></div></div>
+    <div class="ideas-panel" id="panel-collab"><div class="idea-grid" id="grid-collab"></div></div>
+  </div>
+
+  <!-- WEEKLY RHYTHM -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--agent-dim)">📅</div>
+      <span class="sec-name">Weekly Rhythm</span>
+    </div>
+    <div class="week-strip" id="week-strip">
+      <div class="wk-col" data-day="1"><div class="wk-name">Mon</div><div class="wk-task primary">SOI calls / texts</div><div class="wk-task">Plan the week</div><div class="wk-task">CRM review</div></div>
+      <div class="wk-col" data-day="2"><div class="wk-name">Tue</div><div class="wk-task primary">Farm outreach</div><div class="wk-task">Batch content</div><div class="wk-task">Underwrite 2 deals</div></div>
+      <div class="wk-col" data-day="3"><div class="wk-name">Wed</div><div class="wk-task primary">Partner call</div><div class="wk-task">Showings / offers</div><div class="wk-task">ServiceBridge delivery</div></div>
+      <div class="wk-col" data-day="4"><div class="wk-name">Thu</div><div class="wk-task primary">Lead follow-up</div><div class="wk-task">Transaction review</div><div class="wk-task">Direct mail</div></div>
+      <div class="wk-col" data-day="5"><div class="wk-name">Fri</div><div class="wk-task primary">Online engagement</div><div class="wk-task">Week review</div><div class="wk-task">Options scan</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════
+     ROADMAP VIEW
+════════════════════════════════ -->
+<div class="view" id="view-roadmap">
+<div class="roadmap-view">
+  <div class="rm-hero">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+      <div>
+        <div class="rm-label">90-Day Execution Roadmap</div>
+        <div class="rm-h1">BUILD TO<br><em>$10K/MO</em></div>
+      </div>
+      <div>
+        <div class="rm-target">$10,000</div>
+        <div class="rm-target-lbl">Monthly Target · 5 Pillars</div>
+      </div>
+    </div>
+  </div>
+  <div class="income-section">
+    <div class="income-eyebrow">Target Income Allocation · Month 3</div>
+    <div class="income-grid">
+      <div class="ic"><div class="ic-stream">RE Agent</div><div class="ic-amt c-agent">$3,500</div><div class="ic-note">1–2 closings/mo</div></div>
+      <div class="ic"><div class="ic-stream">Laughder</div><div class="ic-amt c-laugher">$1,000</div><div class="ic-note">Ads + brand deals</div></div>
+      <div class="ic"><div class="ic-stream">ServiceBridge</div><div class="ic-amt c-bridge">$2,500</div><div class="ic-note">8–10 clients MRR</div></div>
+      <div class="ic"><div class="ic-stream">RE Investing</div><div class="ic-amt c-invest">$1,000</div><div class="ic-note">Cashflow</div></div>
+      <div class="ic"><div class="ic-stream">Trading</div><div class="ic-amt c-trade">$2,000</div><div class="ic-note">Options + futures</div></div>
+    </div>
+  </div>
+  <div class="phases">
+    <div class="ph-col ph-1">
+      <div class="ph-head"><div class="ph-num">Phase 01 · Month 1</div><div class="ph-title">FOUNDATION <span class="ph-pill" style="background:var(--agent-dim);color:var(--agent)">Launch</span></div><div class="ph-dates">Days 1–30</div><div class="ph-target">Target: $2,000–$4,000</div></div>
+      <div class="sched"><div class="sched-ttl">Daily Schedule</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Pre-market + options scan</div><div class="ts-d">Futures review, 45-DTE setup, alerts set.</div></div></div>
+        <div class="ts"><div class="ts-t">8:00a</div><div><div class="ts-lbl">★ Empire Block<span class="es">INVEST</span></div><div class="ts-d">Pull MLS, underwrite 2 deals, build direct mail list.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent prospecting</div><div class="ts-d">10 contacts, respond all leads, CRM check.</div></div></div>
+        <div class="ts"><div class="ts-t">12:00p</div><div><div class="ts-lbl">ServiceBridge build + outreach</div><div class="ts-d">Landing page, cold email 3–5 businesses.</div></div></div>
+        <div class="ts"><div class="ts-t">2:00p</div><div><div class="ts-lbl">Laughder — post + batch</div><div class="ts-d">1 comedy piece published. Batch 2–3 more.</div></div></div>
+        <div class="ts"><div class="ts-t">4:00p</div><div><div class="ts-lbl">Futures check + investor DMs</div><div class="ts-d">Adjust stops only. 5 LinkedIn DMs to investors.</div></div></div>
+      </div>
+      <div class="pris"><div class="pris-ttl">Month 1 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: Pipeline First</strong>Contact everyone you know. 3 referral partners. 1 open house/week.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: Volume</strong>Post daily. Pure comedy. Goal: 500+ followers. Consistency beats quality.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: First Client</strong>1 niche, 1 city, 1 landing page. First paying client by day 30.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: Build Pipeline</strong>Underwrite 2/day. Meet 1 lender. 40+ deals analyzed by day 30.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: Protect Capital</strong>Max 2% risk. 4–6 options positions. Futures: 1–2 swings max.</div></div>
+      </div>
+      <div class="kpis"><div class="kpis-ttl">Month 1 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE deals in pipeline</span><span class="kpi-val c-agent">3+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Deals underwritten</span><span class="kpi-val c-invest">40+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge clients</span><span class="kpi-val c-bridge">1–2</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder followers</span><span class="kpi-val c-laugher">500+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val">$1,500–$3,500</span></div>
+      </div>
+    </div>
+    <div class="ph-col ph-2">
+      <div class="ph-head"><div class="ph-num">Phase 02 · Month 2</div><div class="ph-title">MOMENTUM <span class="ph-pill" style="background:var(--bridge-dim);color:var(--bridge)">Scale</span></div><div class="ph-dates">Days 31–60</div><div class="ph-target">Target: $4,500–$7,000</div></div>
+      <div class="sched"><div class="sched-ttl">Daily Schedule (Refined)</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Pre-market + trade mgmt</div><div class="ts-d">Manage expiring options. Adjust at 50% profit.</div></div></div>
+        <div class="ts"><div class="ts-t">7:30a</div><div><div class="ts-lbl">★ Deep underwrite / active deal<span class="es">INVEST</span></div><div class="ts-d">Full NOI, DSCR, rehab. Tour shortlisted properties.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent — clients + prospecting</div><div class="ts-d">Showings, offers, CMA. 15 contacts if no active clients.</div></div></div>
+        <div class="ts"><div class="ts-t">12:00p</div><div><div class="ts-lbl">ServiceBridge delivery + growth</div><div class="ts-d">Run ads, deliver leads, add 2nd niche.</div></div></div>
+        <div class="ts"><div class="ts-t">1:30p</div><div><div class="ts-lbl">Laughder — content + collabs</div><div class="ts-d">Batch 5 pieces. Apply for first brand deal.</div></div></div>
+        <div class="ts"><div class="ts-t">3:30p</div><div><div class="ts-lbl">JV + lender calls</div><div class="ts-d">Oregon Pacific, WaFd, SELCO. Pitch 1 deal/week.</div></div></div>
+      </div>
+      <div class="pris"><div class="pris-ttl">Month 2 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: First Commission</strong>Close 1 deal. 3+ active leads in pipeline.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: First Revenue</strong>1K followers. 1 brand deal $200–500.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: $1,500 MRR</strong>3–5 clients at $400–600/mo. Automate delivery.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: LOI Submitted</strong>1 live deal with LOI drafted. Lender pre-approval.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: Build Consistency</strong>Track win rate over 20+ trades. 3–5% monthly.</div></div>
+      </div>
+      <div class="kpis"><div class="kpis-ttl">Month 2 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE closings + pipeline</span><span class="kpi-val c-agent">1 + 3 active</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">LOI submitted</span><span class="kpi-val c-invest">1+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge MRR</span><span class="kpi-val c-bridge">$1,500–2,500</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder followers</span><span class="kpi-val c-laugher">2,000+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val">$4,000–$7,000</span></div>
+      </div>
+    </div>
+    <div class="ph-col ph-3">
+      <div class="ph-head"><div class="ph-num">Phase 03 · Month 3</div><div class="ph-title">ACQUISITION <span class="ph-pill" style="background:var(--invest-dim);color:var(--invest)">Empire</span></div><div class="ph-dates">Days 61–90</div><div class="ph-target">Target: $8,000–$10,000+</div></div>
+      <div class="sched"><div class="sched-ttl">Daily Schedule (Optimized)</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Market open + P&amp;L review</div><div class="ts-d">Roll or close options at target. A+ futures only.</div></div></div>
+        <div class="ts"><div class="ts-t">7:30a</div><div><div class="ts-lbl">★ Acquisition mode<span class="es">INVEST</span></div><div class="ts-d">LOIs, lender calls, inspections. 2–3 in pipeline.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent — investor clients</div><div class="ts-d">Serve investor buyers. Each = JV partner potential.</div></div></div>
+        <div class="ts"><div class="ts-t">11:30a</div><div><div class="ts-lbl">ServiceBridge — sales only</div><div class="ts-d">VA handles delivery. You close and upsell.</div></div></div>
+        <div class="ts"><div class="ts-t">1:00p</div><div><div class="ts-lbl">Laughder — monetization push</div><div class="ts-d">3 brand deal pitches/week. Launch merch/product.</div></div></div>
+        <div class="ts"><div class="ts-t">3:00p</div><div><div class="ts-lbl">Trade review + journal</div><div class="ts-d">Win rate, avg P&amp;L, mistakes. Stock portfolio check.</div></div></div>
+      </div>
+      <div class="pris"><div class="pris-ttl">Month 3 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: Commission #2</strong>Specialize in investor buyers — they repeat and refer.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: Multi-Revenue</strong>YouTube ads + brand deals + merch. $1–2K/mo.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: $2,500 MRR</strong>VA delivers. You sell only. Referral program live.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: Under Contract</strong>1 multifamily under contract. JV partner committed.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: System Locked In</strong>$1,500–2,000/mo consistent. Stocks reviewed quarterly.</div></div>
+      </div>
+      <div class="kpis"><div class="kpis-ttl">Month 3 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE commissions</span><span class="kpi-val c-agent">$3,000–5,000</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Multifamily target</span><span class="kpi-val c-invest">Under contract</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge MRR</span><span class="kpi-val c-bridge">$2,000–2,500</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder revenue</span><span class="kpi-val c-laugher">$800–2,000</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val c-invest">$8,000–$10,000+</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="bot-panel">
+      <h3>Non-Negotiable Rules</h3>
+      <div class="bot-rule"><div class="bot-num">01</div><div class="bot-body"><strong>Trading: never break the rules</strong>50% profit close. 2x loss max. 2:1 R/R on futures always.</div></div>
+      <div class="bot-rule"><div class="bot-num">02</div><div class="bot-body"><strong>RE Agent: prospecting never stops</strong>Even with active deals. Daily within your available hours.</div></div>
+      <div class="bot-rule"><div class="bot-num">03</div><div class="bot-body"><strong>Empire Block is sacred</strong>Underwrite 2 deals every working morning. This compounds into your first acquisition.</div></div>
+      <div class="bot-rule"><div class="bot-num">04</div><div class="bot-body"><strong>ServiceBridge: paid before delivery</strong>Deposit or first month upfront. No exceptions.</div></div>
+      <div class="bot-rule"><div class="bot-num">05</div><div class="bot-body"><strong>Laughder is pure comedy</strong>No RE crossover. The brand is comedy. Keep it consistent.</div></div>
+    </div>
+    <div class="bot-panel">
+      <h3>Honest Reality Check</h3>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--laugher)">⚠</div><div class="bot-body"><strong>Month 1 income will be low</strong>RE commissions take 30–90 days. Expect $1,500–3,000 and don't panic.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--laugher)">⚠</div><div class="bot-body"><strong>Trading is not your primary engine</strong>7% monthly on $29K = ~$2K ceiling. Don't trade your way to $10K.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--bridge)">→</div><div class="bot-body"><strong>Fastest path to cash</strong>One RE commission = $3–6K. ServiceBridge = predictable MRR. These fund the lifestyle while RE investing builds the empire.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--invest)">✓</div><div class="bot-body"><strong>The long game is multifamily</strong>Every commission funds the next acquisition. Eugene near UO = structural rental demand forever.</div></div>
+    </div>
+  </div>
+  <div class="ticker">
+    <div class="tick">RE AGENT <span class="b">12 deals/yr</span></div>
+    <div class="tick">LAUGHDER <span class="r">pure comedy brand</span></div>
+    <div class="tick">SERVICEBRIDGE <span class="a">$2,500 MRR target</span></div>
+    <div class="tick">RE INVESTING <span class="g">multifamily Eugene</span></div>
+    <div class="tick">OPTIONS 5K <span class="p">45 DTE · 15–20Δ</span></div>
+    <div class="tick">FUTURES 24K <span class="p">2:1 R/R minimum</span></div>
+    <div class="tick">CLOSE OPTIONS <span class="g">50% profit</span></div>
+    <div class="tick">EMPIRE BLOCK <span class="g">8 AM daily ★</span></div>
+    <div class="tick">DAILY RESET <span class="g">6:00 PM</span></div>
+  </div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CONSTANTS & STATE
+// ═══════════════════════════════════════
+const GOALS_KEY   = 'eos_goals_v1';
+const AVAIL_KEY   = 'eos_avail_v1';
+const TASKS_KEY   = 'eos_ai_tasks_v1';
+const DK          = 'eos_daily_v2';
+const DDK         = 'eos_daily_date_v2';
+const WK          = 'eos_weekly_v2';
+const WDK         = 'eos_weekly_date_v2';
+const CTK         = 'eos_custom_v1';
+
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAY_NAMES_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const TIMES = ['6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM'];
+
+const DEFAULT_GOALS = { agent:12, laugher:10000, bridge:100, invest:2, trade:2000 };
+const DEFAULT_AVAIL = {
+  0: { on: false, start: '9:00 AM', end: '5:00 PM' },
+  1: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+  2: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+  3: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+  4: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+  5: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+  6: { on: false, start: '9:00 AM', end: '5:00 PM' },
+};
+
+let goals = JSON.parse(localStorage.getItem(GOALS_KEY) || 'null') || { ...DEFAULT_GOALS };
+let avail = JSON.parse(localStorage.getItem(AVAIL_KEY) || 'null') || JSON.parse(JSON.stringify(DEFAULT_AVAIL));
+let aiTasks = JSON.parse(localStorage.getItem(TASKS_KEY) || 'null');
+let customMode = 'daily';
+
+// ═══════════════════════════════════════
+// PILLAR CONFIG
+// ═══════════════════════════════════════
+const PILLARS = {
+  agent:   { icon:'🏠', name:'RE Agent',      color:'var(--agent)',   dim:'var(--agent-dim)'   },
+  laugher: { icon:'😂', name:'Laughder',      color:'var(--laugher)', dim:'var(--laugher-dim)' },
+  bridge:  { icon:'🔗', name:'ServiceBridge', color:'var(--bridge)',  dim:'var(--bridge-dim)'  },
+  invest:  { icon:'🏢', name:'RE Investing',  color:'var(--invest)',  dim:'var(--invest-dim)'  },
+  trade:   { icon:'📈', name:'Trading',       color:'var(--trade)',   dim:'var(--trade-dim)'   },
+};
+const PCT = { agent:'var(--agent)', laugher:'var(--laugher)', bridge:'var(--bridge)', invest:'var(--invest)', trade:'var(--trade)', general:'#888' };
+const PCNAME = { agent:'🏠 RE Agent', laugher:'😂 Laughder', bridge:'🔗 ServiceBridge', invest:'🏢 RE Investing', trade:'📈 Trading', general:'⚡ General' };
+const TIME_LABELS = { '9am':'9:00 AM','10am':'10:00 AM','11am':'11:00 AM','12pm':'12:00 PM','1pm':'1:00 PM','2pm':'2:00 PM','3pm':'3:00 PM','4pm':'4:00 PM','5pm':'5:00 PM','contact':'📞 Business hours' };
+
+// ═══════════════════════════════════════
+// VIEW SWITCHING
+// ═══════════════════════════════════════
+function switchView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// PANELS
+// ═══════════════════════════════════════
+function toggleGoalsPanel() {
+  const p = document.getElementById('goals-panel');
+  const b = document.getElementById('goals-backdrop');
+  const btn = document.getElementById('goals-nav-btn');
+  if (p.classList.contains('open')) {
+    p.classList.remove('open'); b.classList.remove('open'); btn.classList.remove('active-panel');
+  } else {
+    closeTaskModal();
+    p.classList.add('open'); b.classList.add('open'); btn.classList.add('active-panel');
+    loadGoalInputs();
+  }
+}
+function closeGoalsPanel() {
+  document.getElementById('goals-panel').classList.remove('open');
+  document.getElementById('goals-backdrop').classList.remove('open');
+  document.getElementById('goals-nav-btn').classList.remove('active-panel');
+}
+function toggleTaskModal() {
+  const m = document.getElementById('task-modal');
+  const b = document.getElementById('task-backdrop');
+  if (m.classList.contains('open')) {
+    m.classList.remove('open'); b.classList.remove('open');
+  } else {
+    closeGoalsPanel();
+    m.classList.add('open'); b.classList.add('open');
+    setTimeout(() => document.getElementById('ca-input').focus(), 280);
+  }
+}
+function closeTaskModal() {
+  document.getElementById('task-modal').classList.remove('open');
+  document.getElementById('task-backdrop').classList.remove('open');
+}
+
+// ═══════════════════════════════════════
+// GOALS
+// ═══════════════════════════════════════
+function loadGoalInputs() {
+  document.getElementById('g-agent').value   = goals.agent;
+  document.getElementById('g-laugher').value = goals.laugher;
+  document.getElementById('g-bridge').value  = goals.bridge;
+  document.getElementById('g-invest').value  = goals.invest;
+  document.getElementById('g-trade').value   = goals.trade;
+}
+
+function fmtGoal(key, val) {
+  if (key === 'trade') return val >= 1000 ? `$${(val/1000).toFixed(val%1000===0?0:1)}K` : `$${val}`;
+  if (key === 'laugher') return val >= 1000 ? `${(val/1000).toFixed(val%1000===0?0:1)}K` : val;
+  return val;
+}
+
+function updateGoalChips() {
+  document.getElementById('gc-agent').textContent   = fmtGoal('agent',   goals.agent);
+  document.getElementById('gc-laugher').textContent = fmtGoal('laugher', goals.laugher);
+  document.getElementById('gc-bridge').textContent  = fmtGoal('bridge',  goals.bridge);
+  document.getElementById('gc-invest').textContent  = fmtGoal('invest',  goals.invest);
+  document.getElementById('gc-trade').textContent   = fmtGoal('trade',   goals.trade);
+  document.getElementById('hs-agent').textContent   = goals.agent + ' deals';
+  document.getElementById('hs-invest').textContent  = goals.invest + ' acq';
+}
+
+// ═══════════════════════════════════════
+// AVAILABILITY
+// ═══════════════════════════════════════
+function buildAvailGrid() {
+  const grid = document.getElementById('avail-grid');
+  grid.innerHTML = DAYS.map((d, i) => {
+    const a = avail[i];
+    const timeOpts = TIMES.map(t => `<option${a.start===t?' selected':''}>${t}</option>`).join('');
+    const timeOptsEnd = TIMES.map(t => `<option${a.end===t?' selected':''}>${t}</option>`).join('');
+    return `<div class="avail-day ${a.on?'on':'off'}" id="avd-${i}">
+      <div class="avail-day-name">${d}</div>
+      <div class="avail-time-col">
+        <select class="avail-select" onchange="setAvailTime(${i},'start',this.value)">${timeOpts}</select>
+        <select class="avail-select" onchange="setAvailTime(${i},'end',this.value)">${timeOptsEnd}</select>
+        <button class="avail-off-btn" onclick="toggleAvailDay(${i})">${a.on?'✓ On':'✕ Off'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleAvailDay(i) {
+  avail[i].on = !avail[i].on;
+  localStorage.setItem(AVAIL_KEY, JSON.stringify(avail));
+  buildAvailGrid();
+  updateAvailBanner();
+}
+function setAvailTime(i, key, val) {
+  avail[i][key] = val;
+  localStorage.setItem(AVAIL_KEY, JSON.stringify(avail));
+  updateAvailBanner();
+}
+
+function updateAvailBanner() {
+  const container = document.getElementById('avail-banner-days');
+  container.innerHTML = DAYS.map((d, i) => {
+    const a = avail[i];
+    return `<span class="avail-day-chip ${a.on?'on':'off'}">${d}${a.on ? ` ${a.start.replace(':00','').replace(' AM','a').replace(' PM','p')}–${a.end.replace(':00','').replace(' AM','a').replace(' PM','p')}` : ''}</span>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// AI TASK GENERATION
+// ═══════════════════════════════════════
+async function regenerateTasks() {
+  const btn = document.getElementById('regen-btn');
+  const lbl = document.getElementById('regen-lbl');
+  // Read current inputs
+  goals.agent   = parseInt(document.getElementById('g-agent').value)   || 12;
+  goals.laugher = parseInt(document.getElementById('g-laugher').value) || 10000;
+  goals.bridge  = parseInt(document.getElementById('g-bridge').value)  || 100;
+  goals.invest  = parseInt(document.getElementById('g-invest').value)  || 2;
+  goals.trade   = parseInt(document.getElementById('g-trade').value)   || 2000;
+  localStorage.setItem(GOALS_KEY, JSON.stringify(goals));
+  updateGoalChips();
+
+  btn.disabled = true;
+  btn.classList.add('loading');
+  lbl.textContent = 'Building your plan';
+
+  const workingDays = DAYS.filter((d,i) => avail[i].on);
+  const availSummary = DAYS.map((d,i) => {
+    const a = avail[i];
+    return a.on ? `${d}: ${a.start}–${a.end}` : `${d}: OFF`;
+  }).join(', ');
+
+  const prompt = `You are an expert productivity coach for a real estate entrepreneur in Eugene, Oregon. Generate a personalized daily task schedule based on these exact goals and availability.
+
+GOALS:
+- RE Agent: ${goals.agent} deals/year (licensed Oregon agent)
+- Laughder.com: ${goals.laugher.toLocaleString()} followers (pure comedy brand, NO real estate content)
+- ServiceBridge: ${goals.bridge} leads/month (lead gen website selling to service businesses like roofers, HVAC, plumbers)
+- RE Investing: ${goals.invest} multifamily acquisitions/year in Eugene OR
+- Trading: $${goals.trade.toLocaleString()}/month (options on $5K account + micro futures on $24K account + stock holdings)
+
+WEEKLY AVAILABILITY: ${availSummary}
+Working days: ${workingDays.join(', ')}
+
+IMPORTANT RULES:
+- Only schedule "contact other people" tasks during business hours (9 AM–5 PM) on working days
+- Trading tasks (pre-market, options scan) should happen at market open time (6 AM PT)
+- Laughder content is pure comedy — never mix with real estate
+- Scale activity intensity to hit the goals (e.g. ${goals.agent} deals/yr = ~${Math.ceil(goals.agent/12)} deals/mo = need ~${Math.ceil(goals.agent * 25 / 52)} contacts/week)
+- If goals are high (e.g. 24+ deals/yr), increase prospecting contacts, follow-ups, and time blocks proportionally
+- Respect the off days — don't schedule heavy work on days marked OFF
+
+Generate exactly 5 task sections, one per pillar. Respond ONLY with valid JSON, no markdown, no explanation:
+
+{
+  "sections": [
+    {
+      "pillar": "trade",
+      "timeBlock": "6:00–8:00 AM",
+      "tasks": [
+        {
+          "text": "task title",
+          "sub": "time · brief context",
+          "tags": [{"label": "Options", "color": "trade"}],
+          "details": ["bullet point 1", "bullet point 2", "bullet point 3"]
+        }
+      ]
+    }
+  ],
+  "weeklyTasks": [
+    {
+      "text": "weekly task title",
+      "sub": "when · brief context",
+      "pillar": "agent",
+      "details": ["bullet 1", "bullet 2"]
+    }
+  ],
+  "powerHourNote": "one sentence about today's prospecting intensity based on goal of ${goals.agent} deals/yr"
+}
+
+Pillar order must be: trade, invest, agent, bridge, laugher. Include 2 tasks per pillar section and 6 weekly tasks total. Keep task text concise (under 12 words). Details should be specific, actionable bullets.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const raw = data.content?.find(b => b.type === 'text')?.text || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    aiTasks = parsed;
+    localStorage.setItem(TASKS_KEY, JSON.stringify(aiTasks));
+    closeGoalsPanel();
+    renderAITasks();
+    renderWeeklyTasksList();
+    updateAvailBanner();
+
+    if (parsed.powerHourNote) {
+      document.getElementById('power-hour-time-badge').title = parsed.powerHourNote;
+    }
+  } catch(e) {
+    console.error('AI generation error:', e);
+    alert('Could not generate tasks — please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    lbl.textContent = '✦ Regenerate Daily Tasks with AI';
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER AI TASKS
+// ═══════════════════════════════════════
+const SECTION_ICONS = { trade:'📈', invest:'🏢', agent:'🏠', bridge:'🔗', laugher:'😂' };
+const SECTION_NAMES = { trade:'Trading', invest:'RE Investing — Empire Block', agent:'RE Agent', bridge:'ServiceBridge', laugher:'Laughder.com' };
+
+function renderAITasks() {
+  const container = document.getElementById('ai-tasks-container');
+  if (!aiTasks || !aiTasks.sections) {
+    container.innerHTML = renderDefaultTasks();
+    return;
+  }
+  const state = JSON.parse(localStorage.getItem(DK) || '{}');
+  container.innerHTML = aiTasks.sections.map((sec, si) => {
+    const p = PILLARS[sec.pillar] || PILLARS.trade;
+    const tasks = sec.tasks.map((t, ti) => {
+      const tid = `ai_${si}_${ti}`;
+      const done = !!state[tid];
+      const tags = (t.tags || []).map(tg =>
+        `<span class="ai-t-tag" style="background:var(--${tg.color}-dim);color:var(--${tg.color})">${tg.label}</span>`
+      ).join('');
+      const bullets = (t.details || []).map(d =>
+        `<li><span>${d}</span></li>`
+      ).join('');
+      return `<div class="ai-task-block ${done?'ai-task-done':''}" id="${tid}">
+        <div class="ai-task-row" onclick="hcAI(event,'${tid}')">
+          <div class="ai-chk">✓</div>
+          <div class="ai-t-body">
+            <div class="ai-t-text">${esc(t.text)}</div>
+            <div class="ai-t-sub">${esc(t.sub||'')}</div>
+            ${tags ? `<div class="ai-t-tags">${tags}</div>` : ''}
+          </div>
+          <div class="ai-arr">▼</div>
+        </div>
+        <div class="ai-drawer">
+          <div class="ai-d-inner">
+            <div class="ai-goal-tag">Goal: ${goalLabel(sec.pillar)}</div>
+            ${bullets ? `<ul>${bullets}</ul>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // slot for custom inline tasks
+    const slotId = `slot-${sec.pillar}`;
+    return `<div class="ai-section">
+      <div class="ai-sec-head">
+        <div class="ai-icon" style="background:${p.dim}">${SECTION_ICONS[sec.pillar]||'⚡'}</div>
+        <span class="ai-name">${SECTION_NAMES[sec.pillar]||sec.pillar}</span>
+        <span class="ai-badge" style="background:${p.dim};color:${p.color}">${esc(sec.timeBlock||'')}</span>
+      </div>
+      ${tasks}
+      <div class="custom-inline-section" id="${slotId}" style="padding:0 0 4px 0;"></div>
+    </div>`;
+  }).join('');
+
+  // Re-attach custom inline tasks after re-render
+  renderInlineSlots();
+}
+
+function goalLabel(pillar) {
+  const g = goals;
+  if (pillar==='agent')   return `${g.agent} deals/yr`;
+  if (pillar==='laugher') return `${g.laugher.toLocaleString()} followers`;
+  if (pillar==='bridge')  return `${g.bridge} leads/mo`;
+  if (pillar==='invest')  return `${g.invest} acquisitions/yr`;
+  if (pillar==='trade')   return `$${g.trade.toLocaleString()}/mo`;
+  return '';
+}
+
+// fallback static tasks if AI hasn't run yet
+function renderDefaultTasks() {
+  return `<div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:24px;text-align:center;margin-bottom:24px;">
+    <div style="font-size:28px;margin-bottom:10px;">✦</div>
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">Set your goals, get your plan.</div>
+    <div style="font-size:12px;color:var(--dim);margin-bottom:16px;">Click <strong style="color:var(--text)">⚙ Goals &amp; Hours</strong> in the nav, set your targets and availability, then hit <strong style="color:var(--invest)">Regenerate Daily Tasks with AI</strong>.</div>
+    <button onclick="toggleGoalsPanel()" style="background:var(--invest);border:none;border-radius:8px;color:#000;font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;padding:10px 20px;cursor:pointer;">⚙ Open Goals &amp; Hours</button>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// CLICK HANDLER — AI tasks (expand vs check)
+// ═══════════════════════════════════════
+function hcAI(event, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const onChk = event.target.classList.contains('ai-chk') || !!event.target.closest('.ai-chk');
+  if (onChk) {
+    el.classList.toggle('ai-task-done');
+    const state = JSON.parse(localStorage.getItem(DK) || '{}');
+    state[id] = el.classList.contains('ai-task-done');
+    localStorage.setItem(DK, JSON.stringify(state));
+    updateProgress();
+  } else {
+    const open = el.classList.contains('open');
+    document.querySelectorAll('.ai-task-block.open').forEach(x => { if (x!==el) x.classList.remove('open'); });
+    el.classList.toggle('open', !open);
+  }
+}
+
+// ═══════════════════════════════════════
+// WEEKLY TASKS
+// ═══════════════════════════════════════
+function renderWeeklyTasksList() {
+  const container = document.getElementById('weekly-tasks-list');
+  if (!aiTasks || !aiTasks.weeklyTasks) {
+    container.innerHTML = '';
+    return;
+  }
+  const state = JSON.parse(localStorage.getItem(WK) || '{}');
+  const html = aiTasks.weeklyTasks.map((t, i) => {
+    const id = `wt_${i}`;
+    const done = !!state[id];
+    const p = PILLARS[t.pillar] || PILLARS.agent;
+    const bullets = (t.details||[]).map(d=>`<li><span>${esc(d)}</span></li>`).join('');
+    return `<div class="ai-task-block ${done?'ai-task-done':''}" id="${id}" style="margin-bottom:3px;">
+      <div class="ai-task-row" onclick="hcWeekly(event,'${id}')">
+        <div class="ai-chk">✓</div>
+        <div class="ai-t-body">
+          <div class="ai-t-text">${esc(t.text)}</div>
+          <div class="ai-t-sub">${esc(t.sub||'')}</div>
+          <div class="ai-t-tags"><span class="ai-t-tag" style="background:${p.dim};color:${p.color}">${p.icon} ${p.name}</span></div>
+        </div>
+        <div class="ai-arr">▼</div>
+      </div>
+      <div class="ai-drawer">
+        <div class="ai-d-inner">${bullets?`<ul>${bullets}</ul>`:''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  container.innerHTML = html;
+  updateWeeklyBadge();
+}
+
+function hcWeekly(event, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const onChk = event.target.classList.contains('ai-chk') || !!event.target.closest('.ai-chk');
+  if (onChk) {
+    el.classList.toggle('ai-task-done');
+    const state = JSON.parse(localStorage.getItem(WK) || '{}');
+    state[id] = el.classList.contains('ai-task-done');
+    localStorage.setItem(WK, JSON.stringify(state));
+    updateWeeklyBadge();
+    updateProgress();
+  } else {
+    const open = el.classList.contains('open');
+    document.querySelectorAll('.ai-task-block.open').forEach(x => { if(x!==el) x.classList.remove('open'); });
+    el.classList.toggle('open', !open);
+  }
+}
+
+function updateWeeklyBadge() {
+  const total = document.querySelectorAll('[id^="wt_"]').length;
+  const done  = document.querySelectorAll('[id^="wt_"].ai-task-done').length;
+  const b = document.getElementById('weekly-badge');
+  if (b) b.textContent = `${done} / ${total} done`;
+}
+
+// ═══════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════
+const MSGS = [
+  'Set your goals, then tap ⚙ Goals & Hours to generate your plan.',
+  'Good start — keep the momentum going.',
+  'Halfway there — building the empire.',
+  'Almost done — finish strong.',
+  '🎉 Full day complete. This is what the empire looks like.',
+];
+function updateProgress() {
+  const aiTotal = document.querySelectorAll('[id^="ai_"]').length;
+  const aiDone  = document.querySelectorAll('[id^="ai_"].ai-task-done').length;
+  const wtTotal = document.querySelectorAll('[id^="wt_"]').length;
+  const wtDone  = document.querySelectorAll('[id^="wt_"].ai-task-done').length;
+  const custom  = loadCustomTasks();
+  const cDay = custom.filter(t=>t.mode==='daily');
+  const cWeek = custom.filter(t=>t.mode==='weekly');
+  const cDayDone = cDay.filter(t=>t.done).length;
+  const cWeekDone = cWeek.filter(t=>t.done).length;
+
+  const total = aiTotal + wtTotal + cDay.length + cWeek.length;
+  const done  = aiDone  + wtDone  + cDayDone    + cWeekDone;
+
+  document.getElementById('prog-count').textContent = `${done} / ${total}`;
+  document.getElementById('prog-fill').style.width = total ? `${(done/total)*100}%` : '0%';
+  const idx = total ? Math.min(Math.floor((done/total)*(MSGS.length-1)), MSGS.length-1) : 0;
+  document.getElementById('prog-msg').textContent = MSGS[idx];
+  const ds = document.getElementById('done-stat');
+  if (ds) ds.textContent = `${aiDone+cDayDone}/${aiTotal+cDay.length}`;
+}
+
+// ═══════════════════════════════════════
+// DAILY RESET
+// ═══════════════════════════════════════
+function getDayId() {
+  const n = new Date();
+  if (n.getHours() >= 18) {
+    const t = new Date(n); t.setDate(t.getDate()+1);
+    return t.toDateString()+'_pre';
+  }
+  return n.toDateString();
+}
+function getWeekId() {
+  const n = new Date(), day = n.getDay(), h = n.getHours();
+  const d = new Date(n);
+  let back = day; if(day===0&&h<18) back=7;
+  d.setDate(d.getDate()-back); d.setHours(18,0,0,0);
+  return 'w_'+d.toDateString();
+}
+function loadDailyState() {
+  if (localStorage.getItem(DDK) !== getDayId()) {
+    localStorage.removeItem(DK);
+    localStorage.setItem(DDK, getDayId());
+  }
+  const state = JSON.parse(localStorage.getItem(DK)||'{}');
+  Object.keys(state).forEach(id => {
+    if (state[id]) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('ai-task-done');
+    }
+  });
+  updateProgress();
+}
+function loadWeeklyState() {
+  if (localStorage.getItem(WDK) !== getWeekId()) {
+    localStorage.removeItem(WK);
+    localStorage.setItem(WDK, getWeekId());
+  }
+  const state = JSON.parse(localStorage.getItem(WK)||'{}');
+  Object.keys(state).forEach(id => {
+    if (state[id]) { const el=document.getElementById(id); if(el) el.classList.add('ai-task-done'); }
+  });
+  updateWeeklyBadge();
+}
+function resetDaily() {
+  document.querySelectorAll('[id^="ai_"]').forEach(el => el.classList.remove('ai-task-done'));
+  localStorage.removeItem(DK);
+  updateProgress();
+}
+
+// ═══════════════════════════════════════
+// CUSTOM TASKS
+// ═══════════════════════════════════════
+function loadCustomTasks() { return JSON.parse(localStorage.getItem(CTK)||'[]'); }
+function saveCustomTasks(t) { localStorage.setItem(CTK, JSON.stringify(t)); }
+function setMode(m) {
+  customMode = m;
+  document.getElementById('tog-daily').classList.toggle('active', m==='daily');
+  document.getElementById('tog-weekly').classList.toggle('active', m==='weekly');
+  renderCustomList();
+}
+function addCustomTask() {
+  const inp = document.getElementById('ca-input');
+  const desc = document.getElementById('ca-desc');
+  const text = inp.value.trim(); if (!text) { inp.focus(); return; }
+  const tasks = loadCustomTasks();
+  tasks.push({ id:'ct_'+Date.now(), text, desc:desc.value.trim(), pillar:document.getElementById('ca-pillar').value, time:document.getElementById('ca-time').value, mode:customMode, done:false, created:Date.now() });
+  saveCustomTasks(tasks);
+  inp.value=''; desc.value='';
+  closeTaskModal();
+  renderCustomList(); renderInlineSlots(); updateProgress();
+}
+function toggleCustomTask(id) {
+  const tasks = loadCustomTasks();
+  const t = tasks.find(x=>x.id===id); if(t) t.done=!t.done;
+  saveCustomTasks(tasks); renderCustomList(); renderInlineSlots(); updateProgress();
+}
+function deleteCustomTask(id) {
+  saveCustomTasks(loadCustomTasks().filter(x=>x.id!==id));
+  renderCustomList(); renderInlineSlots(); updateProgress();
+}
+function renderCustomList() {
+  const tasks = loadCustomTasks().filter(t=>t.mode===customMode);
+  const list = document.getElementById('ca-list');
+  if (!tasks.length) { list.innerHTML = '<div class="ca-empty" id="ca-empty">No tasks yet — add one above.</div>'; return; }
+  list.innerHTML = tasks.map(t => {
+    const c = PCT[t.pillar]||'#888'; const n = PCNAME[t.pillar]||'General';
+    const tl = t.time ? (TIME_LABELS[t.time]||t.time) : '';
+    return `<div class="ct-item ${t.done?'ct-done':''}">
+      <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+      <div class="ct-body">
+        <div class="ct-text">${esc(t.text)}</div>
+        ${t.desc?`<div class="ct-desc">${esc(t.desc)}</div>`:''}
+        <div class="ct-meta">
+          <span class="ct-badge" style="background:${c}20;color:${c}">${n}</span>
+          ${tl?`<span class="ct-time">${tl}</span>`:''}
+          ${t.done?'<span class="ct-time" style="color:var(--dim)">✓ Done</span>':''}
+        </div>
+      </div>
+      <button class="ct-delete" onclick="deleteCustomTask('${t.id}')">×</button>
+    </div>`;
+  }).join('');
+}
+function getSlot(t) { return ['9am','10am','11am','contact'].includes(t.time) ? 'trade' : 'bridge'; }
+function renderInlineSlots() {
+  const all = loadCustomTasks();
+  // daily tasks → inject into the pillar slot that matches, or closest section
+  const daily = all.filter(t=>t.mode==='daily');
+  // Find all slot- elements and clear them
+  document.querySelectorAll('[id^="slot-"]').forEach(el => { el.innerHTML=''; });
+  daily.forEach(t => {
+    // route to matching pillar slot, fallback to trade (morning) or bridge (afternoon)
+    let slotId = `slot-${t.pillar}`;
+    let el = document.getElementById(slotId);
+    if (!el) {
+      slotId = ['9am','10am','11am','contact'].includes(t.time) ? 'slot-trade' : 'slot-bridge';
+      el = document.getElementById(slotId);
+    }
+    if (!el) return;
+    const c = PCT[t.pillar]||'#888'; const n = PCNAME[t.pillar]||'General';
+    const tl = t.time ? (TIME_LABELS[t.time]||t.time) : 'Business hours';
+    el.innerHTML += `<div class="ct-inline ${t.done?'ct-done':''}">
+      <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+      <div class="ct-body">
+        <div class="ct-text">${esc(t.text)}</div>
+        ${t.desc?`<div class="ct-desc">${esc(t.desc)}</div>`:''}
+        <div class="ct-meta">
+          <span class="ct-badge" style="background:${c}20;color:${c}">${n}</span>
+          <span class="ct-time">${tl}</span>
+        </div>
+      </div>
+      <button class="ct-delete" onclick="deleteCustomTask('${t.id}')">×</button>
+    </div>`;
+  });
+  // weekly
+  const ws = document.getElementById('slot-weekly');
+  if (ws) {
+    const wt = all.filter(t=>t.mode==='weekly');
+    ws.innerHTML = wt.map(t => {
+      const c=PCT[t.pillar]||'#888'; const n=PCNAME[t.pillar]||'General';
+      const tl=t.time?(TIME_LABELS[t.time]||t.time):'';
+      return `<div class="ct-inline ${t.done?'ct-done':''}">
+        <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+        <div class="ct-body">
+          <div class="ct-text">${esc(t.text)}</div>
+          ${t.desc?`<div class="ct-desc">${esc(t.desc)}</div>`:''}
+          <div class="ct-meta">
+            <span class="ct-badge" style="background:${c}20;color:${c}">${n}</span>
+            ${tl?`<span class="ct-time">${tl}</span>`:''}
+          </div>
+        </div>
+        <button class="ct-delete" onclick="deleteCustomTask('${t.id}')">×</button>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════════════════
+// CONTENT IDEAS
+// ═══════════════════════════════════════
+const IDEAS = {
+  reels:[
+    {title:'"Oregon rain has entered the chat"',hook:'Lean into the stereotype. Local content gets shared by locals.',fmt:'Sketch'},
+    {title:'"POV: you told someone you\'re an entrepreneur"',hook:'The unsolicited advice that follows. Self-aware hustle humor.',fmt:'POV'},
+    {title:'"Expectation vs Reality: working from home"',hook:'Universal format. 1-second hook. Everyone shares it.',fmt:'E vs R'},
+    {title:'"Things people say that don\'t make sense"',hook:'Deadpan delivery of absurd common phrases. High rewatch.',fmt:'Observational'},
+    {title:'"Trending audio + absurd Oregon twist"',hook:'Take #1 trending sound and apply a hyper-local spin.',fmt:'Trend'},
+    {title:'"How to look productive while doing nothing"',hook:'Parody productivity content. Deadpan delivery essential.',fmt:'Parody'},
+    {title:'"Rating Eugene things on a scale of 1–10"',hook:'Local listicle comedy. Gets shared in Eugene FB groups.',fmt:'Rating'},
+    {title:'"The 3am thought that ruins your morning"',hook:'Relatable anxiety humor. The specific detail makes it funny.',fmt:'Monologue'},
+  ],
+  shorts:[
+    {title:'"60 seconds of unhinged advice"',hook:'Rapid-fire fake tips delivered seriously. High-retention format.',fmt:'List'},
+    {title:'"Explaining my day to someone from 1950"',hook:'Time travel comedy. Hook: "I spent 3 hours watching strangers dance."',fmt:'Explainer'},
+    {title:'"Oregon in 60 seconds — the honest version"',hook:'Local pride + self-deprecating humor. High share rate locally.',fmt:'Local'},
+    {title:'"The algorithm asked me to post this"',hook:'Meta-humor about content creation. Creator community loves this.',fmt:'Meta'},
+    {title:'"Speed run: explaining my business plan"',hook:'60 seconds, chaotic, self-aware. Hustle humor.',fmt:'Speed run'},
+    {title:'"I tried a productivity hack for 1 day"',hook:'Parody of the 5am-club crowd. End: "Never doing that again."',fmt:'Day in life'},
+    {title:'"Things I said today that I regret"',hook:'Personal and specific beats generic. End with a punchline.',fmt:'Confessional'},
+    {title:'"Reacting to my old self\'s advice"',hook:'Nostalgia + cringe + growth. Three emotions = high engagement.',fmt:'Reaction'},
+  ],
+  stories:[
+    {title:'"Rate this take: [controversial opinion]"',hook:'Poll sticker. Massive engagement. Leads into DM naturally.',fmt:'Poll'},
+    {title:'Behind the scenes of filming a video',hook:'Raw, unedited. Process content. People want to see how it works.',fmt:'BTS'},
+    {title:'"Hot take: [something everyone secretly agrees with]"',hook:'Question sticker. Ask audience to share their hot take.',fmt:'Hot take'},
+    {title:'"Would you rather: [absurd choice]"',hook:'Poll sticker. Simple, engaging, keeps the streak alive.',fmt:'Would you rather'},
+    {title:'AMA — ask me anything about comedy',hook:'Question sticker. Generates DMs. Answer top ones in follow-up.',fmt:'AMA'},
+    {title:'"Today\'s mood in one GIF"',hook:'GIF sticker + reaction. Relatable micro-content. 30 seconds to post.',fmt:'Mood'},
+    {title:'"Unpopular opinion: [thing everyone thinks]"',hook:'Gets strong reactions. People share because they agree privately.',fmt:'Opinion'},
+    {title:'"This made me laugh today"',hook:'Share something funny you found. Low effort, high authenticity.',fmt:'Share'},
+  ],
+  collab:[
+    {title:'Duet with a local Oregon comedian',hook:'Find Eugene/Portland-area creators. Tag + duet = cross-pollination.',fmt:'Duet'},
+    {title:'Stitch the most confident wrong take',hook:'Free content from their audience. Reply format is favored by algorithms.',fmt:'Stitch'},
+    {title:'Tag a brand in a funny brand-adjacent video',hook:'If they repost = massive reach spike. Aim for 50K–500K follower brands.',fmt:'Brand tag'},
+    {title:'Collab with a local podcast as comedy guest',hook:'One episode = 30 min of reach. Find Eugene entrepreneur podcasts.',fmt:'Podcast'},
+    {title:'"What _____ actually means" — ft. another creator',hook:'Scripted collab. Both promote. Simple concept, high upside.',fmt:'Scripted'},
+    {title:'Reaction collab — react to each other\'s old content',hook:'Both creators post from different angles. Built-in cross-promotion.',fmt:'Reaction'},
+    {title:'Challenge format — tag 3 creators',hook:'If it catches, exponential reach with zero ad spend.',fmt:'Challenge'},
+    {title:'Collab with trades/blue-collar humor account',hook:'Adjacent audience to ServiceBridge. Funny crossover.',fmt:'Crossover'},
+  ]
+};
+function getWeekSeed() {
+  const n=new Date(),day=n.getDay(),h=n.getHours(),d=new Date(n);
+  let back=day; if(day===0&&h<18) back=7;
+  d.setDate(d.getDate()-back); d.setHours(18,0,0,0);
+  return Math.floor(d.getTime()/1000);
+}
+function seeded(arr,seed) {
+  const a=[...arr];let s=seed;
+  for(let i=a.length-1;i>0;i--){s=(s*1664525+1013904223)&0xffffffff;const j=Math.abs(s)%(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function renderPlatform(plat) {
+  const seed=getWeekSeed()*31+plat.length;
+  const items=seeded(IDEAS[plat],seed).slice(0,4);
+  document.getElementById('grid-'+plat).innerHTML=items.map((x,i)=>`
+    <div class="idea-card">
+      <div class="idea-num">IDEA 0${i+1}</div>
+      <div class="idea-title">${x.title}</div>
+      <div class="idea-hook">${x.hook}</div>
+      <span class="idea-fmt" style="background:var(--laugher-dim);color:var(--laugher)">${x.fmt}</span>
+    </div>`).join('');
+}
+function renderAllIdeas(){['reels','shorts','stories','collab'].forEach(renderPlatform);}
+function switchTab(e,plat){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ideas-panel').forEach(p=>p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('panel-'+plat).classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// HIGHLIGHT TODAY
+// ═══════════════════════════════════════
+function highlightToday() {
+  const d=new Date().getDay();
+  document.querySelectorAll('.power-card').forEach(c=>{
+    if(parseInt(c.dataset.day)===d||(d===6&&parseInt(c.dataset.day)===0)){
+      c.classList.add('today-card');
+      const dl=c.querySelector('.pw-day');
+      if(dl&&!dl.querySelector('.today-pip')) dl.innerHTML+='<span class="today-pip">Today</span>';
+    }
+  });
+  document.querySelectorAll('.wk-col').forEach(c=>{
+    if(parseInt(c.dataset.day)===d) c.classList.add('today-col');
+  });
+}
+
+// ═══════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════
+function tick() {
+  const now=new Date(),t=new Date(now);
+  t.setHours(18,0,0,0); if(now>=t) t.setDate(t.getDate()+1);
+  const diff=t-now;
+  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  document.getElementById('countdown').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if(now.getHours()===18&&now.getMinutes()===0&&now.getSeconds()===0){
+    resetDaily();
+    if(now.getDay()===0){
+      document.querySelectorAll('[id^="wt_"]').forEach(el=>el.classList.remove('ai-task-done'));
+      localStorage.removeItem(WK); updateWeeklyBadge(); renderAllIdeas();
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// UTIL
+// ═══════════════════════════════════════
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+updateGoalChips();
+buildAvailGrid();
+updateAvailBanner();
+renderAITasks();
+renderWeeklyTasksList();
+loadDailyState();
+loadWeeklyState();
+renderCustomList();
+renderInlineSlots();
+renderAllIdeas();
+highlightToday();
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
