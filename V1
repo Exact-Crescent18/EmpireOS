@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empire OS — Daily Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Fragment+Mono:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070709;
+  --surface: #0f0f12;
+  --card: #131318;
+  --card2: #18181f;
+  --border: #1e1e28;
+  --border2: #2a2a38;
+  --text: #e8e8f0;
+  --dim: #6b6b80;
+  --muted: #3a3a4a;
+
+  /* Pillar colors */
+  --agent:   #3b82f6;  /* blue   — RE Agent */
+  --laugher: #f43f5e;  /* rose   — Laughder */
+  --bridge:  #f59e0b;  /* amber  — ServiceBridge */
+  --invest:  #10b981;  /* green  — RE Investing */
+  --trade:   #a78bfa;  /* purple — Trading */
+
+  --agent-dim:   rgba(59,130,246,0.1);
+  --laugher-dim: rgba(244,63,94,0.1);
+  --bridge-dim:  rgba(245,158,11,0.1);
+  --invest-dim:  rgba(16,185,129,0.1);
+  --trade-dim:   rgba(167,139,250,0.1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:14px;
+  line-height:1.6;
+}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(7,7,9,0.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 28px;
+  gap:0;
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:17px;font-weight:800;
+  letter-spacing:0.12em;
+  color:var(--text);
+  margin-right:32px;
+  padding:15px 0;
+  flex-shrink:0;
+}
+.nav-logo span{color:var(--invest);}
+.nav-tab{
+  font-family:'Fragment Mono',monospace;
+  font-size:10px;letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--dim);
+  padding:17px 16px;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all 0.18s;
+  user-select:none;
+  white-space:nowrap;
+}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--invest);}
+.nav-right{
+  margin-left:auto;
+  display:flex;align-items:center;gap:12px;
+}
+.reset-pill{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:6px 14px;
+}
+.reset-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--invest);
+  animation:breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+.reset-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.1em;}
+.reset-time{font-family:'Fragment Mono',monospace;font-size:13px;color:var(--text);letter-spacing:0.06em;}
+
+/* ── VIEWS ── */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ════════════════════════════════
+   DAILY OS
+════════════════════════════════ */
+.daily-wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+
+/* PILLAR STRIP */
+.pillar-strip{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:3px;
+  margin-bottom:28px;
+}
+.pillar-chip{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 14px 12px;
+  position:relative;
+  overflow:hidden;
+}
+.pillar-chip::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--pc,#fff);
+}
+.pc-icon{font-size:18px;margin-bottom:4px;}
+.pc-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:2px;}
+.pc-goal{font-size:11px;color:var(--text);font-weight:500;line-height:1.3;}
+
+/* HERO */
+.daily-hero{
+  margin-bottom:24px;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.daily-hero-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(30px,5vw,52px);
+  font-weight:800;
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  color:#fff;
+}
+.daily-hero-title span{color:var(--invest);}
+.daily-hero-sub{
+  font-family:'Fragment Mono',monospace;
+  font-size:10px;letter-spacing:0.14em;
+  color:var(--dim);text-transform:uppercase;
+  margin-top:10px;
+}
+.hero-stats{display:flex;gap:8px;flex-wrap:wrap;}
+.h-stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:7px;padding:10px 16px;text-align:center;
+}
+.h-stat-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--invest);line-height:1;}
+.h-stat-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+
+/* RESET BAR */
+.reset-bar{
+  background:var(--card);border:1px solid var(--border);
+  border-left:3px solid var(--invest);
+  border-radius:8px;padding:11px 16px;
+  margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.reset-bar-txt{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
+.reset-bar-txt strong{color:var(--invest);}
+.manual-btn{
+  background:none;border:1px solid var(--border);border-radius:5px;
+  color:var(--dim);font-family:'Fragment Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 12px;cursor:pointer;transition:all 0.15s;
+}
+.manual-btn:hover{border-color:var(--dim);color:var(--text);}
+
+/* PROGRESS */
+.prog-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:16px 20px;margin-bottom:28px;
+}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prog-lbl{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);}
+.prog-num{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--invest);}
+.prog-track{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--invest),var(--trade));border-radius:99px;width:0%;transition:width 0.4s ease;}
+.prog-msg{font-size:11px;color:var(--dim);margin-top:8px;}
+
+/* SECTION */
+.os-section{margin-bottom:28px;}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sec-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.sec-name{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);}
+.sec-badge{margin-left:auto;font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;padding:3px 10px;border-radius:4px;}
+
+/* TASK WRAPPERS */
+.tasklist{display:flex;flex-direction:column;gap:3px;}
+.tw{border-radius:8px;overflow:hidden;border:1px solid var(--border);transition:border-color 0.2s;}
+.tw.open{border-color:var(--border2);}
+.tw.done-wrap{border-color:rgba(16,185,129,0.2);}
+
+.task-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 15px;background:var(--card);
+  cursor:pointer;transition:background 0.15s;user-select:none;
+}
+.task-row:hover{background:var(--card2);}
+.tw.done-wrap .task-row{background:rgba(16,185,129,0.04);}
+.tw.done-wrap .t-text{text-decoration:line-through;color:var(--dim);}
+.tw.done-wrap .t-sub{color:var(--muted);}
+
+.chk{
+  width:19px;height:19px;border-radius:5px;border:1px solid var(--border2);
+  background:var(--card2);flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;font-size:10px;color:transparent;font-weight:800;
+}
+.tw.done-wrap .chk{background:var(--invest);border-color:var(--invest);color:#000;}
+
+.t-body{flex:1;min-width:0;}
+.t-text{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;}
+.t-sub{font-size:11px;color:var(--dim);margin-top:2px;line-height:1.5;}
+.t-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.t-tag{
+  font-family:'Fragment Mono',monospace;font-size:8px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;
+}
+.arr{
+  font-size:10px;color:var(--dim);
+  transition:transform 0.25s,color 0.15s;
+  flex-shrink:0;padding-top:4px;padding-left:6px;
+  margin-left:auto;
+}
+.tw.open .arr{transform:rotate(180deg);color:var(--invest);}
+
+/* DRAWER */
+.drawer{max-height:0;overflow:hidden;transition:max-height 0.38s cubic-bezier(0.4,0,0.2,1);background:#0b0b0e;}
+.tw.open .drawer{max-height:1000px;border-top:1px solid var(--border);}
+.d-inner{padding:16px 18px 20px;display:flex;flex-direction:column;gap:14px;}
+.d-sec{}
+.d-lbl{
+  font-family:'Fragment Mono',monospace;font-size:8px;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);
+  margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);
+}
+.d-bullets{display:flex;flex-direction:column;gap:5px;}
+.d-bullet{display:flex;gap:8px;font-size:12px;color:var(--dim);line-height:1.5;}
+.d-bullet::before{content:'→';color:var(--invest);font-size:10px;flex-shrink:0;margin-top:3px;}
+.d-bullet strong{color:var(--text);}
+
+.d-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.d-chip{
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:6px;padding:8px 12px;
+  font-size:11px;color:var(--dim);line-height:1.4;
+  transition:border-color 0.15s,color 0.15s;
+  cursor:default;
+}
+.d-chip:hover{border-color:var(--border2);color:var(--text);}
+.d-chip strong{color:var(--text);display:block;font-size:12px;margin-bottom:2px;}
+
+.d-script{
+  background:var(--card2);border:1px solid var(--border2);
+  border-left:3px solid var(--invest);
+  border-radius:6px;padding:11px 13px;
+  font-size:12px;color:var(--dim);line-height:1.6;
+}
+.d-script .slbl{
+  font-family:'Fragment Mono',monospace;font-size:8px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--invest);display:block;margin-bottom:5px;
+}
+
+/* PILLAR DIVIDERS */
+.pillar-divider{
+  display:flex;align-items:center;gap:10px;
+  margin:4px 0 6px;
+}
+.pd-dot{width:8px;height:8px;border-radius:50%;}
+.pd-name{
+  font-family:'Fragment Mono',monospace;font-size:9px;
+  letter-spacing:0.16em;text-transform:uppercase;
+}
+.pd-line{flex:1;height:1px;background:var(--border);}
+
+/* POWER GRID */
+.power-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.power-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:14px 14px;
+}
+.power-card.today-card{
+  border-color:var(--bridge);
+  background:rgba(245,158,11,0.05);
+}
+.pw-day{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.power-card.today-card .pw-day{color:var(--bridge);}
+.today-pip{background:var(--bridge);color:#000;font-size:8px;font-weight:700;letter-spacing:0.05em;padding:1px 6px;border-radius:3px;}
+.pw-task{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:3px;}
+.pw-note{font-size:11px;color:var(--dim);line-height:1.3;}
+
+/* WEEK STRIP */
+.week-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.wk-col{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px 11px;}
+.wk-col.today-col{border-color:var(--agent);background:var(--agent-dim);}
+.wk-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.wk-col.today-col .wk-name{color:var(--agent);}
+.wk-task{font-size:11px;color:var(--dim);margin-bottom:4px;line-height:1.4;padding-left:8px;border-left:2px solid var(--border);}
+.wk-task.primary{color:var(--text);font-weight:600;border-left-color:var(--agent);}
+
+/* WEEKLY TASKS CARD */
+.weekly-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;margin-bottom:28px;
+}
+.weekly-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.weekly-head-left{}
+.weekly-head-title{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);}
+.weekly-head-sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.weekly-body{padding:10px 14px;}
+
+/* CONTENT IDEAS CARD */
+.ideas-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;margin-bottom:28px;
+}
+.ideas-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.ideas-head-left .title{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);}
+.ideas-head-left .sub{font-size:11px;color:var(--dim);margin-top:2px;}
+.refresh-btn{
+  background:var(--laugher-dim);border:1px solid rgba(244,63,94,0.25);
+  border-radius:5px;color:var(--laugher);
+  font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:6px 13px;cursor:pointer;transition:all 0.15s;
+}
+.refresh-btn:hover{background:var(--laugher);color:#fff;}
+.ptabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.ptabs::-webkit-scrollbar{display:none;}
+.ptab{
+  font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--dim);padding:11px 16px;cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;user-select:none;
+}
+.ptab:hover{color:var(--dim);}
+.ptab.active{color:var(--laugher);border-bottom-color:var(--laugher);}
+.ideas-panel{display:none;padding:14px 16px;}
+.ideas-panel.active{display:block;}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.idea-card{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:7px;padding:13px;transition:border-color 0.15s;
+}
+.idea-card:hover{border-color:var(--border2);}
+.idea-num{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--dim);margin-bottom:4px;}
+.idea-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4;}
+.idea-hook{font-size:11px;color:var(--dim);line-height:1.5;font-style:italic;}
+.idea-fmt{
+  display:inline-block;font-family:'Fragment Mono',monospace;
+  font-size:8px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;margin-top:7px;
+}
+
+/* ════════════════════════════════
+   ROADMAP VIEW
+════════════════════════════════ */
+.roadmap-view{padding-bottom:60px;}
+
+.rm-hero{
+  border-bottom:1px solid var(--border);
+  padding:36px 40px 28px;
+  position:relative;overflow:hidden;
+}
+.rm-hero::after{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(16,185,129,0.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.rm-label{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--invest);margin-bottom:8px;}
+.rm-h1{font-family:'Syne',sans-serif;font-size:clamp(40px,6vw,72px);font-weight:800;line-height:0.9;letter-spacing:-0.02em;color:#fff;}
+.rm-h1 em{color:var(--invest);font-style:normal;}
+.rm-meta{text-align:right;}
+.rm-target{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--invest);line-height:1;}
+.rm-target-lbl{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.14em;text-transform:uppercase;}
+
+/* 5-pillar income grid */
+.income-section{padding:28px 40px;border-bottom:1px solid var(--border);}
+.income-eyebrow{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;}
+.income-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ic{background:var(--card);padding:16px 18px;position:relative;}
+.ic::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--ic-c,#fff);width:0%;transition:width 1.2s ease;}
+.ic-stream{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
+.ic-amt{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1;color:#fff;}
+.ic-note{font-size:11px;color:var(--dim);margin-top:2px;}
+
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);}
+.ph-col{border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.ph-col:last-child{border-right:none;}
+.ph-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);position:relative;}
+.ph-head::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.ph-1 .ph-head::before{background:var(--agent);}
+.ph-2 .ph-head::before{background:var(--bridge);}
+.ph-3 .ph-head::before{background:var(--invest);}
+.ph-num{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;}
+.ph-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:0.02em;color:#fff;}
+.ph-pill{display:inline-block;font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:middle;}
+.ph-dates{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px;}
+.ph-target{font-family:'Fragment Mono',monospace;font-size:11px;margin-top:5px;}
+.ph-1 .ph-target{color:var(--agent);}
+.ph-2 .ph-target{color:var(--bridge);}
+.ph-3 .ph-target{color:var(--invest);}
+
+.sched{padding:16px 22px;border-bottom:1px solid var(--border);}
+.sched-ttl{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.ts{display:flex;gap:10px;margin-bottom:8px;}
+.ts-t{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);min-width:40px;padding-top:2px;flex-shrink:0;}
+.ts-lbl{font-size:12px;font-weight:500;color:var(--text);line-height:1.3;}
+.ts-d{font-size:11px;color:var(--dim);margin-top:1px;line-height:1.3;}
+.es{color:var(--invest);font-size:9px;margin-left:3px;}
+
+.pris{padding:14px 22px;border-bottom:1px solid var(--border);}
+.pris-ttl{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.pr-row{display:flex;gap:8px;margin-bottom:8px;}
+.pr-dot{width:6px;height:6px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+.pr-body{font-size:11px;color:var(--dim);line-height:1.5;}
+.pr-body strong{color:var(--text);font-weight:600;display:block;font-size:12px;margin-bottom:1px;}
+
+.kpis{padding:14px 22px;}
+.kpis-ttl{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.kpi-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;}
+.kpi-row:last-child{border-bottom:none;}
+.kpi-lbl{font-size:11px;color:var(--dim);}
+.kpi-val{font-family:'Fragment Mono',monospace;font-size:11px;}
+
+/* bottom */
+.bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border);}
+.bot-panel{padding:28px 32px;border-right:1px solid var(--border);}
+.bot-panel:last-child{border-right:none;}
+.bot-panel h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:0.04em;color:var(--invest);margin-bottom:14px;}
+.bot-rule{display:flex;gap:10px;margin-bottom:12px;}
+.bot-num{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--invest);min-width:20px;padding-top:1px;flex-shrink:0;}
+.bot-body{font-size:11px;color:var(--dim);line-height:1.6;}
+.bot-body strong{color:var(--text);display:block;font-size:12px;}
+
+/* TICKER */
+.ticker{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:9px 40px;display:flex;gap:32px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.ticker::-webkit-scrollbar{display:none;}
+.tick{font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim);white-space:nowrap;letter-spacing:0.06em;}
+.tick span{margin-left:5px;}
+.tick .g{color:var(--invest);}
+.tick .r{color:var(--laugher);}
+.tick .b{color:var(--agent);}
+.tick .a{color:var(--bridge);}
+.tick .p{color:var(--trade);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .pillar-strip{grid-template-columns:repeat(3,1fr);}
+  .income-grid{grid-template-columns:repeat(3,1fr);}
+  .phases{grid-template-columns:1fr;}
+  .ph-col{border-right:none;}
+  .bottom{grid-template-columns:1fr;}
+  .bot-panel{border-right:none;border-bottom:1px solid var(--border);}
+  .income-section,.rm-hero{padding:20px;}
+}
+@media(max-width:640px){
+  .power-grid{grid-template-columns:1fr 1fr;}
+  .idea-grid{grid-template-columns:1fr;}
+  .week-strip{grid-template-columns:repeat(3,1fr);}
+  .pillar-strip{grid-template-columns:repeat(2,1fr);}
+  .income-grid{grid-template-columns:repeat(2,1fr);}
+  .nav{padding:0 14px;}
+  .nav-logo{font-size:14px;margin-right:16px;}
+  .nav-tab{padding:15px 10px;font-size:9px;}
+  .rm-h1{font-size:38px;}
+}
+
+/* util */
+.c-agent{color:var(--agent);}
+.c-laugher{color:var(--laugher);}
+.c-bridge{color:var(--bridge);}
+.c-invest{color:var(--invest);}
+.c-trade{color:var(--trade);}
+
+/* ── ADD TASK NAV BUTTON ── */
+.add-task-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--invest); border: none; border-radius: 7px;
+  color: #000; font-family: 'Fragment Mono', monospace;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 700; padding: 7px 14px; cursor: pointer;
+  transition: opacity 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.add-task-btn:hover { opacity: 0.85; }
+.add-task-icon { font-size: 15px; font-weight: 300; line-height: 1; }
+
+/* ── TASK MODAL PANEL ── */
+.task-modal {
+  position: fixed;
+  top: 53px; right: 0;
+  width: 420px; max-width: 100vw;
+  max-height: calc(100vh - 53px);
+  background: var(--card);
+  border-left: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+  border-bottom-left-radius: 12px;
+  box-shadow: -8px 8px 40px rgba(0,0,0,0.6);
+  z-index: 190;
+  display: flex; flex-direction: column;
+  transform: translateX(105%);
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.22s ease;
+  pointer-events: none;
+}
+.task-modal.open { transform: translateX(0); opacity: 1; pointer-events: all; }
+.task-backdrop {
+  position: fixed; inset: 0; z-index: 180;
+  background: rgba(0,0,0,0.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.task-backdrop.open { opacity: 1; pointer-events: all; }
+
+.tm-inner { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.tm-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; position: relative;
+}
+.tm-header::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--invest), var(--trade), var(--agent));
+}
+.tm-title {
+  font-family: 'Fragment Mono', monospace; font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--text);
+}
+.tm-sub { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.tm-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.tm-close {
+  background: none; border: 1px solid var(--border2); border-radius: 6px;
+  color: var(--dim); font-size: 13px; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+}
+.tm-close:hover { border-color: #e05252; color: #e05252; }
+.tm-form {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 7px; flex-shrink: 0;
+}
+.tm-list {
+  flex: 1; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border2) transparent;
+}
+.tm-list::-webkit-scrollbar { width: 4px; }
+.tm-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* toggle */
+.ca-toggle {
+  display: flex; background: var(--card2); border: 1px solid var(--border);
+  border-radius: 6px; overflow: hidden;
+}
+.ca-tog-btn {
+  font-family: 'Fragment Mono', monospace; font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); padding: 5px 12px; cursor: pointer;
+  border: none; background: none; transition: all 0.15s; user-select: none;
+}
+.ca-tog-btn.active { background: var(--invest); color: #000; font-weight: 700; }
+
+/* inputs */
+.ca-text-input {
+  width: 100%; background: var(--card2); border: 1px solid var(--border2);
+  border-radius: 7px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 8px 12px; outline: none; transition: border-color 0.15s;
+}
+.ca-text-input::placeholder { color: var(--dim); }
+.ca-text-input:focus { border-color: var(--invest); }
+.ca-desc-input { resize: vertical; min-height: 52px; line-height: 1.5; font-size: 12px !important; }
+.ca-bottom-row { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+.ca-selects { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.ca-select {
+  flex: 1; min-width: 100px;
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: 7px; color: var(--text);
+  font-family: 'Fragment Mono', monospace; font-size: 10px;
+  letter-spacing: 0.05em; padding: 7px 8px; outline: none; cursor: pointer;
+  transition: border-color 0.15s;
+}
+.ca-select:focus { border-color: var(--invest); }
+.ca-add-btn {
+  background: var(--invest); border: none; border-radius: 7px;
+  color: #000; font-family: 'Fragment Mono', monospace;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 700; padding: 8px 16px; cursor: pointer;
+  transition: opacity 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.ca-add-btn:hover { opacity: 0.85; }
+
+/* task list items */
+.ca-empty {
+  padding: 20px 16px; font-family: 'Fragment Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-align: center;
+}
+.ct-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 14px; border-top: 1px solid var(--border);
+  background: var(--card); transition: background 0.15s;
+}
+.ct-item:hover { background: var(--card2); }
+.ct-item.ct-done .ct-text { text-decoration: line-through; color: var(--dim); }
+.ct-chk {
+  width: 19px; height: 19px; border-radius: 5px;
+  border: 1px solid var(--border2); background: var(--card2);
+  flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+  font-size: 10px; color: transparent; font-weight: 800;
+}
+.ct-item.ct-done .ct-chk { background: var(--invest); border-color: var(--invest); color: #000; }
+.ct-body { flex: 1; min-width: 0; }
+.ct-text { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+.ct-desc { font-size: 11px; color: var(--dim); margin-top: 3px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.ct-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; align-items: center; }
+.ct-badge { font-family: 'Fragment Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; }
+.ct-time { font-family: 'Fragment Mono', monospace; font-size: 9px; color: var(--invest); letter-spacing: 0.06em; }
+.ct-delete {
+  background: none; border: none; color: var(--muted);
+  font-size: 15px; cursor: pointer; padding: 0 3px; line-height: 1;
+  transition: color 0.15s; flex-shrink: 0; margin-top: 1px;
+}
+.ct-delete:hover { color: #e05252; }
+
+/* inline custom tasks inside schedule sections */
+.custom-inline-section { margin-top: 3px; display: flex; flex-direction: column; gap: 3px; }
+.ct-inline {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 15px; background: var(--card);
+  border: 1px solid var(--invest); border-radius: 8px;
+  position: relative; overflow: hidden;
+}
+.ct-inline::after {
+  content: 'ADDED'; position: absolute; top: 0; right: 0;
+  font-family: 'Fragment Mono', monospace; font-size: 7px;
+  letter-spacing: 0.1em; color: #000;
+  background: var(--invest); padding: 2px 7px; border-bottom-left-radius: 5px;
+}
+.ct-inline.ct-done { border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.04); }
+.ct-inline.ct-done .ct-text { text-decoration: line-through; color: var(--dim); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">EMPIRE <span>OS</span></div>
+  <div class="nav-tab active" onclick="switchView('daily',this)">Daily OS</div>
+  <div class="nav-tab" onclick="switchView('roadmap',this)">90-Day Plan</div>
+  <div class="nav-right">
+    <button class="add-task-btn" onclick="toggleTaskModal()" id="add-task-btn">
+      <span class="add-task-icon">+</span> My Tasks
+    </button>
+    <div class="reset-pill">
+      <div class="reset-dot"></div>
+      <div>
+        <div class="reset-lbl">Resets in</div>
+        <div class="reset-time" id="countdown">--:--:--</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── TASK MODAL PANEL ── -->
+<div class="task-modal" id="task-modal">
+  <div class="tm-inner">
+    <div class="tm-header">
+      <div class="tm-header-left">
+        <div class="tm-title">My Tasks</div>
+        <div class="tm-sub">Persists until checked off · never auto-resets</div>
+      </div>
+      <div class="tm-header-right">
+        <div class="ca-toggle">
+          <button class="ca-tog-btn active" id="tog-daily" onclick="setMode('daily')">Daily</button>
+          <button class="ca-tog-btn" id="tog-weekly" onclick="setMode('weekly')">Weekly</button>
+        </div>
+        <button class="tm-close" onclick="closeTaskModal()">✕</button>
+      </div>
+    </div>
+    <div class="tm-form">
+      <input class="ca-text-input" id="ca-input" type="text"
+        placeholder="Task title — e.g. Call title company re: closing docs…"
+        onkeydown="if(event.key==='Enter')document.getElementById('ca-desc').focus()">
+      <textarea class="ca-text-input ca-desc-input" id="ca-desc"
+        placeholder="Description (optional) — context, phone numbers, what to say, links…"
+        rows="2"></textarea>
+      <div class="ca-bottom-row">
+        <div class="ca-selects">
+          <select class="ca-select" id="ca-pillar">
+            <option value="agent">🏠 RE Agent</option>
+            <option value="invest">🏢 RE Investing</option>
+            <option value="bridge">🔗 ServiceBridge</option>
+            <option value="laugher">😂 Laughder</option>
+            <option value="trade">📈 Trading</option>
+            <option value="general">⚡ General</option>
+          </select>
+          <select class="ca-select" id="ca-time">
+            <option value="">Any time</option>
+            <option value="9am">9:00 AM</option>
+            <option value="10am">10:00 AM</option>
+            <option value="11am">11:00 AM</option>
+            <option value="12pm">12:00 PM</option>
+            <option value="1pm">1:00 PM</option>
+            <option value="2pm">2:00 PM</option>
+            <option value="3pm">3:00 PM</option>
+            <option value="4pm">4:00 PM</option>
+            <option value="5pm">5:00 PM</option>
+            <option value="contact">📞 Needs contact (biz hours)</option>
+          </select>
+        </div>
+        <button class="ca-add-btn" onclick="addCustomTask()">+ Add</button>
+      </div>
+    </div>
+    <div class="tm-list" id="ca-list">
+      <div class="ca-empty" id="ca-empty">No tasks yet — add one above.</div>
+    </div>
+  </div>
+</div>
+<!-- modal backdrop -->
+<div class="task-backdrop" id="task-backdrop" onclick="closeTaskModal()"></div>
+
+<!-- ════════════════════════════════
+     DAILY OS VIEW
+════════════════════════════════ -->
+<div class="view active" id="view-daily">
+<div class="daily-wrap">
+
+  <!-- Pillar strip -->
+  <div class="pillar-strip">
+    <div class="pillar-chip" style="--pc:var(--agent)">
+      <div class="pc-icon">🏠</div>
+      <div class="pc-name">RE Agent</div>
+      <div class="pc-goal">12 deals/yr</div>
+    </div>
+    <div class="pillar-chip" style="--pc:var(--laugher)">
+      <div class="pc-icon">😂</div>
+      <div class="pc-name">Laughder</div>
+      <div class="pc-goal">Comedy brand</div>
+    </div>
+    <div class="pillar-chip" style="--pc:var(--bridge)">
+      <div class="pc-icon">🔗</div>
+      <div class="pc-name">ServiceBridge</div>
+      <div class="pc-goal">Lead gen biz</div>
+    </div>
+    <div class="pillar-chip" style="--pc:var(--invest)">
+      <div class="pc-icon">🏢</div>
+      <div class="pc-name">RE Investing</div>
+      <div class="pc-goal">Multifamily acq.</div>
+    </div>
+    <div class="pillar-chip" style="--pc:var(--trade)">
+      <div class="pc-icon">📈</div>
+      <div class="pc-name">Trading</div>
+      <div class="pc-goal">Options · Futures · Stocks</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="daily-hero">
+    <div>
+      <div class="daily-hero-title">Daily <span>Command</span><br>Center.</div>
+      <div class="daily-hero-sub">5 Pillars · Eugene, OR · Pacific Time</div>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-val" id="done-stat">0/0</div><div class="h-stat-lbl">Done Today</div></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--agent)">12</div><div class="h-stat-lbl">Deals/Year</div></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--laugher)">Daily</div><div class="h-stat-lbl">Laughder Post</div></div>
+    </div>
+  </div>
+
+  <!-- Reset bar -->
+  <div class="reset-bar">
+    <div class="reset-bar-txt">Daily tasks reset at <strong>6:00 PM</strong> · Weekly tasks + content ideas reset <strong>Sunday 6:00 PM</strong></div>
+    <button class="manual-btn" onclick="resetDaily()">↺ Reset Now</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="prog-card">
+    <div class="prog-top">
+      <div class="prog-lbl">Today's Progress</div>
+      <div class="prog-num" id="prog-count">0 / 0</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-msg" id="prog-msg">Tap any task to expand details. Check the box to mark done.</div>
+  </div>
+
+  <!-- ── CUSTOM TASKS INLINE (injected into schedule) ── -->
+  <!-- Morning custom tasks -->
+  <div class="custom-inline-section" id="inline-morning"></div>
+  <!-- Afternoon custom tasks -->
+  <div class="custom-inline-section" id="inline-afternoon" style="margin-bottom:0;"></div>
+
+  <!-- ── MORNING: TRADING ── -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(167,139,250,0.1)">📈</div>
+      <span class="sec-name">Morning Block — Trading</span>
+      <span class="sec-badge" style="background:var(--trade-dim);color:var(--trade)">6–8 AM</span>
+    </div>
+    <div class="tasklist">
+
+      <div class="tw" id="t0">
+        <div class="task-row" onclick="hc(event,'t0')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Pre-market review — futures overnight action, macro news, economic calendar</div>
+            <div class="t-sub">6:00 AM · /MES, /MNQ, /MCL, /MGC. Set alerts. Manage any open positions.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--trade-dim);color:var(--trade)">Futures</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">What to review</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>/MES &amp; /MNQ</strong> — overnight high/low vs prior session close. Where did Asia and Europe close?</div>
+              <div class="d-bullet"><strong>/MCL (crude)</strong> — any geopolitical news overnight? OPEC announcements? Middle East tension?</div>
+              <div class="d-bullet"><strong>/MGC (gold)</strong> — safe haven bid up or down? Dollar strength/weakness overnight?</div>
+              <div class="d-bullet">Check <strong>economic calendar</strong> (Investing.com) — CPI, NFP, FOMC, Fed speakers today? These are your macro catalysts.</div>
+              <div class="d-bullet">Review <strong>open stock positions</strong> — any earnings today on holdings? Pre-market moves on your shares?</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t1">
+        <div class="task-row" onclick="hc(event,'t1')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Options account scan — 45-DTE setups, 15–20Δ short strikes, manage open positions</div>
+            <div class="t-sub">7:00 AM · 5K account. Iron condors, verticals, jade lizards. Close at 50% profit. Cut at 2x loss.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--trade-dim);color:var(--trade)">Options</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Daily options checklist</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>IV Rank &gt; 30</strong> — only sell premium when vol is elevated, not cheap</div>
+              <div class="d-bullet"><strong>45 DTE entry</strong> — theta decay accelerates in final 21 days; enter early, exit early</div>
+              <div class="d-bullet"><strong>15–20 delta</strong> on short strikes — ~80–85% probability of profit at entry</div>
+              <div class="d-bullet"><strong>Close at 50% max profit</strong> — no exceptions. This is the edge compounding mechanism.</div>
+              <div class="d-bullet"><strong>Cut at 2x premium received</strong> — if short vertical cost $1.00 to open, close at $2.00. Done.</div>
+              <div class="d-bullet"><strong>Max 2% risk</strong> on 5K account = $100 max loss per position</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Best underlyings to scan</div>
+            <div class="d-bullets">
+              <div class="d-bullet">SPY, QQQ, IWM, GLD, USO, XLE — liquid, tight spreads, good IV rank data</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div><!-- end morning tasklist -->
+    <div class="custom-inline-section" id="slot-morning" style="padding:0 0 4px 0;"></div>
+  </div>
+
+  <!-- ── EMPIRE BLOCK: RE INVESTING ── -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--invest-dim)">🏢</div>
+      <span class="sec-name">Empire Block — RE Investing</span>
+      <span class="sec-badge" style="background:var(--invest-dim);color:var(--invest)">8–10 AM · Never Skip</span>
+    </div>
+    <div class="tasklist">
+
+      <div class="tw" id="t2">
+        <div class="task-row" onclick="hc(event,'t2')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">★ Deal sourcing — pull MLS + off-market channels, log 2 new properties</div>
+            <div class="t-sub">8:00 AM · Eugene 2–8 unit focus. Run quick cap rate screen on every property.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">★ Acquisitions</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Sourcing channels</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>MLS</strong> — filter 2–8 units Eugene/Springfield. Sort by days on market. Stale = motivated seller.</div>
+              <div class="d-bullet"><strong>LoopNet / Crexi</strong> — commercial multifamily, often priced differently than MLS</div>
+              <div class="d-bullet"><strong>Lane County records</strong> — landlords who've owned 10+ years = tired. Pull and mail directly.</div>
+              <div class="d-bullet"><strong>Drive for dollars</strong> — deferred maintenance properties in 97401, 97402, 97403 (near UO = strong rental demand)</div>
+              <div class="d-bullet"><strong>Property managers</strong> — ask which of their clients want to exit. Gold source.</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Quick underwriting screen</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>50% rule:</strong> Gross rents × 50% &gt; mortgage payment? Worth deeper look.</div>
+              <div class="d-bullet"><strong>Cap rate:</strong> NOI ÷ Purchase Price. Target 6%+ in Eugene market.</div>
+              <div class="d-bullet"><strong>Cash-on-cash:</strong> Annual cash flow ÷ cash invested. Target 8–12%+.</div>
+              <div class="d-bullet"><strong>DSCR:</strong> NOI ÷ annual debt service. Oregon Pacific/WaFd/SELCO require 1.2+.</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t3">
+        <div class="task-row" onclick="hc(event,'t3')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">★ Deep underwrite or active deal pursuit — full analysis or LOI/lender work</div>
+            <div class="t-sub">9:00 AM · Full NOI, DSCR, rehab estimate on a live deal. Or: lender call, inspection, LOI follow-up.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">★ Acquisitions</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Deep underwriting steps</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>NOI</strong> = Gross rents − vacancy (5–8%) − operating expenses (taxes, insurance, maintenance, mgmt)</div>
+              <div class="d-bullet"><strong>Rehab estimate</strong> — walk the property or use $15–25/sqft rule for cosmetic, $40–60 for full gut</div>
+              <div class="d-bullet"><strong>Exit scenarios</strong> — model 3-year hold with refinance (BRRRR) vs 5-year hold vs seller finance carry</div>
+              <div class="d-bullet"><strong>Lender pre-screen</strong> — call Oregon Pacific, WaFd, or Cetan Funds before LOI if deal is live</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">LOI offer framework</div>
+            <div class="d-bullets">
+              <div class="d-bullet">Offer at a cap rate that works for you — back into your price from the NOI, not from the ask</div>
+              <div class="d-bullet">Include inspection contingency (14 days), financing contingency (21 days), and a 30–45 day close</div>
+              <div class="d-bullet">Seller financing ask: "Would you consider carrying 10–20% as a second?" — opens creative structures</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── RE AGENT BLOCK ── -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--agent-dim)">🏠</div>
+      <span class="sec-name">RE Agent — Prospecting + Transactions</span>
+      <span class="sec-badge" style="background:var(--agent-dim);color:var(--agent)">10 AM–12 PM</span>
+    </div>
+    <div class="tasklist">
+
+      <div class="tw" id="t4">
+        <div class="task-row" onclick="hc(event,'t4')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Check MLS + respond to all leads within the hour</div>
+            <div class="t-sub">New listings, price drops, expireds. Speed-to-lead wins 40% of deals. First to respond wins.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--agent-dim);color:var(--agent)">Agent</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">MLS daily scan</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>New listings</strong> — match to buyers on your active list and text immediately</div>
+              <div class="d-bullet"><strong>Price reductions</strong> — 30+ days on market = motivated. Call or text the listing agent.</div>
+              <div class="d-bullet"><strong>Expired listings</strong> — high conversion. Call the owner directly: "I have buyers looking in your area…"</div>
+              <div class="d-bullet"><strong>Back on market</strong> — fell out of escrow. Reach listing agent within the hour.</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Lead response scripts</div>
+            <div class="d-chips">
+              <div class="d-chip"><strong>New buyer lead</strong>"Hey [Name]! This is [You] — saw you were looking at homes in Eugene. Happy to help. What matters most to you in your next place?"</div>
+              <div class="d-chip"><strong>Expired listing owner</strong>"Hi [Name], I'm a local agent — I noticed your home at [address] came off the market. I have active buyers in that area and wanted to reach out before you relisted. Got 5 minutes?"</div>
+              <div class="d-chip"><strong>Seller inquiry</strong>"Hey! Eugene's market is really moving right now. I'd love to do a quick 15-min call to walk you through what your home could sell for — when works for you?"</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t5">
+        <div class="task-row" onclick="hc(event,'t5')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Power Hour prospecting — today's activity (see schedule below)</div>
+            <div class="t-sub">10:00 AM · 60 min max. SOI, farm, partner calls, lead nurture, or online engagement.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--agent-dim);color:var(--agent)">Agent</span><span class="t-tag" style="background:var(--bridge-dim);color:var(--bridge)">60 min</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Follow-up cadence</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>Day 1:</strong> Immediate response + value (listings, market data)</div>
+              <div class="d-bullet"><strong>Day 3:</strong> "Any questions I can answer for you?"</div>
+              <div class="d-bullet"><strong>Day 7:</strong> New listings alert or market update for their search</div>
+              <div class="d-bullet"><strong>Day 14:</strong> Phone call — most agents quit here. You don't.</div>
+              <div class="d-bullet"><strong>Monthly:</strong> Market update text. Stay top of mind forever.</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Re-engagement script</div>
+            <div class="d-script"><span class="slbl">Text Template</span>"Hey [Name] — [You] here. Just thinking of you. The Eugene market shifted a bit this week — [one data point]. Still thinking about [buying/selling]? No pressure, just wanted to stay connected."</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t6">
+        <div class="task-row" onclick="hc(event,'t6')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Move every active transaction forward — one action per open deal</div>
+            <div class="t-sub">Call lender, title, other agent, or client. Every deal needs daily momentum.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--agent-dim);color:var(--agent)">Transactions</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">One action per deal — choose one</div>
+            <div class="d-bullets">
+              <div class="d-bullet">Call <strong>lender</strong> — where is underwriting? Any conditions to clear today?</div>
+              <div class="d-bullet">Text <strong>client</strong> — quick update so they feel informed and calm</div>
+              <div class="d-bullet">Follow up with <strong>title/escrow</strong> — are all docs in? Any holdups?</div>
+              <div class="d-bullet">Reach <strong>other agent</strong> — confirm timelines, inspection issues, repair requests</div>
+              <div class="d-bullet">Check <strong>contingency deadlines</strong> — anything expiring this week?</div>
+              <div class="d-bullet">Send <strong>reminder to buyers</strong> for showings in next 48 hrs — reduce no-shows to zero</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t7">
+        <div class="task-row" onclick="hc(event,'t7')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Send one personal text to a past client — no agenda, no pitch</div>
+            <div class="t-sub">Most underused habit in RE. 3 minutes. Worth thousands in referrals per year.</div>
+            <div class="t-tags"><span class="t-tag" style="background:rgba(244,63,94,0.12);color:var(--laugher)">Referral</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Personal touch texts</div>
+            <div class="d-chips">
+              <div class="d-chip"><strong>Home anniversary</strong>"Hey [Name]! Can't believe it's been [X] months since we closed on your place. Hope you're loving it — how's everything going?"</div>
+              <div class="d-chip"><strong>Neighborhood news</strong>"Hey! Saw a home just sold on your street for [price] — your equity has gone up nicely. Hope things are great with you!"</div>
+              <div class="d-chip"><strong>Thinking of you</strong>"Hey [Name], just thought of you today. Hope you and the family are doing well! Let me know if you ever need anything."</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POWER HOUR grid -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--bridge-dim)">⚡</div>
+      <span class="sec-name">Power Hour — This Week's Prospecting Focus</span>
+      <span class="sec-badge" style="background:var(--bridge-dim);color:var(--bridge)">10 AM · Daily</span>
+    </div>
+    <div class="power-grid" id="power-grid">
+      <div class="power-card" data-day="1"><div class="pw-day">Monday</div><div class="pw-task">SOI — text or call 5 past clients. Check in genuinely. No pitch.</div><div class="pw-note">Goal: 1 referral conversation per week from this habit alone.</div></div>
+      <div class="power-card" data-day="2"><div class="pw-day">Tuesday</div><div class="pw-task">Farm outreach — handwrite 10 notes or door knock 8–10 homes in target neighborhood.</div><div class="pw-note">Consistent presence = top of mind when they're ready to sell.</div></div>
+      <div class="power-card" data-day="3"><div class="pw-day">Wednesday</div><div class="pw-task">Strategic partner call — 1 attorney, CPA, lender (Oregon Pacific, WaFd, SELCO), or PM.</div><div class="pw-note">One strong partner = 5–10 deals/year on autopilot.</div></div>
+      <div class="power-card" data-day="4"><div class="pw-day">Thursday</div><div class="pw-task">Lead nurture — work through anyone who inquired in the last 30 days. Tired landlord follow-ups.</div><div class="pw-note">Most agents stop at 2 follow-ups. You go 7–10. That's where deals live.</div></div>
+      <div class="power-card" data-day="5"><div class="pw-day">Friday</div><div class="pw-task">CRM audit + online engagement — reply to every comment and DM on all platforms.</div><div class="pw-note">What gets tracked gets closed. Engagement beats paid ads.</div></div>
+      <div class="power-card" data-day="0"><div class="pw-day">Weekend</div><div class="pw-task">Host or attend open house. REIA meetup. Show properties to investor buyers.</div><div class="pw-note">In-person = fastest trust builder. One open house = multiple leads.</div></div>
+    </div>
+  </div>
+
+  <!-- ── AFTERNOON: SERVICEBRIDGE + LAUGHDER ── -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--bridge-dim)">🔗</div>
+      <span class="sec-name">Afternoon — ServiceBridge + Laughder</span>
+      <span class="sec-badge" style="background:var(--bridge-dim);color:var(--bridge)">12–4 PM</span>
+    </div>
+    <div class="tasklist">
+
+      <div class="tw" id="t8">
+        <div class="task-row" onclick="hc(event,'t8')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">ServiceBridge — client delivery, outreach, or build (1.5 hrs)</div>
+            <div class="t-sub">12:00 PM · Run ads, deliver leads, send reports, or cold email 3–5 new service businesses.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--bridge-dim);color:var(--bridge)">ServiceBridge</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Cold email template — service businesses</div>
+            <div class="d-script"><span class="slbl">Email</span>Subject: More Eugene [roofing/HVAC/plumbing] leads — interested?<br><br>"Hi [Name], I run ServiceBridge, a lead generation platform for trades businesses in the Eugene area. I have homeowner inquiries coming in for [service] that I'm looking to route to one local contractor this month. Would you be open to a quick 10-min call? No obligation."</div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Pricing + niches</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>Month 1:</strong> $300–400/mo to get testimonials and prove ROI first</div>
+              <div class="d-bullet"><strong>Month 2+:</strong> Raise to $500–800/mo with case study in hand</div>
+              <div class="d-bullet"><strong>Best Eugene niches:</strong> Roofers, HVAC, plumbers, electricians, landscapers</div>
+              <div class="d-bullet"><strong>Always get paid first</strong> — deposit or first month upfront before any lead delivery</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t9">
+        <div class="task-row" onclick="hc(event,'t9')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Laughder — 1 comedy piece published, batch 2–3 more</div>
+            <div class="t-sub">2:00 PM · Pure comedy content. Reels, TikTok, Shorts. Engage with comments and DMs.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--laugher-dim);color:var(--laugher)">Laughder</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Comedy content ideas — post today</div>
+            <div class="d-chips">
+              <div class="d-chip"><strong>Trending audio + local twist</strong>Take a viral sound and put an Oregon/Eugene spin on it. First to a trend gets the reach.</div>
+              <div class="d-chip"><strong>Expectation vs Reality</strong>Universally relatable format. Pick anything — morning routines, weekends, "adulting." Hook in 1 second.</div>
+              <div class="d-chip"><strong>POV comedy sketch</strong>POV: it's raining in Oregon for the 300th day. Self-aware local humor gets shared by locals.</div>
+              <div class="d-chip"><strong>Stitch or duet a viral clip</strong>React to something outrageous or wrong. Conflict and disagreement = reach algorithm loves this.</div>
+              <div class="d-chip"><strong>Absurd life observation</strong>Deadpan delivery of something everyone feels but no one says. Short and punchy wins.</div>
+              <div class="d-chip"><strong>Comment reply video</strong>Answer a spicy comment with a full video. Platforms heavily boost this format for reach.</div>
+              <div class="d-chip"><strong>Day in the life — chaotic edition</strong>Raw, unfiltered, self-deprecating. Authenticity builds faster than production quality.</div>
+              <div class="d-chip"><strong>Collab with another comedian</strong>Find a creator in adjacent niche. Tag + duet = exposure to their full audience.</div>
+            </div>
+          </div>
+          <div class="d-sec">
+            <div class="d-lbl">Platform strategy</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>TikTok first</strong> — test performance, then cross-post top performers to Reels and Shorts</div>
+              <div class="d-bullet"><strong>Hook in first 2 seconds</strong> — say or show something unexpected. Retention = reach.</div>
+              <div class="d-bullet"><strong>Post at 6–9 PM PT</strong> — peak engagement window for comedy content</div>
+              <div class="d-bullet"><strong>Monetization path:</strong> Brand deals → Merch → Live events → YouTube ad revenue</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+    <div class="custom-inline-section" id="slot-afternoon" style="padding:0 0 4px 0;"></div>
+  </div>
+
+  <!-- ── END OF DAY: TRADING + LOG ── -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--trade-dim)">🌆</div>
+      <span class="sec-name">End of Day — Trading Review + Log</span>
+      <span class="sec-badge" style="background:var(--trade-dim);color:var(--trade)">4–6 PM</span>
+    </div>
+    <div class="tasklist">
+
+      <div class="tw" id="t10">
+        <div class="task-row" onclick="hc(event,'t10')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Micro futures swing review — adjust stops, evaluate open positions, set next-day alerts</div>
+            <div class="t-sub">4:00 PM · /MES, /MNQ, /MCL, /MGC. Tighten stops only. No new entries after 2 PM without catalyst.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--trade-dim);color:var(--trade)">Futures</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Position review rules</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>Only tighten stops, never widen them</strong> — trail as price moves in your favor</div>
+              <div class="d-bullet"><strong>2:1 R/R minimum</strong> — if setup no longer has 2:1, exit the trade regardless</div>
+              <div class="d-bullet"><strong>Review the thesis</strong> — has the macro story changed since entry? If yes, exit.</div>
+              <div class="d-bullet"><strong>No new futures entries</strong> after 2 PM PT unless there's a clear economic print or news catalyst</div>
+              <div class="d-bullet"><strong>Stock holdings check</strong> — any earnings tonight or tomorrow? Any dividends due? Trim or hold?</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="tw" id="t11">
+        <div class="task-row" onclick="hc(event,'t11')">
+          <div class="chk">✓</div>
+          <div class="t-body">
+            <div class="t-text">Log all numbers — trades, RE contacts, deals underwritten, ServiceBridge activity, Laughder metrics</div>
+            <div class="t-sub">5:00 PM · Daily log across all 5 pillars. Review KPIs weekly every Sunday.</div>
+            <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">Track</span></div>
+          </div>
+          <div class="arr">▼</div>
+        </div>
+        <div class="drawer"><div class="d-inner">
+          <div class="d-sec">
+            <div class="d-lbl">Daily numbers to log</div>
+            <div class="d-bullets">
+              <div class="d-bullet"><strong>RE Agent:</strong> New contacts · Follow-ups sent · Active leads · Showings scheduled · Offers written</div>
+              <div class="d-bullet"><strong>RE Investing:</strong> Properties underwritten · LOIs submitted · Lender calls made · Properties toured</div>
+              <div class="d-bullet"><strong>ServiceBridge:</strong> Cold emails sent · Replies received · Active paying clients · MRR</div>
+              <div class="d-bullet"><strong>Laughder:</strong> Posts published · Followers gained · Comments/DMs replied · Brand inquiries</div>
+              <div class="d-bullet"><strong>Trading:</strong> Options trades opened/closed · Futures P&amp;L · Options P&amp;L · Stock portfolio value</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEKLY TASKS -->
+  <div class="weekly-card">
+    <div class="weekly-head">
+      <div class="weekly-head-left">
+        <div class="weekly-head-title">Weekly Tasks</div>
+        <div class="weekly-head-sub">Resets every Sunday at 6:00 PM</div>
+      </div>
+      <span class="sec-badge" style="background:var(--invest-dim);color:var(--invest)" id="weekly-badge">0 / 6 done</span>
+    </div>
+    <div class="weekly-body">
+      <div class="custom-inline-section" id="slot-weekly" style="margin-bottom:4px;"></div>
+      <div class="tasklist">
+
+        <div class="tw" id="tw0">
+          <div class="task-row" onclick="hc(event,'tw0')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">Full KPI review — all 5 pillars, income vs targets, deals in pipeline</div>
+              <div class="t-sub">Sunday night · Track against 90-day targets. What's ahead? What's behind?</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">Sunday</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">Weekly review checklist</div>
+              <div class="d-bullets">
+                <div class="d-bullet"><strong>RE Agent:</strong> Contacts made · Leads added · Deals underwritten · Showings · Closings</div>
+                <div class="d-bullet"><strong>ServiceBridge:</strong> Active clients · MRR · New clients signed · Churn</div>
+                <div class="d-bullet"><strong>Laughder:</strong> Followers gained · Posts published · Monetization activity</div>
+                <div class="d-bullet"><strong>RE Investing:</strong> Deals underwritten · LOIs submitted · Lender calls · Properties toured</div>
+                <div class="d-bullet"><strong>Trading:</strong> Net P&amp;L options + futures + stock portfolio change</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="tw" id="tw1">
+          <div class="task-row" onclick="hc(event,'tw1')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">Batch record Laughder content — 3–5 comedy pieces for the week</div>
+              <div class="t-sub">Monday or Tuesday · Film everything in one session. Schedule across the week.</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--laugher-dim);color:var(--laugher)">Laughder</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">Batch filming tips</div>
+              <div class="d-bullets">
+                <div class="d-bullet">Film 5 videos in one outfit, change for 5 more — looks like different days to the algorithm</div>
+                <div class="d-bullet">Use CapCut or InShot to edit — captions, trending audio, text overlays in minutes</div>
+                <div class="d-bullet">Schedule via TikTok native scheduler or Later — post 6–9 PM PT for peak comedy reach</div>
+              </div>
+            </div>
+            <div class="d-sec">
+              <div class="d-lbl">5 ideas to film this week</div>
+              <div class="d-chips">
+                <div class="d-chip"><strong>Oregon rain joke</strong>It's rained 300 days straight. Lean in. Local content gets shared by locals who relate.</div>
+                <div class="d-chip"><strong>The "adulting" fail</strong>Something went wrong this week in real life. Make it funny. Vulnerability = virality.</div>
+                <div class="d-chip"><strong>Absurd life hack</strong>Parody the productivity content world. Deadpan a ridiculous tip like it's serious advice.</div>
+                <div class="d-chip"><strong>Stitch something wrong</strong>Find a viral clip where someone says something absurd. Your reaction = free reach from their audience.</div>
+                <div class="d-chip"><strong>The relatable spiral</strong>"Me at 8am vs me at 8pm" style. Simple, quick to film, universally shareable format.</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="tw" id="tw2">
+          <div class="task-row" onclick="hc(event,'tw2')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">Send 10 direct mail pieces — tired landlords and off-market multifamily owners</div>
+              <div class="t-sub">Pull from Lane County records or PropStream. Consistent mail = off-market deal flow in 60–90 days.</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">RE Investing</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">Who to target</div>
+              <div class="d-bullets">
+                <div class="d-bullet"><strong>Owned 10+ years</strong> — likely have equity, may be tired of managing tenants</div>
+                <div class="d-bullet"><strong>Out-of-state owners</strong> — absentee landlords are often the most motivated to sell</div>
+                <div class="d-bullet"><strong>Properties with deferred maintenance</strong> — visible from street; owner is already stressed</div>
+              </div>
+            </div>
+            <div class="d-sec">
+              <div class="d-lbl">Letter copy</div>
+              <div class="d-script"><span class="slbl">Direct Mail</span>"Hi [Name], I'm a local Eugene investor and real estate agent who specializes in helping landlords sell their rental properties — often without putting them on the market. If you've ever thought about cashing out or simplifying your portfolio, I'd love a quick conversation. No pressure — just showing you your options. Call or text anytime: [Number]. — [Your Name]"</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="tw" id="tw3">
+          <div class="task-row" onclick="hc(event,'tw3')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">JV / lender relationship call — Oregon Pacific, WaFd, SELCO, Cetan Funds, or private investor</div>
+              <div class="t-sub">One call per week. Even just checking in. These relationships fund your first acquisition.</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">RE Investing</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">What to ask lenders</div>
+              <div class="d-bullets">
+                <div class="d-bullet"><strong>Oregon Pacific / WaFd:</strong> Current rates for 4–8 unit in Eugene? Required DSCR? Min down?</div>
+                <div class="d-bullet"><strong>SELCO / OCCU:</strong> Portfolio loan program for investment property in Lane County?</div>
+                <div class="d-bullet"><strong>Cetan Funds:</strong> Deal size and LTV for multifamily bridge? Typical close timeline?</div>
+              </div>
+            </div>
+            <div class="d-sec">
+              <div class="d-lbl">JV pitch opener</div>
+              <div class="d-script"><span class="slbl">JV Script</span>"I'm looking at a [X]-unit property in Eugene — [cap rate]% cap rate, [X]% projected cash-on-cash. I'm looking for a capital partner on the equity side. Would you be open to seeing the numbers?"</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="tw" id="tw4">
+          <div class="task-row" onclick="hc(event,'tw4')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">ServiceBridge — sign 1 new client or follow up on all open proposals</div>
+              <div class="t-sub">Never let proposals go cold. Follow up within 3 days of sending. Paid before delivery, always.</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--bridge-dim);color:var(--bridge)">ServiceBridge</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">Proposal follow-up script</div>
+              <div class="d-script"><span class="slbl">Follow-up Email</span>"Hey [Name] — just circling back on the ServiceBridge proposal I sent over. I have another [roofer/HVAC/plumber] in Eugene who's expressed interest in the leads — wanted to check in with you first since we spoke earlier. Still want to move forward?"</div>
+            </div>
+            <div class="d-sec">
+              <div class="d-lbl">Growth path</div>
+              <div class="d-bullets">
+                <div class="d-bullet">Month 1: 1–2 clients @ $300–400/mo = $600–800 MRR</div>
+                <div class="d-bullet">Month 2: 3–5 clients @ $500–700/mo = $1,500–3,500 MRR</div>
+                <div class="d-bullet">Month 3: VA handles delivery. You close only. 8–10 clients = $4–6K MRR</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="tw" id="tw5">
+          <div class="task-row" onclick="hc(event,'tw5')">
+            <div class="chk">✓</div>
+            <div class="t-body">
+              <div class="t-text">Attend or host 1 open house or REIA event</div>
+              <div class="t-sub">Weekend · In-person trust-building. Open house = buyer leads. REIA = JV partners and lenders.</div>
+              <div class="t-tags"><span class="t-tag" style="background:var(--agent-dim);color:var(--agent)">RE Agent</span><span class="t-tag" style="background:var(--invest-dim);color:var(--invest)">Investing</span></div>
+            </div>
+            <div class="arr">▼</div>
+          </div>
+          <div class="drawer"><div class="d-inner">
+            <div class="d-sec">
+              <div class="d-lbl">Open house tactics</div>
+              <div class="d-bullets">
+                <div class="d-bullet">Greet every visitor by name — use sign-in sheet or Open Home Pro app</div>
+                <div class="d-bullet">Ask: "Are you working with an agent?" — if no, you have a lead</div>
+                <div class="d-bullet">Have a printed neighborhood market update to give away — shows expertise</div>
+                <div class="d-bullet">Follow up within 24 hours with every sign-in. Most agents never do this.</div>
+                <div class="d-bullet">At REIA: introduce yourself as "an investor-focused agent building a multifamily portfolio in Eugene"</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUGHDER CONTENT IDEAS -->
+  <div class="ideas-card">
+    <div class="ideas-head">
+      <div class="ideas-head-left">
+        <div class="title">Laughder — This Week's Comedy Ideas</div>
+        <div class="sub">Refreshes every Sunday at 6:00 PM automatically</div>
+      </div>
+      <button class="refresh-btn" onclick="renderAllIdeas()">↺ New Ideas</button>
+    </div>
+    <div class="ptabs">
+      <div class="ptab active" onclick="switchTab(event,'reels')">📱 Reels / TikTok</div>
+      <div class="ptab" onclick="switchTab(event,'shorts')">▶ YouTube Shorts</div>
+      <div class="ptab" onclick="switchTab(event,'stories')">⚡ Stories</div>
+      <div class="ptab" onclick="switchTab(event,'collab')">🤝 Collab Ideas</div>
+    </div>
+    <div class="ideas-panel active" id="panel-reels"><div class="idea-grid" id="grid-reels"></div></div>
+    <div class="ideas-panel" id="panel-shorts"><div class="idea-grid" id="grid-shorts"></div></div>
+    <div class="ideas-panel" id="panel-stories"><div class="idea-grid" id="grid-stories"></div></div>
+    <div class="ideas-panel" id="panel-collab"><div class="idea-grid" id="grid-collab"></div></div>
+  </div>
+
+  <!-- WEEKLY RHYTHM -->
+  <div class="os-section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--agent-dim)">📅</div>
+      <span class="sec-name">Weekly Rhythm</span>
+    </div>
+    <div class="week-strip" id="week-strip">
+      <div class="wk-col" data-day="1"><div class="wk-name">Mon</div><div class="wk-task primary">SOI calls / texts</div><div class="wk-task">Plan the week</div><div class="wk-task">CRM review</div><div class="wk-task">Deal tracker update</div></div>
+      <div class="wk-col" data-day="2"><div class="wk-name">Tue</div><div class="wk-task primary">Farm outreach</div><div class="wk-task">Batch Laughder content</div><div class="wk-task">Underwrite 2 deals</div><div class="wk-task">ServiceBridge emails</div></div>
+      <div class="wk-col" data-day="3"><div class="wk-name">Wed</div><div class="wk-task primary">Partner / lender call</div><div class="wk-task">Showings / consults</div><div class="wk-task">Offer prep</div><div class="wk-task">ServiceBridge delivery</div></div>
+      <div class="wk-col" data-day="4"><div class="wk-name">Thu</div><div class="wk-task primary">Lead follow-up</div><div class="wk-task">Transaction review</div><div class="wk-task">Direct mail prep</div><div class="wk-task">Futures review</div></div>
+      <div class="wk-col" data-day="5"><div class="wk-name">Fri</div><div class="wk-task primary">Online engagement</div><div class="wk-task">Week review + KPIs</div><div class="wk-task">Open house prep</div><div class="wk-task">Options scan</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════
+     ROADMAP VIEW
+════════════════════════════════ -->
+<div class="view" id="view-roadmap">
+<div class="roadmap-view">
+
+  <div class="rm-hero">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+      <div>
+        <div class="rm-label">90-Day Execution Roadmap</div>
+        <div class="rm-h1">BUILD TO<br><em>$10K/MO</em></div>
+      </div>
+      <div class="rm-meta">
+        <div class="rm-target">$10,000</div>
+        <div class="rm-target-lbl">Monthly Target · 5 Pillars</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="income-section">
+    <div class="income-eyebrow">Target Income Allocation · Month 3</div>
+    <div class="income-grid">
+      <div class="ic" style="--ic-c:var(--agent)"><div class="ic-stream">RE Agent</div><div class="ic-amt c-agent">$3,500</div><div class="ic-note">1–2 closings/mo</div></div>
+      <div class="ic" style="--ic-c:var(--laugher)"><div class="ic-stream">Laughder</div><div class="ic-amt c-laugher">$1,000</div><div class="ic-note">Ads + brand deals</div></div>
+      <div class="ic" style="--ic-c:var(--bridge)"><div class="ic-stream">ServiceBridge</div><div class="ic-amt c-bridge">$2,500</div><div class="ic-note">8–10 clients MRR</div></div>
+      <div class="ic" style="--ic-c:var(--invest)"><div class="ic-stream">RE Investing</div><div class="ic-amt c-invest">$1,000</div><div class="ic-note">Cashflow from acq.</div></div>
+      <div class="ic" style="--ic-c:var(--trade)"><div class="ic-stream">Trading</div><div class="ic-amt c-trade">$2,000</div><div class="ic-note">Options + futures</div></div>
+    </div>
+  </div>
+
+  <div class="phases">
+
+    <div class="ph-col ph-1">
+      <div class="ph-head">
+        <div class="ph-num">Phase 01 · Month 1</div>
+        <div class="ph-title">FOUNDATION <span class="ph-pill" style="background:var(--agent-dim);color:var(--agent)">Launch</span></div>
+        <div class="ph-dates">Days 1–30</div>
+        <div class="ph-target">Target: $2,000–$4,000</div>
+      </div>
+      <div class="sched">
+        <div class="sched-ttl">Daily Schedule</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Pre-market + options scan</div><div class="ts-d">Futures review, options 45-DTE setup, alerts set.</div></div></div>
+        <div class="ts"><div class="ts-t">8:00a</div><div><div class="ts-lbl">★ Empire Block — deal sourcing<span class="es">INVEST</span></div><div class="ts-d">Pull MLS, run 2 quick underwrites, build direct mail list.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent prospecting + MLS</div><div class="ts-d">10 contacts, respond to all leads, CRM check.</div></div></div>
+        <div class="ts"><div class="ts-t">12:00p</div><div><div class="ts-lbl">ServiceBridge — build + outreach</div><div class="ts-d">Niche selection, landing page, cold email 3–5 businesses.</div></div></div>
+        <div class="ts"><div class="ts-t">2:00p</div><div><div class="ts-lbl">Laughder — post + batch content</div><div class="ts-d">1 comedy piece published. Batch 2–3 more for the week.</div></div></div>
+        <div class="ts"><div class="ts-t">4:00p</div><div><div class="ts-lbl">Futures check + investor outreach</div><div class="ts-d">Adjust stops only. 5 LinkedIn DMs to RE investors/lenders.</div></div></div>
+        <div class="ts"><div class="ts-t">5:00p</div><div><div class="ts-lbl">Log all numbers + plan tomorrow</div><div class="ts-d">All 5 pillars. Update CRM. Note deals for deeper underwriting.</div></div></div>
+      </div>
+      <div class="pris">
+        <div class="pris-ttl">Month 1 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: Pipeline First</strong>Contact every person you know. 3 referral partners. 1 open house/week as host.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: Volume Game</strong>Post daily. Pure comedy, no RE crossover. Goal: 500+ followers. Consistency beats quality at this stage.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: First Client</strong>1 niche, 1 city. 1 landing page. $5/day ads or cold email. First paying client by day 30.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: Build Pipeline</strong>Underwrite 2 deals/day. Build direct mail list. Meet 1 lender. Goal: 40+ deals analyzed by day 30.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: Protect Capital</strong>Max 2% risk/trade. 4–6 options positions. Futures: 1–2 swings max. Hard stops always.</div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpis-ttl">Month 1 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE deals in pipeline</span><span class="kpi-val c-agent">3+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Deals underwritten</span><span class="kpi-val c-invest">40+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge clients</span><span class="kpi-val c-bridge">1–2</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder followers</span><span class="kpi-val c-laugher">500+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Trading P&amp;L</span><span class="kpi-val c-trade">≥ $0</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val">$1,500–$3,500</span></div>
+      </div>
+    </div>
+
+    <div class="ph-col ph-2">
+      <div class="ph-head">
+        <div class="ph-num">Phase 02 · Month 2</div>
+        <div class="ph-title">MOMENTUM <span class="ph-pill" style="background:var(--bridge-dim);color:var(--bridge)">Scale</span></div>
+        <div class="ph-dates">Days 31–60</div>
+        <div class="ph-target">Target: $4,500–$7,000</div>
+      </div>
+      <div class="sched">
+        <div class="sched-ttl">Daily Schedule (Refined)</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Pre-market + trade management</div><div class="ts-d">Manage expiring options. Adjust positions at 50% profit.</div></div></div>
+        <div class="ts"><div class="ts-t">7:30a</div><div><div class="ts-lbl">★ Deep underwrite or active deal<span class="es">INVEST</span></div><div class="ts-d">Full NOI, DSCR, rehab. Tour properties. Contact 3 tired landlords.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent — active clients + prospecting</div><div class="ts-d">Showings, offers, CMA. If no active clients: 15 prospecting contacts.</div></div></div>
+        <div class="ts"><div class="ts-t">12:00p</div><div><div class="ts-lbl">ServiceBridge — delivery + growth</div><div class="ts-d">Run ads, deliver leads, add 2nd niche. Automate with Zapier.</div></div></div>
+        <div class="ts"><div class="ts-t">1:30p</div><div><div class="ts-lbl">Laughder — content + monetization push</div><div class="ts-d">Batch 5 pieces. Collab outreach. Apply for first brand deal.</div></div></div>
+        <div class="ts"><div class="ts-t">3:30p</div><div><div class="ts-lbl">JV + lender relationship calls</div><div class="ts-d">Oregon Pacific, WaFd, SELCO. Pitch 1 deal to JV partner/week.</div></div></div>
+        <div class="ts"><div class="ts-t">4:30p</div><div><div class="ts-lbl">Futures swing setup + stock review</div><div class="ts-d">/MES, /MNQ, /MCL next-day entries. 2:1 R/R minimum. Stock holdings check.</div></div></div>
+      </div>
+      <div class="pris">
+        <div class="pris-ttl">Month 2 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: First Commission</strong>Close 1 deal. Pipeline with 3+ active leads. Investor-focused clients = repeat business.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: First Revenue</strong>1K followers → YouTube monetization eligibility. 1 brand deal $200–500. Test merch.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: $1,500 MRR</strong>3–5 clients at $400–600/mo. Case studies built. Automate delivery. Raise prices.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: LOI Submitted</strong>1 live deal with LOI drafted or sent. Lender pre-approval in hand. JV conversation started.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: Build Consistency</strong>Track win rate over 20+ trades. Target 3–5% monthly on 24K book. Futures: 1–2 concurrent max.</div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpis-ttl">Month 2 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE closings + pipeline</span><span class="kpi-val c-agent">1 close + 3 active</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">LOI submitted</span><span class="kpi-val c-invest">1+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge MRR</span><span class="kpi-val c-bridge">$1,500–2,500</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder followers</span><span class="kpi-val c-laugher">2,000+</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Trading P&amp;L</span><span class="kpi-val c-trade">+$600–900</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val">$4,000–$7,000</span></div>
+      </div>
+    </div>
+
+    <div class="ph-col ph-3">
+      <div class="ph-head">
+        <div class="ph-num">Phase 03 · Month 3</div>
+        <div class="ph-title">ACQUISITION <span class="ph-pill" style="background:var(--invest-dim);color:var(--invest)">Empire</span></div>
+        <div class="ph-dates">Days 61–90</div>
+        <div class="ph-target">Target: $8,000–$10,000+</div>
+      </div>
+      <div class="sched">
+        <div class="sched-ttl">Daily Schedule (Optimized)</div>
+        <div class="ts"><div class="ts-t">6:00a</div><div><div class="ts-lbl">Market open + P&amp;L review</div><div class="ts-d">Roll or close options at target. Futures: A+ macro setups only.</div></div></div>
+        <div class="ts"><div class="ts-t">7:30a</div><div><div class="ts-lbl">★ Acquisition mode<span class="es">INVEST</span></div><div class="ts-d">LOIs, lender calls, inspections, title. 2–3 deals in active pipeline. Weekly JV call.</div></div></div>
+        <div class="ts"><div class="ts-t">10:00a</div><div><div class="ts-lbl">RE Agent — investor clients + commission</div><div class="ts-d">Serve investor buyer clients. Each = potential JV partner and repeat transaction.</div></div></div>
+        <div class="ts"><div class="ts-t">11:30a</div><div><div class="ts-lbl">ServiceBridge — sales only</div><div class="ts-d">VA handles delivery. You close new accounts and upsell existing clients.</div></div></div>
+        <div class="ts"><div class="ts-t">1:00p</div><div><div class="ts-lbl">Laughder — monetization push</div><div class="ts-d">Pitch 3 brand deals/week. Launch merch or digital product. Optimize top content.</div></div></div>
+        <div class="ts"><div class="ts-t">3:00p</div><div><div class="ts-lbl">Trade review + journal</div><div class="ts-d">Win rate, avg P&amp;L, mistakes. Cut what's not working. Stock portfolio rebalance check.</div></div></div>
+        <div class="ts"><div class="ts-t">5:00p</div><div><div class="ts-lbl">90-day debrief (Day 90)</div><div class="ts-d">Full audit all 5 pillars. Deal under contract? Plan next 90 days — acquisition primary.</div></div></div>
+      </div>
+      <div class="pris">
+        <div class="pris-ttl">Month 3 Priorities</div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--agent)"></div><div class="pr-body"><strong>RE Agent: Commission #2 + Investor Focus</strong>Close deal #2. Specialize in investor buyers — they transact repeatedly and refer deals.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--laugher)"></div><div class="pr-body"><strong>Laughder: Multi-Revenue</strong>YouTube ads + 2–3 brand deals + merch live. Aim for $1,000–2,000/mo combined.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--bridge)"></div><div class="pr-body"><strong>ServiceBridge: $2,500 MRR</strong>VA delivers. You sell only. Referral program launched. 8–10 clients at $400–600/mo.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--invest)"></div><div class="pr-body"><strong>RE Investing: Under Contract</strong>1 multifamily under contract or active negotiation. BRRRR or seller finance structure. JV partner committed.</div></div>
+        <div class="pr-row"><div class="pr-dot" style="background:var(--trade)"></div><div class="pr-body"><strong>Trading: System Locked In</strong>$1,500–2,000/mo consistent. Options: premium selling machine. Futures: top-tier setups only. Stock positions reviewed quarterly.</div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpis-ttl">Month 3 KPIs</div>
+        <div class="kpi-row"><span class="kpi-lbl">RE commissions</span><span class="kpi-val c-agent">$3,000–5,000</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Multifamily target</span><span class="kpi-val c-invest">Under contract</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">ServiceBridge MRR</span><span class="kpi-val c-bridge">$2,000–2,500</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Laughder revenue</span><span class="kpi-val c-laugher">$800–2,000</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Trading income</span><span class="kpi-val c-trade">$1,500–2,000</span></div>
+        <div class="kpi-row"><span class="kpi-lbl">Month income est.</span><span class="kpi-val c-invest">$8,000–$10,000+</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom">
+    <div class="bot-panel">
+      <h3>Non-Negotiable Rules</h3>
+      <div class="bot-rule"><div class="bot-num">01</div><div class="bot-body"><strong>Trading: never break the rules</strong>50% profit close. 2x loss max. 2:1 R/R on futures always. Stocks: thesis-based holds, not hope-based.</div></div>
+      <div class="bot-rule"><div class="bot-num">02</div><div class="bot-body"><strong>RE Agent: prospecting never stops</strong>Even when you have active deals. 10 contacts minimum, every weekday, starting at 10 AM.</div></div>
+      <div class="bot-rule"><div class="bot-num">03</div><div class="bot-body"><strong>Empire Block is sacred at 8 AM</strong>Underwrite 2 deals every morning. This habit compounds into your first acquisition.</div></div>
+      <div class="bot-rule"><div class="bot-num">04</div><div class="bot-body"><strong>ServiceBridge: paid before delivery</strong>Deposit or first month upfront always. No exceptions.</div></div>
+      <div class="bot-rule"><div class="bot-num">05</div><div class="bot-body"><strong>Laughder is pure comedy — no crossover</strong>Don't mix RE content into Laughder. The brand is comedy. Keep it clean and consistent.</div></div>
+      <div class="bot-rule"><div class="bot-num">06</div><div class="bot-body"><strong>Reinvest 20% back into growth</strong>Ads, tools, or a VA. No lifestyle creep until month 4+.</div></div>
+    </div>
+    <div class="bot-panel">
+      <h3>Honest Reality Check</h3>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--laugher)">⚠</div><div class="bot-body"><strong>Month 1 income will be low</strong>RE commissions take 30–90 days to close. ServiceBridge clients need time to convert. Expect $1,500–3,000 and don't panic.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--laugher)">⚠</div><div class="bot-body"><strong>Trading is not your primary engine</strong>7% monthly on $29K = ~$2K ceiling without leverage risk. Don't try to trade your way to $10K — it will blow the account.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--laugher)">⚠</div><div class="bot-body"><strong>Laughder monetizes slowly</strong>Comedy content takes 3–6 months for meaningful income. It compounds — stay consistent and treat it as month 4+ payoff.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--bridge)">→</div><div class="bot-body"><strong>Your fastest path to cash</strong>One RE commission = $3–6K in one transaction. ServiceBridge = predictable MRR that compounds monthly. These two fund the lifestyle while RE investing builds the empire.</div></div>
+      <div class="bot-rule"><div class="bot-num" style="color:var(--invest)">✓</div><div class="bot-body"><strong>The long game is multifamily</strong>Every commission funds the next acquisition. Every investor client is a potential JV partner. Eugene near UO = structural rental demand. This is the wealth engine.</div></div>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <div class="tick">RE AGENT <span class="b">12 deals/yr</span></div>
+    <div class="tick">LAUGHDER <span class="r">pure comedy brand</span></div>
+    <div class="tick">SERVICEBRIDGE <span class="a">$2,500 MRR target</span></div>
+    <div class="tick">RE INVESTING <span class="g">multifamily Eugene</span></div>
+    <div class="tick">OPTIONS 5K <span class="p">45 DTE · 15–20Δ</span></div>
+    <div class="tick">FUTURES 24K <span class="p">2:1 R/R minimum</span></div>
+    <div class="tick">STOCKS <span class="p">quarterly review</span></div>
+    <div class="tick">CLOSE OPTIONS <span class="g">50% profit</span></div>
+    <div class="tick">MAX LOSS <span class="r">2x premium</span></div>
+    <div class="tick">EMPIRE BLOCK <span class="g">8 AM daily ★</span></div>
+    <div class="tick">DAILY RESET <span class="g">6:00 PM</span></div>
+    <div class="tick">WEEKLY RESET <span class="g">Sunday 6:00 PM</span></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ── VIEW SWITCHING ──
+function switchView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── CONTENT IDEAS ──
+const IDEAS = {
+  reels: [
+    { title: '"Oregon rain has entered the chat"', hook: 'Lean into the stereotype. Local content gets shared by locals. Simple, punchy, relatable.', fmt: 'Sketch' },
+    { title: '"POV: you told someone you\'re an entrepreneur"', hook: 'The unsolicited advice that follows. Self-aware humor about the hustle life.', fmt: 'POV' },
+    { title: '"Expectation vs Reality: working from home"', hook: 'Universal format. 1-second hook. Everyone shares it because everyone feels it.', fmt: 'E vs R' },
+    { title: '"Things people say that don\'t make sense"', hook: 'Deadpan delivery of absurd common phrases. Short, punchy, high rewatch value.', fmt: 'Observational' },
+    { title: '"Trending audio + absurd Oregon twist"', hook: 'Take the #1 trending sound and apply it to something hyper-local. First-mover advantage.', fmt: 'Trend' },
+    { title: '"The 3am thought that ruins your morning"', hook: 'Relatable anxiety humor. Keeps it light. The specific detail is what makes it funny.', fmt: 'Monologue' },
+    { title: '"How to look productive while doing nothing"', hook: 'Parody productivity content. The irony does the work. Deadpan delivery essential.', fmt: 'Parody' },
+    { title: '"Rating Eugene things on a scale of 1–10"', hook: 'Local listicle comedy. Engages the community. Gets shared in Eugene Facebook groups.', fmt: 'Rating' },
+  ],
+  shorts: [
+    { title: '"60 seconds of unhinged advice"', hook: 'Rapid-fire fake tips delivered seriously. Shorts algorithm loves high-retention formats.', fmt: 'List' },
+    { title: '"Explaining my day to someone from 1950"', hook: 'Time travel fish-out-of-water comedy. Writes itself. Hook: "I spent 3 hours watching strangers dance."', fmt: 'Explainer' },
+    { title: '"Things I said today that I regret"', hook: 'Personal and specific beats generic always. End with a punchline, not a fade.', fmt: 'Confessional' },
+    { title: '"Oregon in 60 seconds — the honest version"', hook: 'Local pride + self-deprecating humor. Perfect length for Shorts. High share rate locally.', fmt: 'Local' },
+    { title: '"The algorithm asked me to post this"', hook: 'Meta-humor about content creation itself. Creator community loves this angle.', fmt: 'Meta' },
+    { title: '"Speed run: explaining my business plan"', hook: '60 seconds, chaotic, self-aware. Hustle humor that lands with entrepreneurial audience.', fmt: 'Speed run' },
+    { title: '"Reacting to my old self\'s advice"', hook: 'Nostalgia + cringe + growth. Three emotions in one video = high engagement.', fmt: 'Reaction' },
+    { title: '"I tried a productivity hack for 1 day"', hook: 'Parody of the 5am-club crowd. End with: "I\'m never doing that again."', fmt: 'Day in life' },
+  ],
+  stories: [
+    { title: '"Rate this take: [controversial opinion]"', hook: 'Poll sticker. Massive engagement. Leads into DM conversation naturally.', fmt: 'Poll' },
+    { title: 'Behind the scenes of filming a video', hook: 'Raw, unedited. Authenticity + process content. People want to see how the sausage is made.', fmt: 'BTS' },
+    { title: '"Hot take: [something everyone secretly agrees with]"', hook: 'Question sticker. Ask audience to share their hot take. Generates replies = reach.', fmt: 'Hot take' },
+    { title: '"This made me laugh today — [clip or screenshot]"', hook: 'Share something funny you found. Low effort, high authenticity. Curator content.', fmt: 'Share' },
+    { title: '"Would you rather: [absurd choice]"', hook: 'Poll sticker. Simple, engaging, no-effort content that keeps streak alive.', fmt: 'Would you rather' },
+    { title: 'AMA — ask me anything about comedy', hook: 'Question sticker. Generates DMs. Answer the best ones in follow-up stories.', fmt: 'AMA' },
+    { title: '"Today\'s mood in one GIF"', hook: 'GIF sticker + reaction. Relatable micro-content. Takes 30 seconds to post.', fmt: 'Mood' },
+    { title: '"Unpopular opinion: [thing everyone secretly thinks]"', hook: 'Gets strong reactions. People share because they agree but won\'t say it publicly.', fmt: 'Opinion' },
+  ],
+  collab: [
+    { title: 'Duet with a local Oregon comedian', hook: 'Find Eugene/Portland-area creators. Tag + duet = cross-pollination of audiences. DM 3 this week.', fmt: 'Duet' },
+    { title: 'Collab with a trades/blue-collar humor account', hook: 'Adjacent audience to ServiceBridge clients. Funny crossover that serves both brands.', fmt: 'Crossover' },
+    { title: 'Stitch the most confident wrong take you can find', hook: 'Free content from their audience. Reply format is favored by all algorithms right now.', fmt: 'Stitch' },
+    { title: 'Tag a brand in a funny brand-adjacent video', hook: 'If the brand reposts = massive reach spike. Aim for mid-size brands (50K–500K followers).', fmt: 'Brand tag' },
+    { title: 'Collab with a podcast — be a comedy guest', hook: 'Find local Eugene or Oregon entrepreneurship podcasts. One episode = 30 min of reach.', fmt: 'Podcast' },
+    { title: '"What _____ actually means" — ft. another creator', hook: 'Scripted collab. Both creators promote. Simple concept, high production upside.', fmt: 'Scripted' },
+    { title: 'Reaction collab — react to each other\'s old content', hook: 'Both creators post the same video from different angles. Built-in cross-promotion.', fmt: 'Reaction' },
+    { title: 'Challenge format with a creator in your niche', hook: 'Create a challenge, tag 3 creators. If it catches, exponential reach with no ad spend.', fmt: 'Challenge' },
+  ]
+};
+
+function getWeekSeed() {
+  const now = new Date();
+  const day = now.getDay(), h = now.getHours();
+  const d = new Date(now);
+  let back = day;
+  if (day === 0 && h < 18) back = 7;
+  d.setDate(d.getDate() - back);
+  d.setHours(18, 0, 0, 0);
+  return Math.floor(d.getTime() / 1000);
+}
+function seeded(arr, seed) {
+  const a = [...arr]; let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = Math.abs(s) % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function renderPlatform(plat) {
+  const seed = getWeekSeed() * 31 + plat.length;
+  const items = seeded(IDEAS[plat], seed).slice(0, 4);
+  document.getElementById('grid-' + plat).innerHTML = items.map((x, i) => `
+    <div class="idea-card">
+      <div class="idea-num">IDEA 0${i+1}</div>
+      <div class="idea-title">${x.title}</div>
+      <div class="idea-hook">${x.hook}</div>
+      <span class="idea-fmt" style="background:var(--laugher-dim);color:var(--laugher)">${x.fmt}</span>
+    </div>`).join('');
+}
+function renderAllIdeas() { ['reels','shorts','stories','collab'].forEach(renderPlatform); }
+function switchTab(e, plat) {
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ideas-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('panel-' + plat).classList.add('active');
+}
+
+// ── STORAGE ──
+const DK = 'eos_daily_v1', DDK = 'eos_daily_date_v1';
+const WK = 'eos_weekly_v1', WDK = 'eos_weekly_date_v1';
+
+function getDayId() {
+  const n = new Date();
+  if (n.getHours() >= 18) {
+    const t = new Date(n); t.setDate(t.getDate()+1);
+    return t.toDateString() + '_pre';
+  }
+  return n.toDateString();
+}
+function getWeekId() {
+  const n = new Date(), day = n.getDay(), h = n.getHours();
+  const d = new Date(n);
+  let back = day;
+  if (day === 0 && h < 18) back = 7;
+  d.setDate(d.getDate()-back); d.setHours(18,0,0,0);
+  return 'w_' + d.toDateString();
+}
+
+// ── CLICK HANDLER: expand vs checkbox ──
+function hc(event, id) {
+  const w = document.getElementById(id);
+  if (!w) return;
+  const onChk = event.target.classList.contains('chk') || !!event.target.closest('.chk');
+  if (onChk) {
+    w.classList.toggle('done-wrap');
+    id.startsWith('tw') ? (saveWeekly(), updateWeeklyBadge()) : saveDaily();
+    updateProgress();
+  } else {
+    const open = w.classList.contains('open');
+    document.querySelectorAll('.tw.open').forEach(x => { if (x !== w) x.classList.remove('open'); });
+    w.classList.toggle('open', !open);
+  }
+}
+
+// ── DAILY ──
+function loadDaily() {
+  if (localStorage.getItem(DDK) !== getDayId()) {
+    localStorage.removeItem(DK);
+    localStorage.setItem(DDK, getDayId());
+  }
+  const s = JSON.parse(localStorage.getItem(DK) || '{}');
+  Object.keys(s).forEach(id => { if (s[id]) { const w = document.getElementById(id); if (w) w.classList.add('done-wrap'); } });
+  updateProgress();
+}
+function saveDaily() {
+  const s = {};
+  document.querySelectorAll('.tw[id^="t"]:not([id^="tw"])').forEach(w => { s[w.id] = w.classList.contains('done-wrap'); });
+  localStorage.setItem(DK, JSON.stringify(s));
+}
+function resetDaily() {
+  document.querySelectorAll('.tw[id^="t"]:not([id^="tw"])').forEach(w => w.classList.remove('done-wrap'));
+  localStorage.removeItem(DK);
+  updateProgress();
+}
+
+// ── WEEKLY ──
+function loadWeekly() {
+  if (localStorage.getItem(WDK) !== getWeekId()) {
+    localStorage.removeItem(WK);
+    localStorage.setItem(WDK, getWeekId());
+  }
+  const s = JSON.parse(localStorage.getItem(WK) || '{}');
+  Object.keys(s).forEach(id => { if (s[id]) { const w = document.getElementById(id); if (w) w.classList.add('done-wrap'); } });
+  updateWeeklyBadge();
+}
+function saveWeekly() {
+  const s = {};
+  document.querySelectorAll('.tw[id^="tw"]').forEach(w => { s[w.id] = w.classList.contains('done-wrap'); });
+  localStorage.setItem(WK, JSON.stringify(s));
+}
+function updateWeeklyBadge() {
+  const total = document.querySelectorAll('.tw[id^="tw"]').length;
+  const done = document.querySelectorAll('.tw[id^="tw"].done-wrap').length;
+  const b = document.getElementById('weekly-badge');
+  if (b) b.textContent = `${done} / ${total} done`;
+}
+
+// ── HIGHLIGHT TODAY ──
+function highlightToday() {
+  const d = new Date().getDay();
+  document.querySelectorAll('.power-card').forEach(c => {
+    if (parseInt(c.dataset.day) === d || (d === 6 && parseInt(c.dataset.day) === 0)) {
+      c.classList.add('today-card');
+      const dl = c.querySelector('.pw-day');
+      if (dl && !dl.querySelector('.today-pip')) dl.innerHTML += '<span class="today-pip">Today</span>';
+    }
+  });
+  document.querySelectorAll('.wk-col').forEach(c => {
+    if (parseInt(c.dataset.day) === d) c.classList.add('today-col');
+  });
+}
+
+// ── COUNTDOWN ──
+function tick() {
+  const now = new Date();
+  const t = new Date(now);
+  t.setHours(18,0,0,0);
+  if (now >= t) t.setDate(t.getDate()+1);
+  const diff = t - now;
+  const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
+  document.getElementById('countdown').textContent =
+    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (now.getHours()===18 && now.getMinutes()===0 && now.getSeconds()===0) {
+    resetDaily();
+    if (now.getDay()===0) {
+      document.querySelectorAll('.tw[id^="tw"]').forEach(w => w.classList.remove('done-wrap'));
+      localStorage.removeItem(WK); updateWeeklyBadge(); renderAllIdeas();
+    }
+  }
+}
+
+// ── MODAL OPEN/CLOSE ──
+function toggleTaskModal() {
+  const modal = document.getElementById('task-modal');
+  const backdrop = document.getElementById('task-backdrop');
+  const btn = document.getElementById('add-task-btn');
+  const isOpen = modal.classList.contains('open');
+  if (isOpen) {
+    closeTaskModal();
+  } else {
+    modal.classList.add('open');
+    backdrop.classList.add('open');
+    btn.classList.add('modal-open');
+    setTimeout(() => document.getElementById('ca-input').focus(), 280);
+  }
+}
+function closeTaskModal() {
+  document.getElementById('task-modal').classList.remove('open');
+  document.getElementById('task-backdrop').classList.remove('open');
+  document.getElementById('add-task-btn').classList.remove('modal-open');
+}
+
+// ── CUSTOM TASKS ──
+const CT_KEY = 'eos_custom_tasks_v1';
+let customMode = 'daily'; // 'daily' or 'weekly'
+
+const PILLAR_COLORS = {
+  agent:   { bg: 'var(--agent-dim)',   c: 'var(--agent)',   label: '🏠 RE Agent' },
+  invest:  { bg: 'var(--invest-dim)',  c: 'var(--invest)',  label: '🏢 RE Investing' },
+  bridge:  { bg: 'var(--bridge-dim)',  c: 'var(--bridge)',  label: '🔗 ServiceBridge' },
+  laugher: { bg: 'var(--laugher-dim)', c: 'var(--laugher)', label: '😂 Laughder' },
+  trade:   { bg: 'var(--trade-dim)',   c: 'var(--trade)',   label: '📈 Trading' },
+  general: { bg: 'rgba(255,255,255,0.06)', c: '#aaa',       label: '⚡ General' },
+};
+
+const TIME_LABELS = {
+  '9am': '9:00 AM', '10am': '10:00 AM', '11am': '11:00 AM',
+  '12pm': '12:00 PM', '1pm': '1:00 PM', '2pm': '2:00 PM',
+  '3pm': '3:00 PM', '4pm': '4:00 PM', '5pm': '5:00 PM',
+  'contact': '📞 Business hours',
+};
+
+function loadCustomTasks() {
+  return JSON.parse(localStorage.getItem(CT_KEY) || '[]');
+}
+function saveCustomTasks(tasks) {
+  localStorage.setItem(CT_KEY, JSON.stringify(tasks));
+}
+
+function setMode(mode) {
+  customMode = mode;
+  document.getElementById('tog-daily').classList.toggle('active', mode === 'daily');
+  document.getElementById('tog-weekly').classList.toggle('active', mode === 'weekly');
+  renderCustomList();
+}
+
+function addCustomTask() {
+  const input = document.getElementById('ca-input');
+  const descEl = document.getElementById('ca-desc');
+  const text = input.value.trim();
+  if (!text) { input.focus(); return; }
+  const desc = descEl.value.trim();
+  const pillar = document.getElementById('ca-pillar').value;
+  const time = document.getElementById('ca-time').value;
+  const tasks = loadCustomTasks();
+  tasks.push({
+    id: 'ct_' + Date.now(),
+    text,
+    desc,
+    pillar,
+    time,
+    mode: customMode,
+    done: false,
+    created: Date.now(),
+  });
+  saveCustomTasks(tasks);
+  input.value = '';
+  descEl.value = '';
+  closeTaskModal();
+  renderCustomList();
+  renderInlineSlots();
+  updateProgress();
+}
+
+function toggleCustomTask(id) {
+  const tasks = loadCustomTasks();
+  const t = tasks.find(x => x.id === id);
+  if (t) t.done = !t.done;
+  saveCustomTasks(tasks);
+  renderCustomList();
+  renderInlineSlots();
+  updateProgress();
+}
+
+function deleteCustomTask(id) {
+  const tasks = loadCustomTasks().filter(x => x.id !== id);
+  saveCustomTasks(tasks);
+  renderCustomList();
+  renderInlineSlots();
+  updateProgress();
+}
+
+function renderCustomList() {
+  const tasks = loadCustomTasks().filter(t => t.mode === customMode);
+  const list = document.getElementById('ca-list');
+  const empty = document.getElementById('ca-empty');
+  if (!tasks.length) {
+    list.innerHTML = '';
+    list.appendChild(empty || (() => {
+      const d = document.createElement('div');
+      d.className = 'ca-empty'; d.id = 'ca-empty';
+      d.textContent = 'No custom tasks yet — add one above.';
+      return d;
+    })());
+    return;
+  }
+  const p = PILLAR_COLORS;
+  list.innerHTML = tasks.map(t => {
+    const pc = p[t.pillar] || p.general;
+    const tl = t.time ? TIME_LABELS[t.time] || t.time : '';
+    return `<div class="ct-item ${t.done ? 'ct-done' : ''}" id="li_${t.id}">
+      <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+      <div class="ct-body">
+        <div class="ct-text">${escHtml(t.text)}</div>
+        ${t.desc ? `<div class="ct-desc">${escHtml(t.desc)}</div>` : ''}
+        <div class="ct-meta">
+          <span class="ct-badge" style="background:${pc.bg};color:${pc.c}">${pc.label}</span>
+          ${tl ? `<span class="ct-time">${tl}</span>` : ''}
+          ${t.done ? '<span class="ct-time" style="color:var(--dim)">✓ Done</span>' : ''}
+        </div>
+      </div>
+      <button class="ct-delete" onclick="deleteCustomTask('${t.id}')" title="Remove">×</button>
+    </div>`;
+  }).join('');
+}
+
+// Determine if a task belongs in morning or afternoon slot
+function getSlot(task) {
+  const earlyTimes = ['9am', '10am', '11am'];
+  const contactTimes = ['contact'];
+  if (!task.time) return 'afternoon'; // no time = afternoon default
+  if (earlyTimes.includes(task.time) || contactTimes.includes(task.time)) return 'morning';
+  return 'afternoon';
+}
+
+function renderInlineSlots() {
+  const allTasks = loadCustomTasks();
+  const dailyTasks = allTasks.filter(t => t.mode === 'daily');
+  const p = PILLAR_COLORS;
+
+  ['morning', 'afternoon'].forEach(slot => {
+    const el = document.getElementById('slot-' + slot);
+    if (!el) return;
+    const slotTasks = dailyTasks.filter(t => getSlot(t) === slot);
+    if (!slotTasks.length) { el.innerHTML = ''; return; }
+    el.innerHTML = slotTasks.map(t => {
+      const pc = p[t.pillar] || p.general;
+      const tl = t.time ? TIME_LABELS[t.time] || t.time : 'Business hours';
+      return `<div class="ct-inline ${t.done ? 'ct-done' : ''}">
+        <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+        <div class="ct-body">
+          <div class="ct-text">${escHtml(t.text)}</div>
+          ${t.desc ? `<div class="ct-desc">${escHtml(t.desc)}</div>` : ''}
+          <div class="ct-meta">
+            <span class="ct-badge" style="background:${pc.bg};color:${pc.c}">${pc.label}</span>
+            <span class="ct-time">${tl}</span>
+          </div>
+        </div>
+        <button class="ct-delete" onclick="deleteCustomTask('${t.id}')" title="Remove">×</button>
+      </div>`;
+    }).join('');
+  });
+
+  // Weekly custom tasks — inject into weekly section if present
+  const weeklySlot = document.getElementById('slot-weekly');
+  if (weeklySlot) {
+    const wt = allTasks.filter(t => t.mode === 'weekly');
+    weeklySlot.innerHTML = wt.map(t => {
+      const pc = p[t.pillar] || p.general;
+      const tl = t.time ? TIME_LABELS[t.time] || t.time : '';
+      return `<div class="ct-inline ${t.done ? 'ct-done' : ''}">
+        <div class="ct-chk" onclick="toggleCustomTask('${t.id}')">✓</div>
+        <div class="ct-body">
+          <div class="ct-text">${escHtml(t.text)}</div>
+          ${t.desc ? `<div class="ct-desc">${escHtml(t.desc)}</div>` : ''}
+          <div class="ct-meta">
+            <span class="ct-badge" style="background:${pc.bg};color:${pc.c}">${pc.label}</span>
+            ${tl ? `<span class="ct-time">${tl}</span>` : ''}
+          </div>
+        </div>
+        <button class="ct-delete" onclick="deleteCustomTask('${t.id}')" title="Remove">×</button>
+      </div>`;
+    }).join('');
+  }
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── PROGRESS (updated to include custom tasks) ──
+const MSGS = [
+  'Tap any task to expand. Check the box to mark done.',
+  'Good start — keep the momentum going across all 5 pillars.',
+  'Halfway there — you\'re building the empire today.',
+  'Almost done — finish strong.',
+  '🎉 Full day complete. This is what the empire looks like.',
+];
+function updateProgress() {
+  const dTotal = document.querySelectorAll('.tw[id^="t"]:not([id^="tw"])').length;
+  const wTotal = document.querySelectorAll('.tw[id^="tw"]').length;
+  const dDone = document.querySelectorAll('.tw[id^="t"]:not([id^="tw"]).done-wrap').length;
+  const wDone = document.querySelectorAll('.tw[id^="tw"].done-wrap').length;
+
+  // Include custom tasks in count
+  const allCustom = loadCustomTasks();
+  const customDaily = allCustom.filter(t => t.mode === 'daily');
+  const customWeekly = allCustom.filter(t => t.mode === 'weekly');
+  const customDailyDone = customDaily.filter(t => t.done).length;
+  const customWeeklyDone = customWeekly.filter(t => t.done).length;
+
+  const total = dTotal + wTotal + customDaily.length + customWeekly.length;
+  const done = dDone + wDone + customDailyDone + customWeeklyDone;
+
+  document.getElementById('prog-count').textContent = `${done} / ${total}`;
+  document.getElementById('prog-fill').style.width = total ? `${(done/total)*100}%` : '0%';
+  const idx = total ? Math.min(Math.floor((done/total)*(MSGS.length-1)), MSGS.length-1) : 0;
+  document.getElementById('prog-msg').textContent = MSGS[idx];
+  const ds = document.getElementById('done-stat');
+  if (ds) ds.textContent = `${dDone + customDailyDone}/${dTotal + customDaily.length}`;
+}
+
+// ── INIT ──
+renderAllIdeas();
+loadDaily();
+loadWeekly();
+renderCustomList();
+renderInlineSlots();
+highlightToday();
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
