@@ -489,7 +489,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .pi-desc{font-size:11px;color:var(--dim);line-height:1.6;}
 .pi-targets{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px;}
 .pi-tgt{font-family:'Fragment Mono',monospace;font-size:8px;padding:3px 9px;border-radius:4px;border:1px solid var(--b2);color:var(--dim);}
-.pi-tgt.hi{border-color:rgba(16,185,129,.35);color:var(--invest);background:var(--invest-dim);}
+.pi-tgt.hi{border-color:rgba(16,185,129,.35);color:var(--invest);background:var(--invest-d);}
 .day-nav-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
 .dn-btn{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:var(--s1);border:1px solid var(--b1);border-radius:5px;color:var(--dim);padding:5px 11px;cursor:pointer;transition:all .15s;user-select:none;white-space:nowrap;}
 .dn-btn:hover{border-color:var(--b2);color:var(--txt);}
@@ -497,15 +497,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .dn-btn.has-prog{border-color:rgba(16,185,129,.4);color:var(--invest);}
 .cl-reset-day{background:none;border:1px solid var(--b1);border-radius:5px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:all .15s;margin-left:auto;}
 .cl-reset-day:hover{border-color:var(--dim);color:var(--txt);}
-.tblk{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:16px 0 7px;padding-left:3px;display:flex;align-items:center;gap:7px;}
-.tblk::after{content:'';flex:1;height:1px;background:var(--b1);}
 .cl-site-sec{background:var(--s1);border:1px solid var(--b1);border-radius:10px;overflow:hidden;margin-bottom:6px;}
 .cl-site-head{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;user-select:none;transition:background .15s;}
 .cl-site-head:hover{background:var(--s2);}
 .cl-ss-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .cl-ss-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;}
 .cl-ss-time{font-family:'Fragment Mono',monospace;font-size:8px;color:var(--dim);margin-left:auto;}
-.cl-ss-done{font-family:'Fragment Mono',monospace;font-size:8px;padding:2px 7px;border-radius:3px;margin-left:6px;background:var(--invest-dim);color:var(--invest);border:1px solid rgba(16,185,129,.3);}
+.cl-ss-done{font-family:'Fragment Mono',monospace;font-size:8px;padding:2px 7px;border-radius:3px;margin-left:6px;background:var(--invest-d);color:var(--invest);border:1px solid rgba(16,185,129,.3);}
 .cl-ss-arr{font-size:8px;color:var(--dim);margin-left:5px;transition:transform .18s;}
 .cl-site-sec.cl-collapsed .cl-ss-arr{transform:rotate(-90deg);}
 .cl-site-body{padding:3px 0;}
@@ -1945,7 +1943,7 @@ setInterval(tick,1000);
 
 const CL_VENTURES = {
   'cl-sq': {
-    name:'ServaSquad', icon:'🔗', color:'var(--bridge)', dim:'var(--bridge-dim)',
+    name:'ServaSquad', icon:'🔗', color:'var(--bridge)', dim:'var(--bridge-d)',
     eyebrow:'Contractor Lead Generation · Oregon',
     sub:'20 calls/day · 1 blog post/day · lead delivery within 15 min · 5 backlink emails/day',
     phases:[
@@ -2034,7 +2032,7 @@ const CL_VENTURES = {
   },
 
   'cl-ap': {
-    name:'ApexWire', icon:'⚡', color:'var(--bridge)', dim:'var(--bridge-dim)',
+    name:'ApexWire', icon:'⚡', color:'var(--bridge)', dim:'var(--bridge-d)',
     eyebrow:'Motorsports Media · F1 · NASCAR · IndyCar · IMSA',
     sub:'1 post/day · 3 tweets/day · race weekend content is your biggest traffic spike',
     phases:[
@@ -2105,7 +2103,7 @@ const CL_VENTURES = {
   },
 
   'cl-la': {
-    name:'Laughder', icon:'😂', color:'var(--laugher)', dim:'var(--laugher-dim)',
+    name:'Laughder', icon:'😂', color:'var(--laugher)', dim:'var(--laugher-d)',
     eyebrow:'Comedy Brand · Pure Comedy · No RE Crossover Ever',
     sub:'Database pages rank forever · 3 tweets/day · engage comedy communities daily',
     phases:[
@@ -2154,7 +2152,7 @@ const CL_VENTURES = {
   },
 
   'cl-re': {
-    name:'RE Agent', icon:'🏠', color:'var(--agent)', dim:'var(--agent-dim)',
+    name:'RE Agent', icon:'🏠', color:'var(--agent)', dim:'var(--agent-d)',
     eyebrow:'Licensed Oregon RE Agent · 12 Deals/Year Target · Eugene Market',
     sub:'5 SOI contacts every weekday · prospecting never stops even with active clients',
     phases:[
@@ -2203,7 +2201,7 @@ const CL_VENTURES = {
   },
 
   'cl-tr': {
-    name:'Trading', icon:'📈', color:'var(--trade)', dim:'var(--trade-dim)',
+    name:'Trading', icon:'📈', color:'var(--trade)', dim:'var(--trade-d)',
     eyebrow:'Options $5K · Micro Futures $24K · Systematic Rules Only',
     sub:'Pre-market at 6:00 AM · rules are non-negotiable · journal every single trade',
     phases:[
