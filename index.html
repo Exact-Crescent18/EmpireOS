@@ -461,6 +461,102 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   .avail-grid{grid-template-columns:repeat(3,1fr);}
 }
 
+
+/* ── CALENDAR TAB ── */
+.ntab-cal.active{border-bottom-color:#a78bfa!important;color:#a78bfa!important;}
+
+/* ── CALENDAR VIEW ── */
+.cal-wrap{max-width:1100px;margin:0 auto;padding:24px 18px 80px;}
+.cal-header{margin-bottom:24px;}
+.cal-title{font-family:'Syne',sans-serif;font-size:clamp(22px,3.5vw,36px);font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-.02em;}
+.cal-sub{font-size:13px;color:var(--dim);}
+
+/* tab switcher */
+.cal-tabs{display:flex;gap:4px;margin-bottom:24px;}
+.cal-tab{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;background:var(--s1);border:1px solid var(--b1);border-radius:6px;color:var(--dim);padding:7px 16px;cursor:pointer;transition:all .15s;user-select:none;}
+.cal-tab:hover{color:var(--txt);border-color:var(--b2);}
+.cal-tab.active{background:#a78bfa;border-color:#a78bfa;color:#000;font-weight:700;}
+
+/* daily calendar */
+.day-timeline{display:flex;flex-direction:column;gap:3px;}
+.dt-row{display:grid;grid-template-columns:72px 1fr;gap:0;min-height:44px;}
+.dt-time{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--dim);padding:12px 12px 0 0;text-align:right;flex-shrink:0;border-right:1px solid var(--b1);line-height:1;}
+.dt-time.hour{color:var(--txt);font-size:10px;}
+.dt-block{padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:3px;}
+.dt-card{border-radius:8px;padding:10px 14px;border-left:3px solid transparent;position:relative;transition:opacity .15s;}
+.dt-card:hover{opacity:.85;}
+.dt-card-label{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;font-weight:700;}
+.dt-card-title{font-size:13px;font-weight:600;color:#fff;line-height:1.3;}
+.dt-card-note{font-size:11px;line-height:1.4;margin-top:2px;}
+.dt-card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.dt-tag{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;}
+.dt-divider{height:1px;background:var(--b1);margin:6px 0 6px 86px;}
+
+/* color themes per pillar */
+.dt-trade{background:rgba(167,139,250,.08);border-left-color:#a78bfa;}
+.dt-trade .dt-card-label{color:#a78bfa;}
+.dt-trade .dt-card-note{color:rgba(167,139,250,.7);}
+.dt-agent{background:rgba(59,130,246,.08);border-left-color:#3b82f6;}
+.dt-agent .dt-card-label{color:#3b82f6;}
+.dt-agent .dt-card-note{color:rgba(59,130,246,.7);}
+.dt-sq{background:rgba(245,158,11,.08);border-left-color:#f59e0b;}
+.dt-sq .dt-card-label{color:#f59e0b;}
+.dt-sq .dt-card-note{color:rgba(245,158,11,.7);}
+.dt-content{background:rgba(16,185,129,.08);border-left-color:#10b981;}
+.dt-content .dt-card-label{color:#10b981;}
+.dt-content .dt-card-note{color:rgba(16,185,129,.7);}
+.dt-apex{background:rgba(245,158,11,.08);border-left-color:#f59e0b;}
+.dt-apex .dt-card-label{color:#f59e0b;}
+.dt-apex .dt-card-note{color:rgba(245,158,11,.7);}
+.dt-laugh{background:rgba(244,63,94,.08);border-left-color:#f43f5e;}
+.dt-laugh .dt-card-label{color:#f43f5e;}
+.dt-laugh .dt-card-note{color:rgba(244,63,94,.7);}
+.dt-seo{background:rgba(16,185,129,.08);border-left-color:#10b981;}
+.dt-seo .dt-card-label{color:#10b981;}
+.dt-seo .dt-card-note{color:rgba(16,185,129,.7);}
+.dt-lunch{background:var(--s2);border-left-color:var(--b2);}
+.dt-lunch .dt-card-label{color:var(--dim);}
+.dt-lunch .dt-card-title{color:var(--dim);}
+
+/* weekly calendar */
+.week-cal{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.wc-col{background:var(--s1);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.wc-col.wc-today{border-color:var(--invest);}
+.wc-head{padding:10px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;}
+.wc-day{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;}
+.wc-col.wc-today .wc-day{color:var(--invest);}
+.wc-today-pip{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.08em;text-transform:uppercase;background:var(--invest);color:#000;padding:2px 6px;border-radius:3px;font-weight:700;}
+.wc-blocks{padding:8px;}
+.wc-block{border-radius:6px;padding:8px 10px;margin-bottom:4px;border-left:2px solid transparent;}
+.wc-block-time{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.06em;color:var(--dim);margin-bottom:2px;}
+.wc-block-title{font-size:11px;font-weight:600;color:#fff;line-height:1.3;}
+.wc-block-note{font-size:10px;line-height:1.4;margin-top:2px;}
+.wc-trade{background:rgba(167,139,250,.08);border-left-color:#a78bfa;}
+.wc-trade .wc-block-note{color:rgba(167,139,250,.65);}
+.wc-agent{background:rgba(59,130,246,.08);border-left-color:#3b82f6;}
+.wc-agent .wc-block-note{color:rgba(59,130,246,.65);}
+.wc-sq{background:rgba(245,158,11,.1);border-left-color:#f59e0b;}
+.wc-sq .wc-block-note{color:rgba(245,158,11,.65);}
+.wc-content{background:rgba(16,185,129,.08);border-left-color:#10b981;}
+.wc-content .wc-block-note{color:rgba(16,185,129,.65);}
+.wc-apex{background:rgba(245,158,11,.06);border-left-color:#f59e0b;}
+.wc-apex .wc-block-note{color:rgba(245,158,11,.55);}
+.wc-laugh{background:rgba(244,63,94,.08);border-left-color:#f43f5e;}
+.wc-laugh .wc-block-note{color:rgba(244,63,94,.65);}
+.wc-seo{background:rgba(16,185,129,.06);border-left-color:#10b981;}
+.wc-seo .wc-block-note{color:rgba(16,185,129,.55);}
+.wc-re{background:rgba(59,130,246,.06);border-left-color:#3b82f6;}
+.wc-re .wc-block-note{color:rgba(59,130,246,.55);}
+.wc-lunch{background:var(--s2);border-left-color:var(--b1);}
+.wc-lunch .wc-block-title{color:var(--dim);}
+.wc-after{background:rgba(167,139,250,.06);border-left-color:rgba(167,139,250,.3);}
+.wc-after .wc-block-note{color:rgba(167,139,250,.5);}
+
+/* legend */
+.cal-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.cl-item{display:flex;align-items:center;gap:5px;font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);}
+.cl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
 /* ── CHECKLIST NAV COLORS ── */
 .ntab-sq.active{border-bottom-color:var(--bridge)!important;color:var(--bridge)!important;}
 .ntab-ap.active{border-bottom-color:var(--bridge)!important;color:var(--bridge)!important;}
@@ -525,6 +621,54 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .cl-si.cl-done .cl-si-box{border-color:var(--invest);background:var(--invest);color:#000;}
 .cl-si-text{font-size:11px;color:var(--dim);line-height:1.4;}
 
+
+/* ── TAB PROGRESS INDICATOR ── */
+.tab-indicator{
+  display:inline-block;
+  width:6px;height:6px;
+  border-radius:50%;
+  margin-left:6px;
+  vertical-align:middle;
+  flex-shrink:0;
+  font-size:0;
+}
+.tab-indicator[style*="10b981"]{
+  width:auto;height:auto;
+  border-radius:0;
+  background:none!important;
+  color:#10b981;
+  font-size:8px!important;
+  font-weight:700;
+}
+
+
+/* ── PLATFORMS CARD ── */
+.cl-platforms{background:var(--s2);border:1px solid var(--b2);border-radius:9px;margin-bottom:16px;overflow:hidden;}
+.cp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--b1);padding:0;}
+.cp-card{background:var(--s1);padding:14px 15px;display:flex;flex-direction:column;gap:8px;}
+.cp-top{display:flex;align-items:center;gap:10px;}
+.cp-logo{font-size:26px;line-height:1;flex-shrink:0;}
+.cp-name{font-size:13px;font-weight:700;color:var(--txt);line-height:1.2;}
+.cp-priority{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-top:3px;display:inline-block;}
+.cp-priority-primary{background:rgba(16,185,129,.15);color:var(--invest);border:1px solid rgba(16,185,129,.3);}
+.cp-priority-secondary{background:rgba(245,158,11,.12);color:var(--bridge);border:1px solid rgba(245,158,11,.25);}
+.cp-priority-optional{background:rgba(107,107,128,.12);color:var(--dim);border:1px solid var(--b2);}
+.cp-format{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--invest);line-height:1.4;}
+.cp-tip{font-size:11px;color:var(--dim);line-height:1.55;}
+
+/* ── GUIDELINES CARD ── */
+.cl-guidelines{background:var(--s2);border:1px solid var(--b2);border-radius:9px;margin-bottom:16px;overflow:hidden;}
+.cgl-head{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid var(--b2);background:rgba(0,0,0,0.2);}
+.cgl-icon{font-size:16px;}
+.cgl-title{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--txt);}
+.cgl-body{padding:14px 16px;display:flex;flex-direction:column;gap:14px;}
+.cgl-section{}
+.cgl-sec-title{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--invest);margin-bottom:5px;}
+.cgl-sec-body{font-size:12px;color:var(--dim);line-height:1.65;}
+.cgl-prompt{background:var(--bg);border:1px solid var(--b1);border-left:3px solid var(--invest);border-radius:6px;padding:10px 12px;margin-top:8px;}
+.cgl-prompt-label{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--invest);display:block;margin-bottom:6px;}
+.cgl-prompt-text{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--txt);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+
 </style>
 </head>
 <body>
@@ -535,6 +679,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   <div class="ntab active" onclick="switchView('hub',this)">Execution Hub</div>
   <div class="ntab" onclick="switchView('strategy',this)">Strategy Room</div>
   <div class="ntab" onclick="switchView('roadmap',this)">90-Day Plan</div>
+  <div class="nav-sep" style="width:1px;height:22px;background:#2a2a38;margin:0 4px;align-self:center;flex-shrink:0;"></div>
+  <div class="ntab ntab-cal" onclick="switchView('calendar',this)">📅 Calendar</div>
   <div class="nav-sep" style="width:1px;height:22px;background:#2a2a38;margin:0 4px;align-self:center;flex-shrink:0;"></div>
   <div class="ntab ntab-sq" onclick="switchView('cl-sq',this)">🔗 ServaSquad</div>
   <div class="ntab ntab-ap" onclick="switchView('cl-ap',this)">⚡ ApexWire</div>
@@ -896,6 +1042,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 </div>
 </div>
 
+
+<!-- ════ CALENDAR VIEW ════ -->
+<div class="view" id="view-calendar"></div>
 
 <!-- ════ CHECKLIST VIEWS ════ -->
 <div class="view" id="view-cl-sq"></div>
@@ -1942,289 +2091,374 @@ setInterval(tick,1000);
 // ═══════════════════════════════════════════════════════
 
 const CL_VENTURES = {
+  // ─────────────────────────────────────────────────────
+  // MASTER DAILY SCHEDULE (you are one person)
+  //
+  // 6:00–8:00 AM   Trading — pre-market + journal
+  // 8:00–9:00 AM   RE Agent — morning prospecting prep
+  // 9:00–11:00 AM  ServaSquad — contractor calls (sacred)
+  // 11:00–12:00 PM Content rotation (see day notes)
+  // 12:00–12:30 PM Lunch
+  // 12:30–1:30 PM  ServaSquad — lead delivery + backlinks
+  // 1:30–2:30 PM   ApexWire
+  // 2:30–3:30 PM   Laughder
+  // 3:30–4:30 PM   SEO (shared — covers all content sites)
+  // 4:30–5:00 PM   RE Agent — SOI contacts
+  // After market   Trading — journal + review
+  // ─────────────────────────────────────────────────────
+
   'cl-sq': {
     name:'ServaSquad', icon:'🔗', color:'var(--bridge)', dim:'var(--bridge-d)',
-    eyebrow:'Contractor Lead Generation · Oregon',
-    sub:'20 calls/day · 1 blog post/day · lead delivery within 15 min · 5 backlink emails/day',
+    eyebrow:'Inbound Lead Gen · Content + SEO drives homeowner inquiries · Per-lead sales',
+    sub:'No cold calls. Content ranks → homeowners find you → they fill the form → you sell the lead to a contractor.',
+    platforms:[
+      {logo:'🔵',name:'Facebook Groups',priority:'primary',format:'Blog post links · Text posts',tip:'Join local homeowner groups in each city. Share posts when someone asks a relevant question. Drives direct leads.'},
+      {logo:'📌',name:'Pinterest',priority:'secondary',format:'Vertical infographics · How-to graphics',tip:'"5 Signs You Need a Panel Upgrade" style graphics get repinned for years and drive passive search traffic.'},
+      {logo:'🗺',name:'Google Business Profile',priority:'primary',format:'Posts · Reviews · Photos',tip:'Higher leverage than any social platform. Verified GBP with reviews appears in the local pack above all organic results.'},
+      {logo:'❌',name:'Twitter / Instagram / TikTok',priority:'optional',format:'Not recommended',tip:'Homeowners do not use these to find contractors. Time spent here is time not spent on content or SEO.'},
+    ],
     phases:[
-      {label:'Month 1–2',title:'Foundation — Sign 10 Contractors',desc:'Calls are sacred. 20/day Mon–Fri, no exceptions. Content is second. The calls make the money.',targets:['5 contractors by end M1','10 contractors = $5K MRR by end M2','20+ blog posts published','All 35 landing pages live','Google Search Console set up']},
-      {label:'Month 3',title:'Scale — 15 Contractors + First Content Revenue',desc:'Calls down to 10/day. SEO starting to work. Apply for AdSense. First sponsorship pitches to Oregon home service brands.',targets:['15 contractors = $7,500 MRR','AdSense applied and live','First sponsorship pitch sent','60+ blog posts published','Page-2 rankings improving']},
-      {label:'Month 4–6',title:'Compound — $10K MRR + Organic Leads',desc:'System runs itself. Organic leads coming in from SEO. Optimize what\'s ranking. Add new cities.',targets:['20 contractors = $10K MRR','Organic leads reducing call dependency','New city expansion','Mediavine if 50K sessions','Brand deal on content side']},
+      {label:'Month 1–3',title:'Content + SEO — Get Homeowners Finding You',desc:'Zero contractor outreach. 100% focus on publishing content and getting ranked. Every blog post is a permanent asset that sends homeowner leads on autopilot. The goal is form submissions — not contractor relationships.',targets:['3 blog posts per week published','All 35 landing pages indexed by Google','Search Console showing impressions','First homeowner form submissions coming in']},
+      {label:'Month 2–3',title:'First Lead Sales — Approach Contractors With Real Leads',desc:'When homeowner leads start coming in, approach contractors organically with a real lead in hand. The conversation is simple: "I have a homeowner in Portland needing a panel upgrade, budget $2,000–3,000, ready to hire this week. Want their contact info for $50?" That is a yes or no in 10 seconds.',targets:['First lead sold per service category','2–3 reliable contractors per city identified','Lead intake form capturing timeline + budget','Per-lead pricing established by service type']},
+      {label:'Month 3–6',title:'Volume + Retainer Conversion',desc:'Once you are consistently sending leads to the same contractors, convert them to monthly retainers. "I sent you 8 leads last month. Pay me $400/month for priority routing instead of per-lead." This is your MRR path once lead volume is proven.',targets:['$2,000–5,000/mo from lead sales','3–5 contractors on monthly retainers','Organic leads growing month over month','Content SEO compounding — posts ranking on page 1']},
     ],
     days:{
       Monday:[
-        {site:'Contractor Calls',time:'9:00–11:00 AM',color:'bridge',items:[
-          {text:'Plan call list for the week — sort by city and trade',note:'Roofing Eugene, Plumbing Portland, HVAC Salem, etc.'},
-          {text:'Make 20 contractor calls — phone only, no email',note:'Script: "We\'re bringing on one contractor per trade per city."',subs:['Log every outcome: answered / voicemail / interested / signed','Follow up anyone interested from last 3 days','Schedule callbacks for anyone who asks']},
-          {text:'Onboard any contractor who signed today — deliver first lead within 15 min',note:'Text format: "[Name], [phone], needs [service] in [city]. Budget: [X]."'},
+        {site:'Content Creation',time:'9:00–11:00 AM',color:'bridge',items:[
+          {text:'Plan content for the week — pick 3 service + city combos',note:'Mon/Wed/Fri = ServaSquad blog posts. Use the Topic Generation Prompt to pick topics.',subs:['Check Search Console — which keywords are you close to ranking for?','Pick topics that match those near-ranking queries','Write titles first — under 60 chars — before writing the post']},
+          {text:'Write and publish Monday blog post',note:'"How much does [service] cost in [city], OR?" — 800 words, cost table, local permit office, CTA to /{city}-{service}/.'},
         ]},
-        {site:'Content',time:'11:00 AM–12:00 PM',color:'invest',items:[
-          {text:'Write and publish: "How much does [service] cost in [city], OR?"',note:'800 words. Real pricing. H1 = exact keyword.',subs:['Share in r/Eugene, r/Portland, or r/Oregon if relevant','Share in local Facebook homeowner groups']},
-        ]},
-        {site:'SEO + Backlinks',time:'3:30–4:30 PM',color:'invest',items:[
-          {text:'Check Google Search Console — which pages got impressions this week?',note:'Flag any page with zero impressions after 2+ weeks. Fix their title tags.'},
+        {site:'SEO + Backlinks',time:'11:00 AM–12:00 PM',color:'invest',items:[
           {text:'Send 5 backlink outreach emails',note:'Oregon local news, HOA pages, RE agent blogs. One-line ask.',subs:['Log every email: date, site, URL targeted','Target: 1–2 replies per 20 emails = real backlinks']},
           {text:'Submit any new pages to Search Console → Request Indexing'},
+          {text:'Share blog post in relevant city Facebook homeowner group',note:'r/Eugene, r/Portland, r/Salem, r/Bend, r/medford if appropriate too.'},
+        ]},
+        {site:'Lead Management',time:'12:30–1:00 PM',color:'bridge',items:[
+          {text:'Check contact form — any new homeowner inquiries overnight?'},
+          {text:'For any new leads: identify the right contractor to contact',note:'Search Google Maps for top-rated contractors in that city + trade. Look at page 2–3 — not page 1 (they already have leads).'},
+          {text:'Contact contractor with lead in hand',note:'Call or email: "I have a homeowner in [city] needing [service], budget [X], timeline [Y]. Want their contact info for $[price]?"'},
         ]},
       ],
       Tuesday:[
-        {site:'Contractor Calls',time:'9:00–11:00 AM',color:'bridge',items:[
-          {text:'Make 20 contractor calls — continue from Monday\'s list'},
-          {text:'Follow up everyone interested but who didn\'t commit Monday',note:'Urgency: "I have a homeowner inquiry — before I route it elsewhere…"'},
-          {text:'Deliver any overnight leads within 15 min'},
+        {site:'Content Creation',time:'9:00–10:00 AM',color:'bridge',items:[
+          {text:'No ServaSquad blog post today — Tuesday is ApexWire content slot',note:'This block goes to ApexWire 11 AM–12 PM. Use this hour for SEO work.'},
+          {text:'Search Console audit — check all ServaSquad pages',note:'Which pages have impressions but no clicks? Fix the title tags. Which have clicks? Add more internal links to boost them further.'},
         ]},
-        {site:'Content',time:'11:00 AM–12:00 PM',color:'invest',items:[
-          {text:'Write and publish: "[Service] permit requirements in [city], OR"',note:'700 words. Reference the actual permit office name and URL.',subs:['Include real CCB verification steps','Link to matching service-city landing page at bottom']},
+        {site:'SEO + Backlinks',time:'11:00 AM–12:00 PM',color:'invest',items:[
+          {text:'Internal linking pass — every new post needs 2 landing page links + 2 post links'},
+          {text:'Send 5 backlink emails'},
+          {text:'Pinterest: create one infographic-style graphic for a top post',note:'Canva works fine. Vertical format. "5 Signs You Need a Panel Upgrade in Oregon." Pin it.'},
         ]},
-        {site:'SEO + Backlinks',time:'3:30–4:30 PM',color:'invest',items:[
-          {text:'Find 10 new potential link partners across your sites'},
-          {text:'Send 5 backlink outreach emails — log date, site, URL'},
-          {text:'Add internal links to yesterday\'s posts',note:'Each post: 2 links to landing pages + 2 links to other posts.'},
+        {site:'Lead Management',time:'12:30–1:00 PM',color:'bridge',items:[
+          {text:'Check form submissions — any new leads?'},
+          {text:'Follow up on any leads sent to contractors yesterday — did they respond?',note:'If contractor ghosted: move on to next contractor on your list. Never chase.'},
+          {text:'Update your lead tracking sheet: date received, service, city, contractor contacted, sold Y/N, price'},
         ]},
       ],
       Wednesday:[
-        {site:'Contractor Calls',time:'9:00–11:00 AM',color:'bridge',items:[
-          {text:'Make 20 contractor calls — focus on markets not yet penetrated'},
-          {text:'Call every interested contractor who hasn\'t signed yet',note:'If "interested" for 5+ days without signing, this call decides it.'},
-          {text:'Send written proposal to anyone who asked for details',note:'One paragraph: model, price ($400–600/mo or $30–50/lead), CTA.'},
+        {site:'Content Creation',time:'9:00–11:00 AM',color:'bridge',items:[
+          {text:'Write and publish Wednesday blog post',note:'"How to find a licensed [trade] in [city]" — 700 words. CCB steps + what to ask before hiring.'},
+          {text:'Share in relevant Facebook homeowner group'},
         ]},
-        {site:'Content',time:'11:00 AM–12:00 PM',color:'invest',items:[
-          {text:'Write and publish: "How to find a licensed [trade] in [city]"',note:'700 words. CCB steps + what to ask before hiring.'},
+        {site:'SEO + Backlinks',time:'11:00 AM–12:00 PM',color:'invest',items:[
+          {text:'Competitor content gap — search your target keywords, look at page-one results',note:'What pages do they have that you don\'t? Add those topics to your content calendar.'},
+          {text:'Send 5 backlink emails'},
+          {text:'Fix any page-2 rankings — add 200 words, improve title, add internal links'},
         ]},
-        {site:'SEO + Competitor Research',time:'3:30–4:30 PM',color:'invest',items:[
-          {text:'Search target keywords — look at page-one results',note:'What do they have that you don\'t? Add to content calendar.'},
-          {text:'Fix any page titles with impressions but zero clicks',note:'Rewrite the title tag to be more compelling.'},
-          {text:'Send 5 backlink outreach emails'},
+        {site:'Lead Management',time:'12:30–1:00 PM',color:'bridge',items:[
+          {text:'Check form submissions'},
+          {text:'Research contractors for any new lead cities or trades you haven\'t covered yet',note:'Build a short list of 3–5 contractors per trade per city in a spreadsheet so you\'re ready when leads come in.'},
         ]},
       ],
       Thursday:[
-        {site:'Contractor Calls',time:'9:00–11:00 AM',color:'bridge',items:[
-          {text:'Make 20 calls — Thursday is highest-converting follow-up day',note:'People who\'ve had 3 days to think are ready to decide.'},
-          {text:'Deliver all pending leads — check nothing is sitting unsent'},
-          {text:'Add 20 new contractors to CRM — Thumbtack and Craigslist',note:'Never run out of numbers to call.'},
+        {site:'Content Creation',time:'9:00–10:00 AM',color:'bridge',items:[
+          {text:'No ServaSquad post today — Thursday is ApexWire content slot',note:'Use this hour for lead management and pricing research.'},
+          {text:'Research lead pricing for each service type',note:'Check what Angi, Thumbtack, HomeAdvisor charge contractors per lead in your markets. Price competitively.'},
         ]},
-        {site:'Content',time:'11:00 AM–12:00 PM',color:'invest',items:[
-          {text:'Write and publish: "[Service] vs alternative — Oregon guide"',note:'Example: "Repair vs Replace Furnace — Salem Oregon." 800 words.'},
+        {site:'SEO + Backlinks',time:'11:00 AM–12:00 PM',color:'invest',items:[
+          {text:'Internal linking pass — all 35 landing pages should link to at least 3 blog posts'},
+          {text:'Send 5 backlink emails'},
+          {text:'Google Business Profile update — add a post, photo, or update this week'},
         ]},
-        {site:'SEO — Internal Linking',time:'3:30–4:30 PM',color:'invest',items:[
-          {text:'Internal linking pass — every new post needs 2 landing page links + 2 post links'},
-          {text:'Send 5 backlink outreach emails'},
-          {text:'Check affiliate click data if any programs are live'},
+        {site:'Lead Management',time:'12:30–1:00 PM',color:'bridge',items:[
+          {text:'Check form submissions'},
+          {text:'Review lead form — is it capturing enough info?',note:'Must capture: service type, city, project description, timeline, rough budget. If not capturing all 5, update the form.'},
+          {text:'Follow up on any open contractor negotiations'},
         ]},
       ],
       Friday:[
-        {site:'Contractor Calls',time:'9:00–11:00 AM',color:'bridge',items:[
-          {text:'Final calls of the week — 15 minimum',note:'Someone not ready Monday may be ready now.'},
-          {text:'Review CRM — calls made, interested, signed',note:'Below 1 signed per 40 calls = rewrite your opening line.'},
-          {text:'Confirm all contractors received leads this week'},
+        {site:'Content Creation',time:'9:00–11:00 AM',color:'bridge',items:[
+          {text:'Write and publish Friday blog post',note:'"Best time of year for [service] in [city]" — 600 words. Seasonal angle. Links to landing page.'},
+          {text:'Plan next week\'s 3 topics right now',note:'Mon/Wed/Fri topics picked and written in your content calendar. Never start Monday without knowing what you\'re writing.'},
         ]},
-        {site:'Content',time:'11:00 AM–12:00 PM',color:'invest',items:[
-          {text:'Write and publish: "Best time of year for [service] in [city]"',note:'600 words. Seasonal angle. Links to landing page.'},
-          {text:'Plan next week\'s 5 blog post topics now',note:'Never start Monday without knowing what you\'re writing.'},
-        ]},
-        {site:'Weekly Review',time:'3:30–4:30 PM',color:'invest',items:[
-          {text:'Log weekly metrics: Sessions | Leads | MRR | Contractors | Signed',subs:['ServaSquad leads delivered this week','Current contractor count and MRR','Search Console top pages this week']},
-          {text:'Identify biggest SEO opportunity for next week',note:'Page on position 11–20 = improvement target.'},
+        {site:'Weekly Review',time:'11:00 AM–12:00 PM',color:'invest',items:[
+          {text:'Log weekly metrics',subs:['Blog posts published this week','Total form submissions received','Leads sold and revenue generated','Search Console sessions vs last week','Backlinks sent this week (target: 25)']},
+          {text:'Search Console: identify top 3 opportunities for next week',note:'Pages on position 11–20 = fastest wins. Improve those first.'},
           {text:'Send 5 backlink emails — never skip even on review day'},
+        ]},
+        {site:'Lead Management',time:'12:30–1:00 PM',color:'bridge',items:[
+          {text:'Check form submissions — close out the week'},
+          {text:'Any contractors who bought leads this week — follow up',note:'"How was the lead quality? I have more coming next week."'},
+          {text:'Any contractor who bought 3+ leads this week — pitch monthly retainer',note:'"You\'ve bought 3 leads from me this week at $50 each. I can give you first refusal on all [city] + [service] leads for $400/month. Want to lock that in?"'},
         ]},
       ],
     },
+    guidelines:[
+      {title:'The Model — How ServaSquad Actually Makes Money',body:'Homeowner fills form → you have a real lead → you contact a contractor with that lead in hand → contractor pays per lead. No monthly subscriptions upfront. No cold calling before you have leads. You only need contractors when you have something to sell them.'},
+      {title:'Lead Pricing by Service',body:'Roofing: $80–150/lead (jobs average $10–20K, highest margin). Electrical/Plumbing/HVAC: $40–80/lead (jobs average $500–5,000). Handyman/Garage Door: $20–40/lead (smaller ticket). Once you consistently send 8+ leads/month to the same contractor, pitch a monthly retainer at a slight discount — they get reliability, you get MRR.'},
+      {title:'What Your Lead Form Must Capture',body:'Service type · City and zip · Project description (brief) · Timeline: emergency / within a week / within a month / just researching · Rough budget if they know it. A lead with budget and timeline is worth 2x a vague inquiry. Update your form if it is not capturing all five fields.'},
+      {title:'Content Cadence',body:'3 blog posts per week — Monday, Wednesday, Friday during your 9–11 AM block. Each post targets one service + one city keyword. 12 posts per month. At this pace your content library becomes a significant SEO asset within 6 months and generates consistent homeowner inquiries on autopilot.'},
+      {title:'Topic Generation Prompt',body:'Run this once per week to fill your content calendar.',
+       prompt:'I run ServaSquad.com, an Oregon contractor matching service. Homeowners fill out a form and I connect them with CCB-licensed contractors in Eugene, Medford, Portland, Salem, and Bend. My 7 services: Electrical, Plumbing, HVAC, Roofing, Siding, Handyman, Garage Door Repair.\n\nGive me 3 blog post ideas for next week — one for Monday, one for Wednesday, one for Friday. For each:\n1. Post title (under 60 characters)\n2. Target keyword\n3. City it targets\n4. One sentence on what makes it locally relevant\n\nFocus on questions Oregon homeowners search before hiring a contractor.'},
+      {title:'Post Writing Prompt',body:'Run this daily during your content hour. Fill in the brackets.',
+       prompt:'Write an 800-word blog post for ServaSquad.com targeting "[keyword]".\n\nServaSquad connects Oregon homeowners with CCB-licensed contractors for free — homeowners fill out a form and we match them with the right local pro.\n\nRequirements:\n- H1 = exact keyword\n- Cost table with realistic Oregon pricing ranges\n- Name the specific permit office for [city] with its URL\n- One locally specific fact about [city]\'s housing stock or climate\n- Transition words throughout (however, furthermore, because, consequently)\n- CTA at top and bottom linking to https://servasquad.com/[city]-[service]/\n- Meta title under 60 characters\n- Meta description under 160 characters\n- Tone: informative and direct, written for a homeowner about to hire someone'},
+    ],
   },
 
   'cl-ap': {
     name:'ApexWire', icon:'⚡', color:'var(--bridge)', dim:'var(--bridge-d)',
-    eyebrow:'Motorsports Media · F1 · NASCAR · IndyCar · IMSA',
-    sub:'1 post/day · 3 tweets/day · race weekend content is your biggest traffic spike',
+    eyebrow:'Motorsports Media · 1:30–2:30 PM daily · Tue/Thu blog posts',
+    sub:'One focused hour per day 1:30–2:30 PM. Blog posts on Tue + Thu. Race weekend Monday recaps are your biggest traffic moment.',
     phases:[
-      {label:'Month 1–2',title:'Foundation — 50 Pages + Twitter',desc:'Volume first. Race recaps, standings updates, driver profiles, track guides. Post on race weekends within 30 min of the checkered flag.',targets:['20 pages published by end M1','50 pages by end M2','500+ Twitter followers','Google indexed and crawling']},
-      {label:'Month 3',title:'Monetization — AdSense + Affiliates',desc:'Apply for AdSense once you have 60+ posts. Add affiliate links for F1 TV, sim racing gear, motorsports merchandise. First sponsorship pitches.',targets:['AdSense approved and live','2–3 affiliate programs active','$300–800/mo ad revenue','1,000+ Twitter followers']},
-      {label:'Month 4–6',title:'Compound — Sponsorships + Mediavine',desc:'Race weekend traffic spikes are your biggest asset. One viral recap = thousands of new readers. Apply to Mediavine at 50K monthly sessions.',targets:['Mediavine at 50K sessions','First sponsorship $300–500/mo','5,000+ Twitter followers','$1,000–1,500/mo revenue']},
+      {label:'Month 1–2',title:'Foundation — 50 Pages + Twitter',desc:'One hour per day builds this. Race recaps on Mondays, previews on Thursdays, everything else Tuesday 1:30–2:30 PM. Consistency over intensity.',targets:['20 pages published by end Month 1','50 pages by end Month 2','500+ Twitter followers','Google indexed and crawling']},
+      {label:'Month 3',title:'Monetization — AdSense + Affiliates',desc:'Apply for AdSense once you hit 60+ posts and 3 months of age. Affiliate links added during the 1:30–2:30 PM block.',targets:['AdSense approved and live','2–3 affiliate programs active','$300–800/mo ad revenue','1,000+ Twitter followers']},
+      {label:'Month 4–6',title:'Compound — Sponsorships + Mediavine',desc:'Race weekend traffic spikes are your biggest asset. Apply to Mediavine at 50K monthly sessions. Sponsorship pitches happen in the SEO block.',targets:['Mediavine at 50K sessions','First sponsorship $300–500/mo','5,000+ Twitter followers','$1,000–1,500/mo revenue']},
     ],
     days:{
       Monday:[
-        {site:'Race Calendar Update',time:'First thing',color:'bridge',items:[
-          {text:'Post upcoming week\'s race schedule (F1 / IndyCar / NASCAR / IMSA)',note:'Do this every Monday — it\'s your anchor weekly content piece.'},
-        ]},
-        {site:'Content Creation',time:'1:30–2:30 PM',color:'bridge',items:[
-          {text:'Monday after race weekend — publish full race recap within first hour of work',note:'600–800 words. Updated standings table. Post in relevant subreddit.',subs:['r/formula1, r/NASCAR, or r/IndyCar — link to your recap','3 tweets: key stat, driver quote, standings update']},
-          {text:'Non-race Monday — write driver profile or season analysis',note:'1,200+ words. Quality over speed in off weeks.'},
-        ]},
-        {site:'Social + Community',time:'2:30–3:00 PM',color:'bridge',items:[
-          {text:'Post 3 tweets: one fact, one take, one link to latest content'},
-          {text:'Engage with 10 motorsports conversations on Twitter/X',note:'Genuine replies only. Build account rep before dropping links.'},
-          {text:'Check Search Console — any new clicks on ApexWire?'},
+        {site:'ApexWire',time:'1:30–2:30 PM',color:'bridge',items:[
+          {text:'Post upcoming week\'s race calendar (F1 / IndyCar / NASCAR)',note:'Every Monday — this is your anchor weekly content piece.'},
+          {text:'Monday after race weekend — publish full race recap',note:'600–800 words. Updated standings. Post in relevant subreddit.',subs:['r/formula1, r/NASCAR, or r/IndyCar — link your recap','3 tweets: key stat, driver quote, standings update']},
+          {text:'Non-race Monday — write driver profile or season analysis',note:'Quality piece. 1,200+ words. This is your best non-race content.'},
+          {text:'Engage with 10 motorsports conversations on Twitter/X',note:'Genuine replies only — build account reputation before dropping links.'},
         ]},
       ],
       Tuesday:[
-        {site:'Content',time:'1:30–2:30 PM',color:'bridge',items:[
-          {text:'Write standings update or team analysis piece'},
-          {text:'If race happened — write reaction/analysis piece'},
+        {site:'Blog Post (Tue = ApexWire)',time:'11:00 AM–12:00 PM',color:'bridge',items:[
+          {text:'Write and publish ApexWire article — standings update or team analysis',note:'Tuesday is your ApexWire content slot in the shared rotation.'},
         ]},
-        {site:'Social + Monetization',time:'2:30–3:00 PM',color:'bridge',items:[
+        {site:'ApexWire',time:'1:30–2:30 PM',color:'bridge',items:[
           {text:'3 tweets + reply to 10 motorsports conversations'},
-          {text:'Add affiliate links to top-traffic pages where naturally relevant'},
-          {text:'Write 2 sponsorship pitch emails to motorsports brands'},
+          {text:'Check which ApexWire pages are getting organic clicks in Search Console'},
+          {text:'Add affiliate links to top-traffic pages where naturally relevant',note:'F1 TV, sim racing gear — only where it fits the content.'},
         ]},
       ],
       Wednesday:[
-        {site:'Content',time:'1:30–2:30 PM',color:'bridge',items:[
-          {text:'Write mid-week piece: "on this day in motorsport", driver stats, or track guide'},
-          {text:'Write best-of list targeting a specific motorsports search query'},
-        ]},
-        {site:'Social + SEO',time:'2:30–3:00 PM',color:'bridge',items:[
+        {site:'ApexWire',time:'1:30–2:30 PM',color:'bridge',items:[
+          {text:'Write mid-week piece: "on this day in motorsport", driver stats, or track guide',note:'Shorter is fine — 600 words. Consistency matters more than length today.'},
           {text:'3 tweets + 10 replies'},
-          {text:'Search Console: find page-2 rankings — improve one of them today'},
-          {text:'Reach out to 2 large motorsports Twitter accounts — build relationships'},
+          {text:'Reach out to 2 large motorsports Twitter accounts — genuine engagement, no pitch'},
         ]},
       ],
       Thursday:[
-        {site:'Race Preview',time:'1:30–2:30 PM',color:'bridge',items:[
-          {text:'Publish race preview if a race is this weekend',note:'Thursday publish captures Friday search spike.',subs:['Circuit preview and key corners','Key battles and storylines','Predicted podium','Tire strategy notes']},
-          {text:'No race — write historical or analytical piece'},
+        {site:'Blog Post (Thu = ApexWire)',time:'11:00 AM–12:00 PM',color:'bridge',items:[
+          {text:'Write and publish race preview if race is this weekend',note:'Thursday publish captures the Friday search traffic spike.',subs:['Circuit preview and key corners','Key battles and storylines to watch','Predicted podium','Tire strategy notes']},
+          {text:'No race this weekend — write a historical or analytical piece'},
         ]},
-        {site:'Social',time:'2:30–3:00 PM',color:'bridge',items:[
+        {site:'ApexWire',time:'1:30–2:30 PM',color:'bridge',items:[
           {text:'3 tweets — hype upcoming race if applicable'},
           {text:'Internal linking pass on ApexWire pages'},
           {text:'Check Twitter follower growth week over week'},
         ]},
       ],
       Friday:[
-        {site:'Timely Content',time:'1:30–2:30 PM',color:'bridge',items:[
-          {text:'Publish qualifying preview or practice recap',note:'Friday publish = captured over the weekend when fans search.'},
-          {text:'Review ApexWire traffic this week vs last week'},
-        ]},
-        {site:'Social + Analytics',time:'2:30–3:00 PM',color:'bridge',items:[
-          {text:'3 tweets + race weekend hype'},
+        {site:'ApexWire',time:'1:30–2:30 PM',color:'bridge',items:[
+          {text:'Write qualifying preview or practice recap if race weekend',note:'Friday publish = captured over the weekend when fans are searching.'},
+          {text:'3 tweets + race weekend hype if applicable'},
           {text:'Log weekly metrics: sessions, top page, Twitter followers'},
-          {text:'Plan next week\'s content calendar — write it now'},
         ]},
       ],
     },
+    platforms:[
+      {logo:'🐦',name:'Twitter / X',priority:'primary',format:'Short takes · Stats · Race reactions',tip:'Post during and after every race. Results, takes, stats. This is where the entire motorsports fan base lives in real time.'},
+      {logo:'👽',name:'Reddit',priority:'primary',format:'Long-form posts · Article links',tip:'r/formula1 (5M), r/NASCAR (500K), r/IndyCar (100K). One upvoted race recap sends 3,000–5,000 visitors in a day.'},
+      {logo:'▶️',name:'YouTube',priority:'optional',format:'Race analysis · Season reviews · Tier lists',tip:'Long-term play. F1 video performs extremely well. Only add when text content generates consistent revenue.'},
+      {logo:'📷',name:'Instagram / TikTok',priority:'optional',format:'Clips · Graphics',tip:'Lower priority. Motorsports audience is on Twitter and Reddit — not Instagram. Only if you want to do video production.'},
+    ],
+    guidelines:[
+      {title:'Content Cadence',body:'2 blog posts per week — Tuesday and Thursday during your 11 AM–12 PM slot. Plus race recaps on Monday mornings after every race weekend. F1 runs 24 races per year, NASCAR 36, IndyCar ~17. Race weekend Mondays are your highest-traffic opportunity — never miss one.'},
+      {title:'Post Types by Priority',body:'1. Race recaps (Monday after race weekend) — highest traffic, most shareable. 2. Race previews (Thursday before race weekend) — captures Friday search spike. 3. Standings updates (Tuesday) — evergreen search traffic. 4. Driver and team profiles — permanent reference pages that rank for years. 5. Track guides — "Circuit of the Americas guide F1" type searches that recur every year.'},
+      {title:'Topic Generation Prompt',body:'Use this once per week to plan your ApexWire content calendar.',
+       prompt:'I run ApexWire.com, a motorsports news and analysis site covering F1, IndyCar, and NASCAR.\n\nGive me 5 blog post ideas for next week. For each give me:\n1. Post title (under 60 characters, include the series name)\n2. Target keyword\n3. Why this is timely or searchable right now\n4. Ideal publishing day (Monday for recaps, Thursday for previews, Tuesday for evergreen)\n\nFocus on content that either (a) captures race weekend search traffic or (b) ranks permanently as a reference page.'},
+      {title:'Post Writing Prompt',body:'Use this for each ApexWire post. Fill in the brackets.',
+       prompt:'Write an 800-word blog post for ApexWire.com targeting the keyword "[keyword]".\n\nApexWire covers F1, IndyCar, and NASCAR with analysis and results for passionate motorsports fans.\n\nPost requirements:\n- H1 = exact keyword\n- Include real current standings or race results data\n- Include at least one specific technical or strategic insight — not just a summary\n- Use motorsports terminology correctly — fans will notice if it is wrong\n- End with a link to related content on ApexWire\n- Tone: knowledgeable fan talking to other knowledgeable fans, not a press release\n- Meta title under 60 characters\n- Meta description under 160 characters'},
+      {title:'Social Strategy',body:'Twitter/X is your primary distribution channel. Post 3 times per day: (1) A stat or fact — "Hamilton has now led more laps than any driver in F1 history." These get retweeted by big accounts. (2) An opinion or take — "The 2026 regulations will close the gap more than any rule change since 2014." These generate replies and engagement. (3) A link to your latest post. Post race results on Twitter within 30 minutes of the checkered flag — that window is when fans are most active and searching.'},
+      {title:'Reddit Strategy',body:'Engage genuinely in r/formula1 (5M members), r/NASCAR (500K), r/IndyCar daily. Comment on race discussions with actual analysis — not links. When you publish a race recap or preview, share it once with a genuine intro. One upvoted post in r/formula1 can send 3,000–5,000 visitors in a single day.'},
+      {title:'Weekly Goals',body:'2 blog posts published (Tue + Thu) · Race recap published Monday after every race weekend · 15 tweets posted (3/day × 5 days) · 50 genuine Reddit or Twitter replies · Sessions growing week over week in Search Console'},
+    ],
   },
 
   'cl-la': {
     name:'Laughder', icon:'😂', color:'var(--laugher)', dim:'var(--laugher-d)',
-    eyebrow:'Comedy Brand · Pure Comedy · No RE Crossover Ever',
-    sub:'Database pages rank forever · 3 tweets/day · engage comedy communities daily',
+    eyebrow:'Comedy Brand · 2:30–3:30 PM daily · pure comedy only',
+    sub:'One focused hour per day 2:30–3:30 PM. Database pages rank forever. 3 tweets daily. No RE crossover ever.',
     phases:[
-      {label:'Month 1–2',title:'Foundation — 50 Database Pages + Twitter',desc:'Database pages first. They rank permanently. News content spikes then dies. Build the reference library — one comedian, one special, one platform at a time.',targets:['20 database pages by end M1','50 pages by end M2','300+ Twitter followers','AdSense application submitted']},
-      {label:'Month 3',title:'Monetization — AdSense + Brand Deals',desc:'Comedy content has strong ad rates. Apply for AdSense. Reach out to comedy streaming platforms, ticketing companies, and podcast networks for brand deals.',targets:['AdSense approved and live','1 brand deal $300–500/mo','1,000+ Twitter followers','$300–700/mo combined revenue']},
-      {label:'Month 4–6',title:'Compound — Multi-Revenue',desc:'Comedy is extremely shareable. One post viral in r/standupcomedy = 5,000 visitors in a day. Focus on content that travels. Mediavine at 50K sessions.',targets:['Mediavine at 50K sessions','Multiple brand deals active','Affiliate revenue from comedy tickets/streaming','$800–1,200/mo revenue']},
+      {label:'Month 1–2',title:'Foundation — 50 Database Pages',desc:'Database pages first — they rank permanently. One hour per day at 2:30 PM builds the reference library one page at a time.',targets:['20 database pages by end Month 1','50 pages by end Month 2','300+ Twitter followers','AdSense application submitted']},
+      {label:'Month 3',title:'Monetization — AdSense + Brand Deals',desc:'Apply for AdSense. Comedy has strong ad rates. Brand deal pitches happen during this 2:30–3:30 PM block.',targets:['AdSense approved','1 brand deal $300–500/mo','1,000+ Twitter followers','$300–700/mo combined revenue']},
+      {label:'Month 4–6',title:'Compound — Multi-Revenue',desc:'One viral post in r/standupcomedy = 5,000 visitors. Focus on content that travels. Mediavine at 50K sessions.',targets:['Mediavine at 50K sessions','Multiple brand deals','Affiliate revenue from comedy tickets/streaming','$800–1,200/mo revenue']},
     ],
     days:{
       Monday:[
-        {site:'Database Page',time:'2:30–3:30 PM',color:'laugher',items:[
-          {text:'Write and publish one comedian profile or complete special list',note:'Mon = database page. These rank permanently and compound.',subs:['H1 = exact search query e.g. "Netflix Comedy Specials 2026 — Complete List"','Real descriptions per item — no filler','Link to 2 other Laughder pages at bottom']},
-          {text:'3 tweets: comedy clip embed, comedian birthday, or opinion poll',note:'"Better Netflix special: [X] or [Y]?" — drives replies and shares.'},
-          {text:'Engage in r/standupcomedy or r/comedy — genuine only, no spam'},
+        {site:'Laughder',time:'2:30–3:30 PM',color:'laugher',items:[
+          {text:'Write and publish one comedian profile or complete special list',note:'Mon = database page. These rank permanently and compound over time.',subs:['H1 = exact search query — "Netflix Comedy Specials 2026 Complete List"','Real descriptions per item — no filler padding','Link to 2 other Laughder pages at bottom']},
+          {text:'3 tweets: comedy clip embed, comedian birthday, or opinion poll',note:'"Better Netflix special: [X] or [Y]?" drives replies and shares.'},
+          {text:'Engage in r/standupcomedy — genuine contributions only, no link drops'},
         ]},
       ],
       Tuesday:[
-        {site:'News Content',time:'2:30–3:30 PM',color:'laugher',items:[
-          {text:'Write and publish one trending comedy news piece',note:'Tue = news. New special, comedian tour, award news.',subs:['Must be something people are actually searching today','Include embedded YouTube clip where available']},
+        {site:'Laughder',time:'2:30–3:30 PM',color:'laugher',items:[
+          {text:'Write and publish one trending comedy news piece',note:'Tue = news. New special announced, comedian tour, comedy award.',subs:['Must be something people are actually searching today','Embed a YouTube clip where available']},
           {text:'3 tweets — one must be a question to drive replies'},
           {text:'Check Search Console for Laughder — any impressions yet?'},
         ]},
       ],
       Wednesday:[
-        {site:'Database Page',time:'2:30–3:30 PM',color:'laugher',items:[
-          {text:'Write and publish one database page',note:'Wed = database page. Keep building the reference library.',subs:['"Every [Comedian] Special Ranked and Reviewed"','"Best Comedy on [Platform] — Complete List"','"Comedy Movies Like [Film]" — ranks permanently']},
+        {site:'Laughder',time:'2:30–3:30 PM',color:'laugher',items:[
+          {text:'Write and publish one database page',note:'Wed = database page. Keep building the reference library.',subs:['"Every [Comedian] Special Ranked" — permanent traffic','"Best Comedy on [Platform]" — ranks and stays ranked','"Comedy Movies Like [Film]" — evergreen search intent']},
           {text:'Reach out to 2 comedy Twitter accounts — genuine engagement first'},
           {text:'3 tweets'},
         ]},
       ],
       Thursday:[
-        {site:'Best-Of List',time:'2:30–3:30 PM',color:'laugher',items:[
-          {text:'Write and publish a best-of list targeting a specific search query',note:'Thu = best-of. "Best dark comedy specials on streaming 2026."',subs:['Target query with real search volume','At least 8–10 items with genuine descriptions — no padding']},
+        {site:'Laughder',time:'2:30–3:30 PM',color:'laugher',items:[
+          {text:'Write and publish a best-of list targeting a specific search query',note:'Thu = best-of. "Best dark comedy specials on streaming 2026."',subs:['Target a query with real search volume','8–10 items minimum with genuine descriptions — no padding']},
           {text:'3 tweets — ask followers to vote or rank something'},
           {text:'Internal linking pass on Laughder pages'},
         ]},
       ],
       Friday:[
-        {site:'Database Page + Review',time:'2:30–3:30 PM',color:'laugher',items:[
+        {site:'Laughder',time:'2:30–3:30 PM',color:'laugher',items:[
           {text:'Write and publish one database page',note:'Fri = database page. Never stop building the reference library.'},
-          {text:'Check Laughder traffic this week vs last week'},
           {text:'3 tweets'},
           {text:'Log weekly metrics: sessions, top page, Twitter followers, revenue'},
         ]},
       ],
     },
+    platforms:[
+      {logo:'👽',name:'Reddit',priority:'primary',format:'Genuine comments · Article links',tip:'r/standupcomedy (2M members). Comment genuinely on recommendation threads. One upvoted post sends 500–1,000 visitors overnight.'},
+      {logo:'🐦',name:'Twitter / X',priority:'primary',format:'Hot takes · Polls · Opinions',tip:'"Chappelle\'s best special is Killin Them Softly" gets 50 replies. Build account with takes first, share links once you have followers.'},
+      {logo:'📌',name:'Pinterest',priority:'secondary',format:'"Best comedy to watch" style graphics',tip:'People saving "what to watch" lists on Pinterest drive consistent passive traffic to your database pages.'},
+      {logo:'📱',name:'TikTok / Instagram Reels',priority:'optional',format:'Comedy clips · Commentary',tip:'High upside but high effort and copyright risk with clips. Original on-camera content is safe but requires production time.'},
+    ],
+    guidelines:[
+      {title:'Content Cadence',body:'1 database page per day during your 2:30–3:30 PM slot. That is 5 pages per week, 20 per month, 240 per year. Database pages — comedian profiles, complete special lists, best-of rankings — rank permanently and compound. News posts get a spike then fade. Build the database first.'},
+      {title:'Post Types by Priority',body:'1. Comedian profiles ("Every Dave Chappelle Special Ranked") — permanent reference, ranks for years. 2. Platform lists ("Best Comedy Specials on Netflix 2026") — high search volume, update annually. 3. Best-of rankings ("Best Dark Comedy Movies on Streaming") — evergreen, shareable. 4. Comedy news (new special announced, tour dates) — timely spike, less permanent. Ratio: 4 database pages for every 1 news post.'},
+      {title:'Topic Generation Prompt',body:'Use this once per week to plan your Laughder content calendar.',
+       prompt:'I run Laughder.com, a comedy reference and entertainment site covering stand-up specials, comedy movies, and comedian profiles.\n\nGive me 5 blog post ideas for next week. For each give me:\n1. Post title (under 60 characters)\n2. Target keyword\n3. Post type: database page, best-of list, news, or comedian profile\n4. Why people search this — what is the intent behind the query?\n\nFocus on: (a) searches people make when deciding what comedy to watch, (b) comedian-specific searches, (c) platform-specific searches like "best comedy on HBO Max." Avoid generic topics with no clear search intent.'},
+      {title:'Post Writing Prompt',body:'Use this for each Laughder post. Fill in the brackets.',
+       prompt:'Write an 800-word blog post for Laughder.com targeting the keyword "[keyword]".\n\nLaughder is a comedy reference site — think IMDb but focused on stand-up specials and comedy content. The tone is that of a knowledgeable comedy fan recommending to another comedy fan.\n\nPost requirements:\n- H1 = exact keyword\n- For ranking posts: include at least 8–10 items with genuine 2–3 sentence descriptions of each — no filler\n- For comedian profiles: include their full special list with years and streaming platforms\n- Be genuinely opinionated — "this is their best work because..." not just summaries\n- Internal links to 2 other relevant Laughder pages\n- Meta title under 60 characters\n- Meta description under 160 characters\n- Tone: passionate comedy fan, not a Wikipedia article'},
+      {title:'Social Strategy',body:'Twitter/X for Laughder grows through opinions and polls, not links. Post 3 times per day: (1) A hot take — "Chappelle\'s best special is Killin Them Softly and it\'s not close." These generate replies. (2) A poll — "Better Netflix special: [X] or [Y]?" Polls get massive engagement. (3) A link to your latest database page once you have engaged followers. Do not lead with links until your account has 300+ followers — nobody clicks links from accounts they don\'t know.'},
+      {title:'Reddit Strategy',body:'r/standupcomedy (2M members) is your primary community. Comment genuinely on threads asking for recommendations — "what should I watch next?" type posts. When your recommendation matches something you have written about, you can naturally mention your page. One helpful comment that gets upvoted sends 500–1,000 visitors. Do this daily. Also engage in r/movies for comedy film content and r/netflix for streaming recommendations.'},
+      {title:'Weekly Goals',body:'5 database pages published (one per day 2:30–3:30 PM) · 15 tweets posted (3/day × 5 days) · 5 genuine Reddit comments in r/standupcomedy · Sessions growing in Search Console · AdSense applied for once you hit 30+ posts and 60 days of age'},
+    ],
   },
 
   'cl-re': {
     name:'RE Agent', icon:'🏠', color:'var(--agent)', dim:'var(--agent-d)',
-    eyebrow:'Licensed Oregon RE Agent · 12 Deals/Year Target · Eugene Market',
-    sub:'5 SOI contacts every weekday · prospecting never stops even with active clients',
+    eyebrow:'RE Agent · 8:00–9:00 AM prep + 4:30–5:00 PM SOI contacts',
+    sub:'Two blocks per day — morning planning 8–9 AM, SOI contacts 4:30–5 PM. Never skip even when other pillars are busy.',
     phases:[
-      {label:'Month 1',title:'Pipeline — 3+ Deals Active',desc:'Contact everyone you know. No pitch — genuine check-ins. 1 referral conversation per week from SOI alone builds the pipeline.',targets:['3+ deals in active pipeline','3 referral partners locked in','1 open house per week','CRM current and fully updated']},
-      {label:'Month 2',title:'First Commission + Steady Pipeline',desc:'Close 1 deal. Keep 3+ active. Start specializing in investor buyers — they repeat and refer, and every investor buyer is a potential JV partner for multifamily.',targets:['1 closing completed','$3,000–5,000 commission in','3+ active leads in pipeline','Strategic partner call weekly']},
-      {label:'Month 3+',title:'Investor Specialization',desc:'Investor buyers become your multifamily JV network. Every agent deal funds the next acquisition. Eugene near UO = structural rental demand forever.',targets:['2+ closings total','Investor buyer network growing','6+ deals in pipeline','RE + investing cross-over emerging']},
+      {label:'Month 1',title:'Pipeline — 3+ Deals Active',desc:'Contact everyone you know. No pitch — genuine check-ins. 5 SOI contacts every single weekday at 4:30 PM, no exceptions.',targets:['3+ deals in active pipeline','3 referral partners locked in','1 open house per week','CRM fully current']},
+      {label:'Month 2',title:'First Commission + Steady Pipeline',desc:'Close 1 deal. Keep 3+ active. Investor buyers are your target — they repeat, refer, and become JV partners for your multifamily deals.',targets:['1 closing completed','$3,000–5,000 commission','3+ active leads','Partner call weekly']},
+      {label:'Month 3+',title:'Investor Specialization',desc:'Every investor buyer is a potential JV partner. Eugene near UO = structural rental demand forever. Serve investors well.',targets:['2+ closings total','Investor buyer network growing','6+ deals in pipeline','RE + investing cross-over emerging']},
     ],
     days:{
       Monday:[
-        {site:'SOI + Prospecting',time:'4:30–5:00 PM',color:'agent',items:[
+        {site:'Morning Prospecting Prep',time:'8:00–9:00 AM',color:'agent',items:[
           {text:'Plan SOI call list for the week — who haven\'t you touched in 60+ days?'},
-          {text:'Contact 5 people from SOI — text, call, or email',note:'Genuine check-in only. No pitch. One of these refers you this month.'},
           {text:'CRM review — pipeline status, what needs follow-up this week',note:'What gets tracked gets closed.'},
+          {text:'Plan open house or showing schedule for the week'},
+        ]},
+        {site:'SOI Contacts',time:'4:30–5:00 PM',color:'agent',items:[
+          {text:'Contact 5 people from SOI — text, call, or email',note:'Genuine check-in only. No pitch. One of these refers you this month.'},
         ]},
       ],
       Tuesday:[
-        {site:'Farm + Follow-Up',time:'4:30–5:00 PM',color:'agent',items:[
-          {text:'Farm outreach — 10 notes or targeted calls in your target neighborhood',note:'Consistent presence = top of mind when they\'re ready to sell.'},
+        {site:'Morning Prospecting Prep',time:'8:00–9:00 AM',color:'agent',items:[
+          {text:'Farm outreach prep — identify 10 targets in your farm neighborhood'},
+          {text:'Review any active client needs for today — showings, offers, CMAs'},
+        ]},
+        {site:'SOI Contacts',time:'4:30–5:00 PM',color:'agent',items:[
           {text:'Contact 5 people from SOI'},
-          {text:'Follow up active leads from last 7 days'},
+          {text:'Follow up any active leads from last 7 days'},
         ]},
       ],
       Wednesday:[
-        {site:'Partner Call',time:'4:30–5:00 PM',color:'agent',items:[
-          {text:'Strategic partner call — attorney, CPA, or lender',note:'Oregon Pacific, WaFd, SELCO. One strong partner = 5–10 deals/year.'},
-          {text:'Contact 5 people from SOI'},
+        {site:'Morning Prospecting Prep',time:'8:00–9:00 AM',color:'agent',items:[
+          {text:'Strategic partner call — attorney, CPA, or lender (Oregon Pacific, WaFd, SELCO)',note:'One strong partner = 5–10 deals per year on autopilot.'},
           {text:'Showings or offers if active clients in pipeline'},
+        ]},
+        {site:'SOI Contacts',time:'4:30–5:00 PM',color:'agent',items:[
+          {text:'Contact 5 people from SOI'},
+          {text:'Farm outreach — 10 handwritten notes or calls in target neighborhood'},
         ]},
       ],
       Thursday:[
-        {site:'Lead Nurture',time:'4:30–5:00 PM',color:'agent',items:[
-          {text:'Work through all inquiries from last 30 days',note:'Most agents stop at 2 follow-ups. You go 7–10.'},
+        {site:'Morning Prospecting Prep',time:'8:00–9:00 AM',color:'agent',items:[
+          {text:'Lead nurture — work through all inquiries from last 30 days',note:'Most agents stop at 2 follow-ups. You go 7–10.'},
           {text:'Tired landlord follow-ups — these become your investor deals',note:'They sell at a discount because they\'re exhausted. You solve that.'},
+        ]},
+        {site:'SOI Contacts',time:'4:30–5:00 PM',color:'agent',items:[
           {text:'Contact 5 people from SOI'},
+          {text:'Follow up any open offers or pending transactions'},
         ]},
       ],
       Friday:[
-        {site:'CRM Audit + Engagement',time:'4:30–5:00 PM',color:'agent',items:[
-          {text:'CRM audit — update all contacts, flag anyone needing follow-up next week'},
-          {text:'Reply to every real estate comment and DM across all platforms'},
+        {site:'Morning Prospecting Prep',time:'8:00–9:00 AM',color:'agent',items:[
+          {text:'CRM audit — update all contacts, flag anyone for next week follow-up'},
+          {text:'Review this week\'s pipeline — what moved, what\'s stalled?'},
+          {text:'Plan open house or REIA meetup for weekend if applicable'},
+        ]},
+        {site:'SOI Contacts',time:'4:30–5:00 PM',color:'agent',items:[
           {text:'Contact 5 people from SOI'},
+          {text:'Reply to every real estate comment and DM across all platforms'},
           {text:'Plan RE prospecting strategy for next week'},
         ]},
       ],
     },
+    platforms:[
+      {logo:'🔵',name:'Facebook',priority:'primary',format:'Market updates · Client stories · Video tours',tip:'Highest ROI social platform for RE agents. Local community groups, neighborhood pages, and your own business page all drive referrals.'},
+      {logo:'📸',name:'Instagram',priority:'primary',format:'Property photos · Reels · Stories',tip:'Visual platform that works well for real estate. Short Reels of property walkthroughs and market updates perform strongly.'},
+      {logo:'💼',name:'LinkedIn',priority:'secondary',format:'Market analysis · Investor content',tip:'Best platform for reaching investor buyers and professional referral partners — lenders, attorneys, CPAs.'},
+      {logo:'▶️',name:'YouTube',priority:'optional',format:'Property tours · Market videos · Guides',tip:'Long-term brand builder. "Eugene Oregon real estate market update" style videos rank on Google and build lasting authority.'},
+    ],
+    guidelines:[
+      {title:'The 12-Deal Goal Broken Down',body:'12 deals per year = 1 deal per month. At an average Oregon commission of $8,000–12,000 per transaction that is $96,000–144,000 gross per year. To close 1 deal per month you need 3–4 active leads in your pipeline at all times. To have 3–4 active leads you need to contact 150–200 people per month. At 5 SOI contacts per weekday that is exactly 100 contacts per month — supplemented by farm outreach and open houses.'},
+      {title:'Daily Non-Negotiable',body:'5 SOI contacts every single weekday at 4:30 PM. Text, call, or email — genuine check-in, no pitch. This one habit alone generates 1–2 referral conversations per week. Over 12 months that compounds into a self-sustaining referral pipeline that requires no cold outreach.'},
+      {title:'Investor Buyer Focus',body:'Every investor buyer you serve is a potential JV partner for your multifamily portfolio. Prioritize investor buyers over owner-occupants in your prospecting. They close faster, pay cash or have financing lined up, buy repeatedly, and refer other investors. One strong investor buyer relationship = 3–5 deals per year from that one person.'},
+      {title:'Conversation Prompt for SOI Contacts',body:'Use this as your mental framework — not a script.',
+       prompt:'Hey [name] — just thinking of you. How is [something specific to them]? ... [natural conversation] ... By the way, I am actively working with buyers and sellers in Eugene right now. If you ever hear of anyone thinking about making a move I would love to help them. You know how I work.\n\nKey: never pitch on the first contact. Ask about them first. The referral mention is casual, not salesy. Then move on. People refer people they like, not people who ask them to.'},
+      {title:'Weekly Goals',body:'25 SOI contacts made (5/day) · 1 strategic partner call · 10 farm outreach contacts · CRM fully updated · 1 open house or showing scheduled · Pipeline reviewed every Friday'},
+    ],
   },
 
   'cl-tr': {
     name:'Trading', icon:'📈', color:'var(--trade)', dim:'var(--trade-d)',
-    eyebrow:'Options $5K · Micro Futures $24K · Systematic Rules Only',
-    sub:'Pre-market at 6:00 AM · rules are non-negotiable · journal every single trade',
+    eyebrow:'Options $5K · Micro Futures $24K · 6:00–8:00 AM + after market',
+    sub:'Bookends the day — pre-market 6–8 AM before everything else. Journal after market. Never bleeds into business hours.',
     phases:[
-      {label:'Month 1–2',title:'Protect Capital — Build Consistency',desc:'Max 2% risk per trade. 4–6 options positions. Futures: 1–2 swings max at a time. Track win rate over 20+ trades. Never break the rules.',targets:['Zero rule violations','4–6 active options positions','Win rate tracked every week','2–3% monthly target maintained']},
-      {label:'Month 3',title:'System Locked — $1,500–2,000/mo',desc:'If the system works, you\'ve proven it by month 3. Journal every trade. Win rate below 50% = reduce size, find the pattern, fix it.',targets:['$1,500–2,000/mo consistent','100% of trades journaled','Win rate above 50%','Max drawdown under 8%']},
-      {label:'Month 4–6',title:'Optimize — Trading Funds the Empire',desc:'Consistent trading income funds acquisitions. Review quarterly. Never let trading become the main focus — it\'s one of five pillars, not the engine.',targets:['$2,000/mo consistent','Options: 7% monthly on $5K account','Futures: A+ setups only','Stock portfolio reviewed quarterly']},
+      {label:'Month 1–2',title:'Protect Capital — Rules First',desc:'6:00–8:00 AM every day. Pre-market scan, position review, alerts set. Business day starts at 8 AM. Trading never bleeds into your call blocks or content time.',targets:['Zero rule violations','4–6 options positions max','Win rate tracked weekly','2–3% monthly target']},
+      {label:'Month 3',title:'System Locked — $1,500–2,000/mo',desc:'Three months proves the system. Journal 100% of trades. If win rate is below 50% find the pattern and fix it before adding size.',targets:['$1,500–2,000/mo consistent','100% of trades journaled','Win rate above 50%','Drawdown under 8%']},
+      {label:'Month 4–6',title:'Optimize — Trading Funds the Empire',desc:'Consistent trading income funds acquisitions. Never more than 2 hours of your day. One of five pillars — not the engine.',targets:['$2,000/mo consistent','Options: 7% monthly on $5K','Futures: A+ setups only','Stock portfolio reviewed quarterly']},
     ],
     days:{
       Monday:[
         {site:'Pre-Market',time:'6:00–8:00 AM',color:'trade',items:[
-          {text:'Pre-market scan — overnight moves, futures positioning, news',note:'Set alerts. Review any position approaching 50% profit target.'},
-          {text:'Options review — all open positions, expiration dates',note:'Anything within 21 DTE: plan to close or roll.',subs:['Close at 50% profit — no exceptions','Max loss: 2x credit received','Never hold through earnings']},
-          {text:'Futures — review any open swing trades',note:'2:1 R/R minimum always. Adjust stops if needed. No new trades without setup.'},
+          {text:'Pre-market scan — overnight moves, futures positioning, key news',note:'Set alerts. Review any position approaching 50% profit target.'},
+          {text:'Options — all open positions, expiration dates',note:'Anything within 21 DTE: plan to close or roll this week.',subs:['Close at 50% profit — no exceptions ever','Max loss: 2x credit received','Never hold through earnings']},
+          {text:'Futures — review any open swing trades',note:'2:1 R/R minimum always. Adjust stops if needed.'},
+          {text:'Be done by 8:00 AM sharp — business day starts',note:'Trading never bleeds into contractor call time or content blocks.'},
         ]},
-        {site:'Trade Journal',time:'After market close',color:'trade',items:[
-          {text:'Log every trade: entry, exit, reason, P&L',note:'The journal is what separates consistent traders from gamblers.'},
-          {text:'Current week P&L vs weekly target — are you on pace?'},
+        {site:'Trade Journal',time:'After market (5 PM+)',color:'trade',items:[
+          {text:'Log every trade: entry, exit, reason, P&L'},
+          {text:'Current week P&L vs weekly target — on pace?'},
         ]},
       ],
       Tuesday:[
         {site:'Pre-Market',time:'6:00–8:00 AM',color:'trade',items:[
-          {text:'Pre-market scan — check positions, set alerts'},
-          {text:'Look for new 45-DTE options setups on watchlist',note:'15–20 delta. High IV rank preferred. 30%+ OTM minimum.'},
+          {text:'Pre-market scan — check all positions, set alerts'},
+          {text:'Look for new 45-DTE options setups on watchlist',note:'15–20 delta. High IV rank. 30%+ OTM minimum.'},
+          {text:'Done by 8:00 AM — business day starts'},
         ]},
         {site:'Trade Journal',time:'After market',color:'trade',items:[
           {text:'Log all trades taken today'},
@@ -2236,36 +2470,54 @@ const CL_VENTURES = {
           {text:'Pre-market scan — mid-week position review'},
           {text:'Check earnings announcements this week — close before earnings',note:'Never hold options through earnings. Close or roll 1 day before.'},
           {text:'Futures: A+ setups only — uncertainty is not a trade'},
+          {text:'Done by 8:00 AM'},
         ]},
         {site:'Mid-Week Review',time:'After market',color:'trade',items:[
-          {text:'Mid-week P&L check — on track or adjust size?',note:'Down 4% on the week = reduce size immediately.'},
-          {text:'Log trades + update journal'},
+          {text:'Mid-week P&L check — on track?',note:'Down 4% on the week = reduce size immediately.'},
+          {text:'Log trades'},
         ]},
       ],
       Thursday:[
         {site:'Pre-Market',time:'6:00–8:00 AM',color:'trade',items:[
           {text:'Pre-market scan — all positions checked'},
-          {text:'Friday expiration positions — close or roll today',note:'Don\'t wait until Friday. Manage early.'},
+          {text:'Friday expiration positions — close or roll today, not tomorrow'},
+          {text:'Done by 8:00 AM'},
         ]},
         {site:'Trade Journal',time:'After market',color:'trade',items:[
           {text:'Log all trades'},
-          {text:'Plan any position adjustments needed before Friday'},
+          {text:'Plan position adjustments needed before Friday close'},
         ]},
       ],
       Friday:[
-        {site:'Pre-Market + Close',time:'6:00–8:00 AM',color:'trade',items:[
+        {site:'Pre-Market',time:'6:00–8:00 AM',color:'trade',items:[
           {text:'Pre-market scan — final session of the week'},
-          {text:'Close any near-expiration options not already managed'},
-          {text:'Futures: flat or minimal going into weekend',note:'Weekend gap risk is rarely worth carrying.'},
+          {text:'Close near-expiration options not already managed'},
+          {text:'Futures: flat or minimal going into weekend',note:'Weekend gap risk is rarely worth holding through.'},
+          {text:'Done by 8:00 AM'},
         ]},
         {site:'Weekly Trade Review',time:'After market',color:'trade',items:[
-          {text:'Weekly P&L vs target — write the number',note:'If below target, what was the pattern? Log it specifically.'},
-          {text:'Win rate this week — count trades, winners, losers',subs:['Total trades taken','Winners and losers','Biggest mistake or missed setup']},
+          {text:'Weekly P&L vs target — write the number down',note:'If below target, what was the pattern? Log it specifically.'},
+          {text:'Win rate this week',subs:['Total trades taken','Winners and losers count','Biggest mistake or missed setup']},
           {text:'Journal: what would you do differently next week?'},
           {text:'Stock portfolio check — any rebalancing needed?'},
         ]},
       ],
     },
+    platforms:[
+      {logo:'🐦',name:'Twitter / X',priority:'optional',format:'Trade ideas · Market takes',tip:'Trading Twitter exists but is noisy. Only engage if you enjoy it — it does not directly monetize your trading business.'},
+      {logo:'▶️',name:'YouTube',priority:'optional',format:'Trade reviews · Strategy videos',tip:'Trading education YouTube channels can monetize well long-term. Only pursue if you want to build a public trading brand.'},
+      {logo:'❌',name:'Instagram / TikTok / Facebook',priority:'optional',format:'Not recommended',tip:'Trading does not need social media to generate income. Your time is better spent on pre-market prep and journaling.'},
+    ],
+    guidelines:[
+      {title:'The Rules — Non-Negotiable',body:'Options: close at 50% profit, always. Max loss 2x credit received. Never hold through earnings. 45 DTE entry, 15–20 delta, 30%+ OTM. 4–6 positions maximum at any time.\n\nFutures: 2:1 R/R minimum on every trade. A+ setups only — if you are asking whether it qualifies, it does not. 1–2 swings maximum at a time. Flat or near-flat going into weekends.\n\nStock account: reviewed quarterly only. Not a trading account — a long-term hold account. Do not touch it based on short-term moves.'},
+      {title:'Pre-Market Routine (6:00–8:00 AM)',body:'This block never moves and never bleeds into business hours. Review overnight futures moves. Check all open options positions — anything near 50% profit gets closed. Check for earnings announcements this week and close or roll any positions in those underlyings. Look for new setups on your watchlist. Set alerts. Done by 8:00 AM sharp. The contractor calls start at 9:00 AM and trading never touches that block.'},
+      {title:'Journal Prompt — After Every Trade',body:'Use this after every single trade. Journaling is the difference between a system and gambling.',
+       prompt:'Trade: [underlying] [expiration] [strike] [credit/debit received]\nEntry reason: [why did this qualify as an A+ setup?]\nExit: [price] [reason — 50% profit / stop hit / rolled]\nP&L: [dollar amount]\nWhat I did right:\nWhat I would do differently:\nRule violations (if any):'},
+      {title:'Weekly Review Prompt',body:'Run this every Friday after market close.',
+       prompt:'Trading week review — [date range]\n\nTotal trades taken: [number]\nWinners: [number] | Losers: [number] | Win rate: [%]\nTotal P&L: [amount] | Target was: [amount]\nOptions account: [current value] | Futures account: [current value]\n\nBiggest win this week and why it worked:\nBiggest loss this week and what went wrong:\nAny rule violations — be honest:\nWhat changes next week if any:\n\nRule: if you had more than 1 rule violation this week, reduce position size by 25% next week until the violations stop.'},
+      {title:'Monthly Target Math',body:'Options account $5,000 at 7% monthly = $350/month target. Futures account $24,000 — target varies by setup frequency. Combined realistic target months 1–2: $500–1,000. Month 3+: $1,500–2,000 consistently. This funds the empire while the other pillars build. Never risk the trading accounts trying to hit revenue targets faster — the rules exist because they work over time.'},
+      {title:'Weekly Goals',body:'Zero rule violations · Pre-market done by 8:00 AM every day · Every trade journaled same day · Weekly P&L logged · Position count stays at 4–6 max'},
+    ],
   },
 };
 
@@ -2362,6 +2614,48 @@ function buildChecklistView(v){
     </div>
   </div>`;
 
+  // platforms card
+  if(data.platforms){
+    h+=`<div class="cl-platforms">
+      <div class="cgl-head">
+        <span class="cgl-icon">📡</span>
+        <span class="cgl-title">Ideal Platforms &amp; Content Formats</span>
+      </div>
+      <div class="cp-grid">`;
+    data.platforms.forEach(p=>{
+      h+=`<div class="cp-card">
+        <div class="cp-top">
+          <span class="cp-logo">${p.logo}</span>
+          <div>
+            <div class="cp-name">${esc2(p.name)}</div>
+            <div class="cp-priority cp-priority-${p.priority}">${esc2(p.priority)}</div>
+          </div>
+        </div>
+        <div class="cp-format">${esc2(p.format)}</div>
+        <div class="cp-tip">${esc2(p.tip)}</div>
+      </div>`;
+    });
+    h+=`</div></div>`;
+  }
+
+  // guidelines card
+  if(data.guidelines){
+    h+=`<div class="cl-guidelines">
+      <div class="cgl-head">
+        <span class="cgl-icon">📋</span>
+        <span class="cgl-title">Site Guidelines &amp; AI Content Workflow</span>
+      </div>
+      <div class="cgl-body">`;
+    data.guidelines.forEach(g=>{
+      h+=`<div class="cgl-section">
+        <div class="cgl-sec-title">${esc2(g.title)}</div>
+        <div class="cgl-sec-body">${esc2(g.body)}</div>
+        ${g.prompt?`<div class="cgl-prompt"><span class="cgl-prompt-label">AI PROMPT</span><div class="cgl-prompt-text">${esc2(g.prompt)}</div></div>`:''}
+      </div>`;
+    });
+    h+=`</div></div>`;
+  }
+
   // revenue target
   if(rev.a){
     h+=`<div style="background:var(--s1);border:1px solid var(--b1);border-radius:9px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
@@ -2435,9 +2729,46 @@ function buildChecklistView(v){
 
   h+=`</div>`;
   el.innerHTML=h;
+  updateTabColors();
 }
 
 function esc2(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function updateTabColors(){
+  Object.keys(CL_VENTURES).forEach(v=>{
+    const tab = document.querySelector(`[onclick="switchView('${v}',this)"]`);
+    if(!tab) return;
+    const data = CL_VENTURES[v];
+    const st = clSt[v];
+    const dayName = CL_DAYS[st.dayIdx];
+    const sections = data.days[dayName] || [];
+    let tot=0, dn=0;
+    sections.forEach((sec,si)=>sec.items.forEach((_,ii)=>{
+      tot++;
+      if(clGet(clItemKey(v,st.phase,st.dayIdx,si,ii,false))) dn++;
+    }));
+
+    // Remove existing indicator
+    const existing = tab.querySelector('.tab-indicator');
+    if(existing) existing.remove();
+
+    if(tot === 0) return;
+
+    // Add a small colored dot under the tab label
+    const dot = document.createElement('span');
+    dot.className = 'tab-indicator';
+    if(dn === 0){
+      dot.style.background = '#ef4444';
+    } else if(dn < tot){
+      dot.style.background = '#f59e0b';
+    } else {
+      dot.style.background = '#10b981';
+      dot.textContent = ' ✓';
+      dot.style.fontSize = '8px';
+    }
+    tab.appendChild(dot);
+  });
+}
 
 function clToggleItem(v,ph,d,si,ii){
   const k=clItemKey(v,ph,d,si,ii,false);
@@ -2469,6 +2800,7 @@ function clResetDay(v){
 
 function buildAllChecklistViews(){
   Object.keys(CL_VENTURES).forEach(v=>buildChecklistView(v));
+  updateTabColors();
 }
 
 // patch switchView to rebuild checklist on tab switch
@@ -2480,6 +2812,226 @@ switchView=function(id,el){
 
 // init checklists
 buildAllChecklistViews();
+
+
+// ═══════════════════════════════════════════════════════
+// CALENDAR VIEW
+// ═══════════════════════════════════════════════════════
+
+const DAILY_SCHEDULE = [
+  {time:'6:00 AM', isHour:true, blocks:[
+    {theme:'dt-trade', label:'Trading', title:'Pre-Market Scan', note:'Options review · futures check · alerts set · done by 8 AM sharp', tags:['Options $5K','Futures $24K']}
+  ]},
+  {time:'7:00 AM', isHour:false, blocks:[]},
+  {time:'8:00 AM', isHour:true, blocks:[
+    {theme:'dt-agent', label:'RE Agent', title:'Morning Prospecting Prep', note:'CRM review · pipeline status · partner calls · showings scheduled', tags:['12 Deals/Yr']}
+  ]},
+  {time:'9:00 AM', isHour:true, blocks:[
+    {theme:'dt-sq', label:'ServaSquad', title:'Content Creation', note:'Blog post written and published · Mon/Wed/Fri = ServaSquad post', tags:['3 Posts/Week']}
+  ]},
+  {time:'10:00 AM', isHour:false, blocks:[
+    {theme:'dt-sq', label:'ServaSquad', title:'SEO + Backlinks', note:'5 backlink emails · Search Console · internal linking · page fixes', tags:['25 Emails/Week']}
+  ]},
+  {time:'11:00 AM', isHour:true, blocks:[
+    {theme:'dt-content', label:'Content Rotation', title:'Tue/Thu = ApexWire Post · Mon/Wed/Fri = SEO Work', note:'ApexWire gets 11 AM–12 PM on Tues + Thurs. Other days: SEO and competitor research.', tags:['2 Posts/Week ApexWire']}
+  ]},
+  {time:'12:00 PM', isHour:true, blocks:[
+    {theme:'dt-lunch', label:'Break', title:'Lunch — 30 minutes', note:'', tags:[]}
+  ]},
+  {time:'12:30 PM', isHour:false, blocks:[
+    {theme:'dt-sq', label:'ServaSquad', title:'Lead Management', note:'Check form submissions · contact contractors with live leads · follow up on open deals', tags:['Per-Lead Sales']}
+  ]},
+  {time:'1:30 PM', isHour:true, blocks:[
+    {theme:'dt-apex', label:'ApexWire', title:'Content + Social', note:'Write piece · 3 tweets · Reddit engagement · affiliate links · Search Console check', tags:['1 Hr/Day']}
+  ]},
+  {time:'2:30 PM', isHour:false, blocks:[
+    {theme:'dt-laugh', label:'Laughder', title:'Database Page + Social', note:'Write and publish one page · 3 tweets · Reddit r/standupcomedy comment', tags:['1 Hr/Day']}
+  ]},
+  {time:'3:30 PM', isHour:true, blocks:[
+    {theme:'dt-seo', label:'SEO — All Sites', title:'Shared SEO Block', note:'Page-2 ranking improvements · competitor gaps · GBP update · Pinterest graphic', tags:['Shared']}
+  ]},
+  {time:'4:30 PM', isHour:false, blocks:[
+    {theme:'dt-agent', label:'RE Agent', title:'SOI Contacts — 5 per day', note:'Text, call, or email 5 SOI contacts. Genuine check-in. Never skip.', tags:['30 Min']}
+  ]},
+  {time:'5:00 PM', isHour:true, blocks:[]},
+  {time:'After market', isHour:false, blocks:[
+    {theme:'dt-trade', label:'Trading', title:'Trade Journal + Review', note:'Log every trade · P&L vs target · win rate · what to do differently tomorrow', tags:['Every Trade']}
+  ]},
+];
+
+const WEEKLY_SCHEDULE = [
+  {
+    day:'Monday', theme:'today',
+    blocks:[
+      {cls:'wc-trade',   time:'6–8 AM',      title:'Trading Pre-Market',       note:'Scan + positions + alerts done by 8 AM'},
+      {cls:'wc-agent',   time:'8–9 AM',       title:'RE Agent Prep',            note:'CRM · plan week · showings'},
+      {cls:'wc-sq',      time:'9–11 AM',      title:'ServaSquad Content',       note:'Write + publish post #1 of week'},
+      {cls:'wc-seo',     time:'11 AM–12 PM',  title:'SEO + Backlinks',          note:'5 emails · Search Console · internal links'},
+      {cls:'wc-lunch',   time:'12–12:30 PM',  title:'Lunch',                    note:''},
+      {cls:'wc-sq',      time:'12:30–1:30 PM',title:'Lead Management',          note:'Check forms · contact contractors'},
+      {cls:'wc-apex',    time:'1:30–2:30 PM', title:'ApexWire',                 note:'Race calendar update + content'},
+      {cls:'wc-laugh',   time:'2:30–3:30 PM', title:'Laughder',                 note:'Database page — comedian profile'},
+      {cls:'wc-seo',     time:'3:30–4:30 PM', title:'SEO All Sites',            note:'Page-2 improvements · GBP'},
+      {cls:'wc-re',      time:'4:30–5 PM',    title:'SOI Contacts',             note:'5 contacts — genuine check-in'},
+      {cls:'wc-after',   time:'After market', title:'Trade Journal',            note:'Log trades · P&L check'},
+    ]
+  },
+  {
+    day:'Tuesday', theme:'',
+    blocks:[
+      {cls:'wc-trade',   time:'6–8 AM',       title:'Trading Pre-Market',       note:'New setups · 45-DTE scans'},
+      {cls:'wc-agent',   time:'8–9 AM',       title:'RE Agent Prep',            note:'Farm outreach targets · showings'},
+      {cls:'wc-seo',     time:'9–11 AM',      title:'ServaSquad SEO',           note:'No post today — Search Console audit + competitor research'},
+      {cls:'wc-apex',    time:'11 AM–12 PM',  title:'ApexWire Post #1',        note:'Standings update or team analysis'},
+      {cls:'wc-lunch',   time:'12–12:30 PM',  title:'Lunch',                    note:''},
+      {cls:'wc-sq',      time:'12:30–1:30 PM',title:'Lead Management',          note:'Check forms · follow up leads from Monday'},
+      {cls:'wc-apex',    time:'1:30–2:30 PM', title:'ApexWire Social',          note:'3 tweets · 10 Reddit replies · affiliate links'},
+      {cls:'wc-laugh',   time:'2:30–3:30 PM', title:'Laughder',                 note:'News/trending comedy piece'},
+      {cls:'wc-seo',     time:'3:30–4:30 PM', title:'SEO All Sites',            note:'Backlink emails · Pinterest graphic'},
+      {cls:'wc-re',      time:'4:30–5 PM',    title:'SOI Contacts',             note:'5 contacts + active lead follow-up'},
+      {cls:'wc-after',   time:'After market', title:'Trade Journal',            note:'Log + win rate check'},
+    ]
+  },
+  {
+    day:'Wednesday', theme:'',
+    blocks:[
+      {cls:'wc-trade',   time:'6–8 AM',       title:'Trading Pre-Market',       note:'Earnings check · close before earnings'},
+      {cls:'wc-agent',   time:'8–9 AM',       title:'Strategic Partner Call',   note:'Lender · attorney · CPA — one per week'},
+      {cls:'wc-sq',      time:'9–11 AM',      title:'ServaSquad Content',       note:'Write + publish post #2 of week'},
+      {cls:'wc-seo',     time:'11 AM–12 PM',  title:'SEO + Backlinks',          note:'Competitor gaps · fix page-2 rankings'},
+      {cls:'wc-lunch',   time:'12–12:30 PM',  title:'Lunch',                    note:''},
+      {cls:'wc-sq',      time:'12:30–1:30 PM',title:'Lead Management',          note:'Check forms · contractor research for new trades'},
+      {cls:'wc-apex',    time:'1:30–2:30 PM', title:'ApexWire',                 note:'Mid-week piece · 3 tweets · 10 replies'},
+      {cls:'wc-laugh',   time:'2:30–3:30 PM', title:'Laughder',                 note:'Database page — platform list'},
+      {cls:'wc-seo',     time:'3:30–4:30 PM', title:'SEO All Sites',            note:'Internal links · Search Console'},
+      {cls:'wc-re',      time:'4:30–5 PM',    title:'SOI Contacts',             note:'5 contacts + farm outreach (10 notes)'},
+      {cls:'wc-after',   time:'After market', title:'Trade Journal',            note:'Mid-week P&L check'},
+    ]
+  },
+  {
+    day:'Thursday', theme:'',
+    blocks:[
+      {cls:'wc-trade',   time:'6–8 AM',       title:'Trading Pre-Market',       note:'Friday expirations — close or roll today'},
+      {cls:'wc-agent',   time:'8–9 AM',       title:'Lead Nurture',             note:'30-day inquiry follow-up · tired landlords'},
+      {cls:'wc-seo',     time:'9–11 AM',      title:'ServaSquad SEO',           note:'No post today — lead form review · pricing research'},
+      {cls:'wc-apex',    time:'11 AM–12 PM',  title:'ApexWire Post #2',        note:'Race preview (if race this weekend)'},
+      {cls:'wc-lunch',   time:'12–12:30 PM',  title:'Lunch',                    note:''},
+      {cls:'wc-sq',      time:'12:30–1:30 PM',title:'Lead Management',          note:'Check forms · GBP update · retainer pitches'},
+      {cls:'wc-apex',    time:'1:30–2:30 PM', title:'ApexWire Social',          note:'3 tweets · race weekend hype · internal links'},
+      {cls:'wc-laugh',   time:'2:30–3:30 PM', title:'Laughder',                 note:'Best-of list — specific search query'},
+      {cls:'wc-seo',     time:'3:30–4:30 PM', title:'SEO All Sites',            note:'Backlink emails · GBP · competitor check'},
+      {cls:'wc-re',      time:'4:30–5 PM',    title:'SOI Contacts',             note:'5 contacts + open offer follow-ups'},
+      {cls:'wc-after',   time:'After market', title:'Trade Journal',            note:'Position adjustments for Friday'},
+    ]
+  },
+  {
+    day:'Friday', theme:'',
+    blocks:[
+      {cls:'wc-trade',   time:'6–8 AM',       title:'Trading Pre-Market',       note:'Final session · flat going into weekend'},
+      {cls:'wc-agent',   time:'8–9 AM',       title:'CRM Audit + Pipeline',     note:'Update contacts · what moved this week'},
+      {cls:'wc-sq',      time:'9–11 AM',      title:'ServaSquad Content',       note:'Write + publish post #3 · plan next week topics'},
+      {cls:'wc-seo',     time:'11 AM–12 PM',  title:'Weekly Review + SEO',      note:'Log metrics · Search Console · 5 backlink emails'},
+      {cls:'wc-lunch',   time:'12–12:30 PM',  title:'Lunch',                    note:''},
+      {cls:'wc-sq',      time:'12:30–1:30 PM',title:'Lead Management',          note:'Weekly lead review · retainer pitches · contractor follow-up'},
+      {cls:'wc-apex',    time:'1:30–2:30 PM', title:'ApexWire',                 note:'Qualifying preview or race recap · log weekly metrics'},
+      {cls:'wc-laugh',   time:'2:30–3:30 PM', title:'Laughder',                 note:'Database page · log weekly metrics'},
+      {cls:'wc-seo',     time:'3:30–4:30 PM', title:'SEO Weekly Review',        note:'Top 3 opportunities for next week · Search Console'},
+      {cls:'wc-re',      time:'4:30–5 PM',    title:'SOI Contacts + Replies',   note:'5 contacts · reply all RE comments and DMs'},
+      {cls:'wc-after',   time:'After market', title:'Weekly Trade Review',      note:'P&L vs target · win rate · journal · stock portfolio'},
+    ]
+  },
+];
+
+let calMode = 'daily';
+
+function buildCalendarView() {
+  const el = document.getElementById('view-calendar');
+  if (!el) return;
+
+  const today = new Date().getDay(); // 0=Sun, 1=Mon...5=Fri, 6=Sat
+
+  let h = `<div class="cal-wrap">
+    <div class="cal-header">
+      <div class="cal-title">📅 Daily &amp; Weekly Schedule</div>
+      <div class="cal-sub">Your complete unified timeline — one person, five pillars, zero overlap.</div>
+    </div>
+
+    <div class="cal-tabs">
+      <button class="cal-tab${calMode==='daily'?' active':''}" onclick="setCalMode('daily')">Daily View</button>
+      <button class="cal-tab${calMode==='weekly'?' active':''}" onclick="setCalMode('weekly')">Weekly View</button>
+    </div>
+
+    <div class="cal-legend">
+      <div class="cl-item"><div class="cl-dot" style="background:#a78bfa"></div>Trading</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#3b82f6"></div>RE Agent</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#f59e0b"></div>ServaSquad</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#10b981"></div>Content / SEO</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#f59e0b;opacity:.6"></div>ApexWire</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#f43f5e"></div>Laughder</div>
+    </div>`;
+
+  if (calMode === 'daily') {
+    h += `<div class="day-timeline">`;
+    DAILY_SCHEDULE.forEach(row => {
+      if (row.blocks.length === 0 && !row.isHour) return;
+      h += `<div class="dt-row">
+        <div class="dt-time${row.isHour?' hour':''}">${row.time}</div>
+        <div class="dt-block">`;
+      row.blocks.forEach(b => {
+        h += `<div class="dt-card ${b.theme}">
+          <div class="dt-card-label">${b.label}</div>
+          <div class="dt-card-title">${b.title}</div>
+          ${b.note ? `<div class="dt-card-note">${b.note}</div>` : ''}
+          ${b.tags.length ? `<div class="dt-card-tags">${b.tags.map(t=>`<span class="dt-tag" style="background:rgba(255,255,255,.06);color:var(--dim)">${t}</span>`).join('')}</div>` : ''}
+        </div>`;
+      });
+      if (row.blocks.length === 0) {
+        h += `<div style="height:20px;border-left:1px dashed var(--b1);margin-left:0;"></div>`;
+      }
+      h += `</div></div>`;
+    });
+    h += `</div>`;
+  } else {
+    // Weekly view
+    h += `<div class="week-cal">`;
+    WEEKLY_SCHEDULE.forEach((col, i) => {
+      const dayNum = i + 1; // Mon=1
+      const isToday = today === dayNum;
+      h += `<div class="wc-col${isToday?' wc-today':''}">
+        <div class="wc-head">
+          <div class="wc-day">${col.day}</div>
+          ${isToday ? `<span class="wc-today-pip">Today</span>` : ''}
+        </div>
+        <div class="wc-blocks">`;
+      col.blocks.forEach(b => {
+        h += `<div class="wc-block ${b.cls}">
+          <div class="wc-block-time">${b.time}</div>
+          <div class="wc-block-title">${b.title}</div>
+          ${b.note ? `<div class="wc-block-note">${b.note}</div>` : ''}
+        </div>`;
+      });
+      h += `</div></div>`;
+    });
+    h += `</div>`;
+  }
+
+  h += `</div>`;
+  el.innerHTML = h;
+}
+
+function setCalMode(mode) {
+  calMode = mode;
+  buildCalendarView();
+}
+
+// patch switchView to build calendar when switched to
+const _origSV2 = switchView;
+switchView = function(id, el) {
+  _origSV2(id, el);
+  if (id === 'calendar') buildCalendarView();
+};
+
+buildCalendarView();
 
 </script>
 </body>
