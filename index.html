@@ -647,6 +647,59 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .sp-storage-val{font-family:'Fragment Mono',monospace;font-size:12px;color:var(--invest);}
 
 
+
+/* ── WEEKLY PLAN VIEW ── */
+.ntab-plan.active{border-bottom-color:#06b6d4!important;color:#06b6d4!important;}
+.plan-wrap{max-width:960px;margin:0 auto;padding:24px 18px 80px;}
+.plan-header{margin-bottom:24px;}
+.plan-title{font-family:'Syne',sans-serif;font-size:clamp(22px,3.5vw,32px);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;}
+.plan-week{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:680px){.plan-grid{grid-template-columns:1fr;}}
+.plan-card{background:var(--s1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;}
+.plan-card-head{padding:12px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;}
+.plan-card-icon{font-size:18px;}
+.plan-card-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.plan-card-body{padding:12px 16px;}
+.plan-field{margin-bottom:12px;}
+.plan-field:last-child{margin-bottom:0;}
+.plan-field-label{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.plan-input{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:6px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 10px;outline:none;transition:border-color .15s;resize:none;}
+.plan-input:focus{border-color:#06b6d4;}
+.plan-input::placeholder{color:var(--dim);}
+.plan-metric-row{display:flex;gap:8px;margin-bottom:8px;}
+.plan-metric{flex:1;background:var(--s2);border-radius:7px;padding:10px 12px;text-align:center;}
+.plan-metric-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#06b6d4;line-height:1;}
+.plan-metric-lbl{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:3px;}
+.plan-content-item{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+.plan-day-badge{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;background:rgba(6,182,212,.12);color:#06b6d4;border-radius:4px;padding:2px 6px;flex-shrink:0;margin-top:2px;}
+.plan-content-text{font-size:12px;color:var(--txt);line-height:1.4;}
+.plan-empty{font-size:11px;color:var(--dim);font-style:italic;padding:4px 0;}
+.plan-save-btn{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(6,182,212,.15);color:#06b6d4;border:1px solid rgba(6,182,212,.3);border-radius:5px;padding:5px 12px;cursor:pointer;transition:all .15s;margin-top:8px;}
+.plan-save-btn:hover{background:#06b6d4;color:#000;}
+.plan-history-btn{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:var(--s2);color:var(--dim);border:1px solid var(--b1);border-radius:5px;padding:5px 12px;cursor:pointer;transition:all .15s;}
+.plan-history-btn:hover{border-color:var(--b2);color:var(--txt);}
+.plan-week-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.plan-week-nav button{background:var(--s2);border:1px solid var(--b1);border-radius:6px;color:var(--dim);font-size:14px;width:30px;height:30px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.plan-week-nav button:hover{border-color:var(--b2);color:var(--txt);}
+.plan-week-label{font-family:'Fragment Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt);}
+
+/* inline planning input inside checklists */
+
+.plan-day-slot{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+.plan-day-slot:last-of-type{margin-bottom:8px;}
+.plan-day-slot-label{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#06b6d4;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);border-radius:4px;padding:4px 7px;flex-shrink:0;min-width:34px;text-align:center;margin-top:2px;}
+
+.cl-plan-input-wrap{margin:8px 0 4px 32px;display:none;}
+.cl-plan-input-wrap.open{display:block;}
+.cl-plan-textarea{width:100%;background:var(--s2);border:1px solid rgba(6,182,212,.3);border-radius:6px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:11px;padding:7px 10px;outline:none;resize:vertical;min-height:56px;line-height:1.5;transition:border-color .15s;}
+.cl-plan-textarea:focus{border-color:#06b6d4;}
+.cl-plan-textarea::placeholder{color:var(--dim);}
+.cl-plan-save{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;background:rgba(6,182,212,.12);color:#06b6d4;border:1px solid rgba(6,182,212,.25);border-radius:4px;padding:3px 10px;cursor:pointer;margin-top:4px;transition:all .15s;}
+.cl-plan-save:hover{background:#06b6d4;color:#000;}
+.cl-plan-saved{font-family:'Fragment Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--invest);margin-left:6px;opacity:0;transition:opacity .3s;}
+.cl-plan-saved.show{opacity:1;}
+
 /* ── TASK EXPAND DRAWER ── */
 .cl-how-arr{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;color:var(--dim);font-size:9px;transition:color .15s,transform .15s;margin-top:1px;user-select:none;border-radius:3px;}
 .cl-how-arr:hover{color:var(--gold);}
@@ -794,6 +847,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   <div class="ntab" onclick="switchView('roadmap',this)">90-Day Plan</div>
   <div class="nav-sep" style="width:1px;height:22px;background:#2a2a38;margin:0 4px;align-self:center;flex-shrink:0;"></div>
   <div class="ntab ntab-cal" onclick="switchView('calendar',this)">📅 Calendar</div>
+  <div class="ntab ntab-plan" onclick="switchView('plan',this)">📋 Plan</div>
   <div class="nav-sep" style="width:1px;height:22px;background:#2a2a38;margin:0 4px;align-self:center;flex-shrink:0;"></div>
   <div class="ntab ntab-sq" onclick="switchView('cl-sq',this)">🔗 ServaSquad</div>
   <div class="ntab ntab-ap" onclick="switchView('cl-ap',this)">⚡ ApexWire</div>
@@ -1458,6 +1512,7 @@ Notes: ${profile.notes||'none'}`.trim():`Location: Eugene, OR. Goals: ${goalLine
   // Build history summary
   const hist=ls(K.history)||[];
   const histSummary=hist.length?`Recent completed tasks: ${hist.slice(-10).map(h=>h.text).join('; ')}`:'No task history yet.';
+      const completionHistory = typeof getWeeklyHistory === 'function' ? `\n\nLast 4 weeks completion rates:\n${Object.entries(getWeeklyHistory()).sort().slice(-4).map(([wk,d]) => `${wk}: ${Object.entries(d).filter(([k])=>k!=='ts').map(([v,r])=>`${v} ${r.pct||0}%`).join(', ')}`).join('\n')}` : '';
   return {goalLines,profileCtx,availSummary,workingDays,histSummary};
 }
 
@@ -2692,6 +2747,62 @@ function toggleTaskDrawer(btn, drawerId) {
   btn.classList.toggle('open', !isOpen);
 }
 
+const PLAN_TASKS = {"Plan content for the week — pick 3 service + city combos": {"planKey": "sq_content_plan", "label": "Content Plan", "days": ["Mon", "Wed", "Fri"], "calTime": "9:00 AM", "calTheme": "dt-sq", "dayLabels": {"Mon": "Monday post title + keyword", "Wed": "Wednesday post title + keyword", "Fri": "Friday post title + keyword"}}, "CRM review — pipeline status, what needs follow-up this week": {"planKey": "re_crm_plan", "label": "CRM / Pipeline", "days": ["Mon"], "calTime": "8:00 AM", "calTheme": "dt-agent", "dayLabels": {"Mon": "Active leads, follow-ups needed, offers pending"}}, "Plan SOI call list for the week — who haven't you talked to in 90 days?": {"planKey": "re_soi_plan", "label": "SOI Calls", "days": ["Mon", "Tue", "Wed", "Thu", "Fri"], "calTime": "4:30 PM", "calTheme": "dt-agent", "dayLabels": {"Mon": "5 names to call", "Tue": "5 names to call", "Wed": "5 names to call", "Thu": "5 names to call", "Fri": "5 names to call"}}, "Plan open house or showing schedule for the week": {"planKey": "re_oh_plan", "label": "Open Houses & Showings", "days": ["Sat", "Sun"], "calTime": "10:00 AM", "calTheme": "dt-agent", "dayLabels": {"Sat": "Address, time, prep needed", "Sun": "Address, time, prep needed"}}, "Plan RE prospecting strategy for next week": {"planKey": "re_prospect_plan", "label": "Prospecting Strategy", "days": ["Mon"], "calTime": "8:00 AM", "calTheme": "dt-agent", "dayLabels": {"Mon": "Primary channel, target contacts, farm targets, partner meeting"}}, "Write and publish race preview if race is this weekend": {"planKey": "apex_race_plan", "label": "Race Weekend Plan", "days": ["Thu", "Sat", "Sun", "Mon"], "calTime": "9:00 AM", "calTheme": "dt-apex", "dayLabels": {"Thu": "Preview: race name + key angles", "Sat": "Qualifying take + tweet plan", "Sun": "Recap plan + subreddit strategy", "Mon": "Recap publish + social sharing"}}, "Log weekly metrics": {"planKey": "sq_metrics", "label": "ServaSquad Metrics", "days": ["Fri"], "calTime": "4:00 PM", "calTheme": "dt-sq", "dayLabels": {"Fri": "Posts published / Form submissions / Leads sold / Revenue $ / SC clicks / Backlinks sent"}}, "Log weekly metrics: sessions, top page, Twitter followers": {"planKey": "apex_metrics", "label": "ApexWire Metrics", "days": ["Fri"], "calTime": "4:00 PM", "calTheme": "dt-apex", "dayLabels": {"Fri": "Sessions / Top page / Twitter followers / Revenue $"}}, "Log weekly metrics: sessions, top page, Twitter followers, revenue": {"planKey": "laugh_metrics", "label": "Laughder Metrics", "days": ["Fri"], "calTime": "4:00 PM", "calTheme": "dt-laugh", "dayLabels": {"Fri": "Sessions / Top page / Twitter followers / Revenue $"}}, "Farm outreach prep — identify 10 targets in your farm neighborhood": {"planKey": "re_farm_plan", "label": "Farm Targets", "days": ["Tue"], "calTime": "1:30 PM", "calTheme": "dt-agent", "dayLabels": {"Tue": "Neighborhood + 10 homeowner names/addresses"}}, "Search Console: identify top 3 opportunities for next week": {"planKey": "sq_sc_opps", "label": "SC Opportunities", "days": ["Mon"], "calTime": "10:00 AM", "calTheme": "dt-sq", "dayLabels": {"Mon": "#1 query/page/fix · #2 query/page/fix · #3 query/page/fix"}}, "Journal: what would you do differently next week?": {"planKey": "trade_journal", "label": "Trade Journal", "days": ["Fri"], "calTime": "7:00 AM", "calTheme": "dt-trade", "dayLabels": {"Fri": "Best trade / Worst decision / Rule for next week"}}, "Weekly P&L vs target — write the number down": {"planKey": "trade_pnl", "label": "Weekly P&L", "days": ["Fri"], "calTime": "6:30 AM", "calTheme": "dt-trade", "dayLabels": {"Fri": "P&L this week $ / Target $ / Running monthly $"}}};
+
+
+function buildTaskRow(v, st, si, ii, item, drawId, planCfg, done) {
+  const doneClass = done ? " cl-done" : "";
+  const onclick = "clToggleItem('" + v + "'," + st.phase + "," + st.dayIdx + "," + si + "," + ii + ")";
+  let h = "<div class=\"cl-ci" + doneClass + "\" onclick=\"" + onclick + "\">";
+  if (item.how) {
+    h += "<div class=\"cl-how-arr\" onclick=\"event.stopPropagation();toggleTaskDrawer(this,'" + drawId + "')\">▶</div>";
+  } else {
+    h += "<div class=\"cl-how-arr-spacer\"></div>";
+  }
+  h += "<div class=\"cl-ci-box\">&#10003;</div>";
+  h += "<div class=\"cl-ci-content\">";
+  h += "<div class=\"cl-ci-text\">" + esc2(item.text) + "</div>";
+  if (item.note) h += "<div class=\"cl-ci-note\">" + esc2(item.note) + "</div>";
+  h += "</div></div>";
+  h += buildItemExtra(item, drawId, planCfg, done);
+  return h;
+}
+
+function buildItemExtra(item, drawId, planCfg, done) {
+  let out = '';
+  if (item.how) {
+    out += '<div class="cl-ci-drawer" id="' + drawId + '"><div class="cl-ci-drawer-inner">';
+    item.how.forEach(function(s, idx) {
+      out += '<div class="cl-ci-drawer-step">';
+      out += '<div class="cl-ci-drawer-num">' + (idx+1) + '</div>';
+      out += '<div class="cl-ci-drawer-step-text"><strong>' + esc2(s[0]) + '</strong><br><em>' + esc2(s[1]) + '</em></div>';
+      out += '</div>';
+    });
+    out += '</div></div>';
+  }
+  if (planCfg) {
+    const days = planCfg.days || [];
+    const dayLabels = planCfg.dayLabels || {};
+    out += '<div class="cl-plan-input-wrap' + (done ? ' open' : '') + '" id="plan-' + drawId + '">';
+    out += '<div class="plan-field-label" style="margin-bottom:8px;font-family:Fragment Mono,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#06b6d4;">&#128203; ' + esc2(planCfg.label) + '</div>';
+    days.forEach(function(day) {
+      const savedVal = getPlanField(planCfg.planKey, null, day);
+      const ph = esc2(dayLabels[day] || ('Enter ' + day + ' plan...'));
+      const inputId = 'plan-inp-' + drawId + '-' + day;
+      out += '<div class="plan-day-slot">';
+      out += '<div class="plan-day-slot-label">' + day + '</div>';
+      out += '<textarea class="cl-plan-textarea" id="' + inputId + '" placeholder="' + ph + '" rows="2" ';
+      out += "oninput=\"savePlanField('" + planCfg.planKey + "',this.value,'" + day + "')\">";
+      out += esc2(savedVal) + '</textarea>';
+      out += '</div>';
+    });
+    out += '<button class="cl-plan-save" onclick="event.stopPropagation();showPlanSaved(this)">&#10003; Saved</button>';
+    out += '<span class="cl-plan-saved" id="psaved-' + drawId + '">&#10003;</span>';
+    out += '</div>';
+  }
+  return out;
+}
+
 function buildChecklistView(v){
   const el=document.getElementById('view-'+v);
   if(!el)return;
@@ -2836,17 +2947,11 @@ function buildChecklistView(v){
         if (!item.how && TASK_HOW_DATA[item.text]) {
           item.how = TASK_HOW_DATA[item.text];
         }
+        const planCfg = PLAN_TASKS[item.text];
         const done=clGet(clItemKey(v,st.phase,st.dayIdx,si,ii,false));
         const drawId=`drw-${v}-${st.phase}-${st.dayIdx}-${si}-${ii}`;
-        h+=`<div class="cl-ci${done?' cl-done':''}" onclick="clToggleItem('${v}',${st.phase},${st.dayIdx},${si},${ii})">
-          ${item.how?`<div class="cl-how-arr" onclick="event.stopPropagation();toggleTaskDrawer(this,'${drawId}')">▶</div>`:`<div class="cl-how-arr-spacer"></div>`}
-          <div class="cl-ci-box">✓</div>
-          <div class="cl-ci-content">
-            <div class="cl-ci-text">${esc2(item.text)}</div>
-            ${item.note?`<div class="cl-ci-note">${esc2(item.note)}</div>`:''}
-          </div>
-        </div>
-        ${item.how?`<div class="cl-ci-drawer" id="${drawId}"><div class="cl-ci-drawer-inner">${item.how.map((s,idx)=>`<div class="cl-ci-drawer-step"><div class="cl-ci-drawer-num">${idx+1}</div><div class="cl-ci-drawer-step-text"><strong>${esc2(s[0])}</strong><br><em>${esc2(s[1])}</em></div></div>`).join('')}</div></div>`:''}`;
+        h+=buildTaskRow(v, st, si, ii, item, drawId, planCfg, done);
+
         if(item.subs&&item.subs.length){
           h+=`<div class="cl-sub-list">`;
           item.subs.forEach((sub,subi)=>{
@@ -3106,6 +3211,296 @@ function buildSettingsView() {
   renderSpTab(spCurrentTab);
 }
 
+
+// ── WEEKLY COMPLETION LOG (Option C) ────────────────────────────────────────
+function getWeekKey() {
+  const d = new Date();
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+  return `week_${d.getFullYear()}_${week}`;
+}
+
+function logWeeklyCompletion() {
+  const weekKey = getWeekKey();
+  const log = {};
+  Object.keys(CL_VENTURES).forEach(v => {
+    const data = CL_VENTURES[v];
+    let total = 0, done = 0, skipped = [];
+    [0,1,2].forEach(phase => {
+      ['mon','tue','wed','thu','fri'].forEach((day, di) => {
+        const secs = data.days[day] || [];
+        secs.forEach((sec, si) => {
+          (sec.items || []).forEach((item, ii) => {
+            total++;
+            const k = clItemKey(v, phase, di, si, ii, false);
+            if (clGet(k)) done++;
+            else skipped.push(item.text.substring(0, 40));
+          });
+        });
+      });
+    });
+    log[v] = { total, done, pct: total ? Math.round(done/total*100) : 0, skipped: skipped.slice(0,10) };
+  });
+  const existing = JSON.parse(localStorage.getItem('eos_week_log') || '{}');
+  existing[weekKey] = { ...log, ts: Date.now() };
+  // Keep last 8 weeks only
+  const keys = Object.keys(existing).sort();
+  if (keys.length > 8) keys.slice(0, keys.length - 8).forEach(k => delete existing[k]);
+  localStorage.setItem('eos_week_log', JSON.stringify(existing));
+  return log;
+}
+
+function getWeeklyHistory() {
+  return JSON.parse(localStorage.getItem('eos_week_log') || '{}');
+}
+
+// ── PLAN DATA STORE ──────────────────────────────────────────────────────────
+function getPlanData() {
+  return JSON.parse(localStorage.getItem('eos_plan_data') || '{}');
+}
+
+function savePlanField(key, value, day) {
+  const d = getPlanData();
+  const wk = getWeekKey();
+  if (!d[wk]) d[wk] = {};
+  const storeKey = day ? key + '_' + day : key;
+  d[wk][storeKey] = value;
+  const keys = Object.keys(d).sort();
+  if (keys.length > 12) keys.slice(0, keys.length-12).forEach(k => delete d[k]);
+  localStorage.setItem('eos_plan_data', JSON.stringify(d));
+}
+
+function getPlanField(key, weekKey, day) {
+  const d = getPlanData();
+  const wk = weekKey || getWeekKey();
+  const storeKey = day ? key + '_' + day : key;
+  return (d[wk] || {})[storeKey] || '';
+}
+
+function getWeekLabel(weekKey) {
+  if (!weekKey) return 'This Week';
+  const [,yr,wn] = weekKey.split('_');
+  const jan1 = new Date(parseInt(yr), 0, 1);
+  const d = new Date(jan1.getTime() + (parseInt(wn)-1)*7*86400000);
+  return d.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ' week';
+}
+
+
+function showPlanSaved(btn) {
+  const span = btn.nextElementSibling;
+  if (!span) return;
+  span.classList.add('show');
+  setTimeout(() => span.classList.remove('show'), 1800);
+  if (document.getElementById('view-plan') && document.getElementById('view-plan').style.display !== 'none') {
+    buildPlanView();
+  }
+}
+
+// Auto-open plan input when task is checked
+const _origToggleItem = clToggleItem;
+clToggleItem = function(v, phase, dayIdx, si, ii) {
+  _origToggleItem(v, phase, dayIdx, si, ii);
+  // Check if this item has a plan config — auto-open the plan input
+  const venture = CL_VENTURES[v];
+  if (!venture) return;
+  const dayKey = ['mon','tue','wed','thu','fri'][dayIdx];
+  const secs = venture.days[dayKey] || [];
+  const item = (secs[si]?.items || [])[ii];
+  if (!item) return;
+  const planCfg = PLAN_TASKS[item.text];
+  if (planCfg) {
+    const done = clGet(clItemKey(v, phase, dayIdx, si, ii, false));
+    // Find the plan input wrap for this item and open/close it
+    setTimeout(() => {
+      document.querySelectorAll('.cl-plan-input-wrap').forEach(el => {
+        if (el.id && el.id.includes(`drw-${v}-${phase}-${dayIdx}-${si}-${ii}`)) {
+          el.classList.toggle('open', done);
+        }
+      });
+    }, 50);
+  }
+};
+
+function buildPlanView() {
+  const el = document.getElementById('view-plan');
+  if (!el) return;
+  const wk = getWeekKey();
+  const hist = getWeeklyHistory();
+  const weeks = Object.keys(hist).sort().reverse();
+
+  // Current week plan data
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  function getPlanByDay(key, days) {
+    return days.map(d => {
+      const v = getPlanField(key, null, d);
+      return v ? {day: d, val: v} : null;
+    }).filter(Boolean);
+  }
+  const sq_content = getPlanByDay('sq_content_plan', ['Mon','Wed','Fri']);
+  const re_crm = getPlanByDay('re_crm_plan', ['Mon']);
+  const re_soi = getPlanByDay('re_soi_plan', ['Mon','Tue','Wed','Thu','Fri']);
+  const re_oh = getPlanByDay('re_oh_plan', ['Sat','Sun']);
+  const re_farm = getPlanByDay('re_farm_plan', ['Tue']);
+  const re_prospect = getPlanByDay('re_prospect_plan', ['Mon']);
+  const apex_race = getPlanByDay('apex_race_plan', ['Thu','Sat','Sun','Mon']);
+  const sq_metrics = getPlanByDay('sq_metrics', ['Fri']);
+  const apex_metrics = getPlanByDay('apex_metrics', ['Fri']);
+  const laugh_metrics = getPlanByDay('laugh_metrics', ['Fri']);
+  const trade_pnl = getPlanByDay('trade_pnl', ['Fri']);
+  const trade_journal = getPlanByDay('trade_journal', ['Fri']);
+  const sq_sc_opps = getPlanByDay('sq_sc_opps', ['Mon']);
+
+  // Completion stats from this week
+  const thisWeek = hist[wk] || {};
+  const ventures = [
+    {id:'cl-sq', name:'ServaSquad', icon:'🔗', color:'#f59e0b'},
+    {id:'cl-ap', name:'ApexWire', icon:'⚡', color:'#f59e0b'},
+    {id:'cl-la', name:'Laughder', icon:'😂', color:'#f43f5e'},
+    {id:'cl-re', name:'RE Agent', icon:'🏠', color:'#3b82f6'},
+    {id:'cl-tr', name:'Trading', icon:'📈', color:'#a78bfa'},
+  ];
+
+  function planLines(entries) {
+    if (!entries || !entries.length) return '<div class="plan-empty">Not planned yet — fill in the planning task in the checklist.</div>';
+    return entries.map(function(e) {
+      return '<div style="display:flex;gap:8px;margin-bottom:5px;align-items:flex-start;">' +
+        '<span style="font-family:Fragment Mono,monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#06b6d4;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:1px;">' + e.day + '</span>' +
+        '<span style="font-size:12px;color:var(--txt);line-height:1.5;">' + esc2(e.val) + '</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  let h = `<div class="plan-wrap">
+    <div class="plan-header">
+      <div class="plan-title">📋 Weekly Command Center</div>
+      <div class="plan-week">${getWeekLabel(wk)} · ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</div>
+    </div>
+
+    <div class="plan-metric-row" style="margin-bottom:20px;">
+      ${ventures.map(v => {
+        const d = thisWeek[v.id] || {};
+        return `<div class="plan-metric">
+          <div class="plan-metric-val" style="color:${v.color}">${d.pct||0}%</div>
+          <div class="plan-metric-lbl">${v.icon} ${v.name}</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="plan-grid">
+
+      <div class="plan-card">
+        <div class="plan-card-head">
+          <div class="plan-card-icon">🔗</div>
+          <div class="plan-card-title">ServaSquad — Content Plan</div>
+        </div>
+        <div class="plan-card-body">
+          <div class="plan-field">
+            <div class="plan-field-label">3 posts this week</div>
+            ${planLines(sq_content)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Search Console Opportunities</div>
+            ${planLines(sq_sc_opps)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Weekly metrics</div>
+            ${planLines(sq_metrics)}
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-card-head">
+          <div class="plan-card-icon">🏠</div>
+          <div class="plan-card-title">RE Agent — Pipeline</div>
+        </div>
+        <div class="plan-card-body">
+          <div class="plan-field">
+            <div class="plan-field-label">CRM / Pipeline status</div>
+            ${planLines(re_crm)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">SOI call list</div>
+            ${planLines(re_soi)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Open houses & showings</div>
+            ${planLines(re_oh)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Farm targets</div>
+            ${planLines(re_farm)}
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-card-head">
+          <div class="plan-card-icon">⚡</div>
+          <div class="plan-card-title">ApexWire — Race & Content</div>
+        </div>
+        <div class="plan-card-body">
+          <div class="plan-field">
+            <div class="plan-field-label">Race weekend plan</div>
+            ${planLines(apex_race)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Weekly metrics</div>
+            ${planLines(apex_metrics)}
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-card-head">
+          <div class="plan-card-icon">📈</div>
+          <div class="plan-card-title">Trading — P&L & Journal</div>
+        </div>
+        <div class="plan-card-body">
+          <div class="plan-field">
+            <div class="plan-field-label">Weekly P&L</div>
+            ${planLines(trade_pnl)}
+          </div>
+          <div class="plan-field" style="margin-top:10px;">
+            <div class="plan-field-label">Journal & lessons</div>
+            ${planLines(trade_journal)}
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-card" style="grid-column:1/-1;">
+        <div class="plan-card-head">
+          <div class="plan-card-icon">😂</div>
+          <div class="plan-card-title">Laughder — Weekly Metrics</div>
+        </div>
+        <div class="plan-card-body">
+          ${planLines(laugh_metrics)}
+        </div>
+      </div>
+
+    </div>
+
+    ${weeks.length > 0 ? `
+    <div style="margin-top:28px;">
+      <div class="plan-field-label" style="margin-bottom:12px;">Previous Weeks — Completion History</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${weeks.slice(0,6).map(wk2 => {
+          const w = hist[wk2];
+          const avg = Math.round(ventures.reduce((a,v) => a + ((w[v.id]||{}).pct||0), 0) / ventures.length);
+          return `<div style="background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:10px 14px;min-width:120px;">
+            <div style="font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;">${getWeekLabel(wk2)}</div>
+            <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:${avg>=70?'var(--invest)':avg>=40?'var(--gold)':'var(--red)'};">${avg}%</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:4px;">avg completion</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : ''}
+
+  </div>`;
+
+  el.innerHTML = h;
+}
+
 function buildCalendarView() {
   const el = document.getElementById('view-calendar');
   if (!el) return;
@@ -3134,6 +3529,20 @@ function buildCalendarView() {
 
   if (calMode === 'daily') {
     h += `<div class="day-timeline">`;
+    // Build planned calendar items for today
+    const todayDayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const todayDayName = todayDayNames[new Date().getDay()];
+    const planCalItems = {};
+    Object.entries(PLAN_TASKS).forEach(([taskText, cfg]) => {
+      if (cfg.days && cfg.days.includes(todayDayName)) {
+        const val = getPlanField(cfg.planKey, null, todayDayName);
+        if (val && val.trim()) {
+          if (!planCalItems[cfg.calTime]) planCalItems[cfg.calTime] = [];
+          planCalItems[cfg.calTime].push({theme: cfg.calTheme, label: cfg.label, val: val.trim(), taskText});
+        }
+      }
+    });
+
     DAILY_SCHEDULE.forEach(row => {
       if (row.blocks.length === 0 && !row.isHour) return;
       h += `<div class="dt-row">
@@ -3147,6 +3556,16 @@ function buildCalendarView() {
           ${b.tags.length ? `<div class="dt-card-tags">${b.tags.map(t=>`<span class="dt-tag" style="background:rgba(255,255,255,.06);color:var(--dim)">${t}</span>`).join('')}</div>` : ''}
         </div>`;
       });
+      // Inject planned items at this time slot
+      if (planCalItems[row.time]) {
+        planCalItems[row.time].forEach(pi => {
+          const lines = pi.val.split('\n').filter(Boolean).slice(0,3).join(' · ');
+          h += `<div class="dt-card ${pi.theme}" style="border-left-color:#06b6d4;border-left-width:3px;">
+            <div class="dt-card-label" style="color:#06b6d4;">📋 ${pi.label}</div>
+            <div class="dt-card-title" style="font-size:11px;font-weight:500;">${esc2(lines)}</div>
+          </div>`;
+        });
+      }
       if (row.blocks.length === 0) {
         h += `<div style="height:20px;border-left:1px dashed var(--b1);margin-left:0;"></div>`;
       }
@@ -3191,6 +3610,7 @@ const _origSV2 = switchView;
 switchView = function(id, el) {
   _origSV2(id, el);
   if (id === 'calendar') buildCalendarView();
+  if (id === 'plan') { logWeeklyCompletion(); buildPlanView(); }
   if (id === 'settings') buildSettingsView();
 };
 
@@ -3995,5 +4415,6 @@ applySettingsOnLoad();
 
 </script>
 
+<div class="view" id="view-plan"></div>
 <div class="view" id="view-settings"></div>
 </body>
