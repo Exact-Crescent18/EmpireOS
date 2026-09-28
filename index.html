@@ -557,6 +557,119 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .cl-item{display:flex;align-items:center;gap:5px;font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);}
 .cl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
 
+
+
+/* ── ICON PICKER ── */
+.icon-picker{display:flex;flex-wrap:wrap;gap:5px;padding:4px 0;}
+.icon-opt{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:7px;border:1px solid var(--b2);background:var(--s1);font-size:18px;cursor:pointer;transition:all .15s;user-select:none;}
+.icon-opt:hover{border-color:var(--b2);background:var(--s2);transform:scale(1.1);}
+.icon-opt-sel{border-color:var(--invest);background:var(--invest-d);}
+
+/* ── SETTINGS VIEW ── */
+.ntab-set.active{border-bottom-color:var(--gold)!important;color:var(--gold)!important;}
+.settings-wrap{max-width:900px;margin:0 auto;padding:24px 18px 80px;}
+.settings-title{font-family:'Syne',sans-serif;font-size:clamp(22px,3.5vw,36px);font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-.02em;}
+.settings-sub{font-size:13px;color:var(--dim);margin-bottom:24px;}
+.sp-tabs{display:flex;gap:4px;margin-bottom:24px;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;}
+.sp-tabs::-webkit-scrollbar{display:none;}
+.sp-tab{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;background:var(--s1);border:1px solid var(--b1);border-radius:6px;color:var(--dim);padding:7px 16px;cursor:pointer;transition:all .15s;user-select:none;}
+.sp-tab:hover{color:var(--txt);border-color:var(--b2);}
+.sp-tab.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700;}
+.sp-content{background:var(--s1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;}
+.sp-section{padding:20px 22px;border-bottom:1px solid var(--b1);}
+.sp-section:last-child{border-bottom:none;}
+.sp-sec-title{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--b1);}
+.sp-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.sp-row:last-of-type{margin-bottom:0;}
+.sp-label{font-size:12px;font-weight:600;color:var(--txt);min-width:130px;flex-shrink:0;}
+.sp-input{flex:1;min-width:120px;background:var(--s2);border:1px solid var(--b2);border-radius:7px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;padding:7px 11px;outline:none;transition:border-color .15s;}
+.sp-input:focus{border-color:var(--gold);}
+.sp-input::placeholder{color:var(--dim);}
+.sp-textarea{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:7px;color:var(--txt);font-family:'Fragment Mono',monospace;font-size:11px;padding:9px 11px;outline:none;transition:border-color .15s;resize:vertical;min-height:90px;line-height:1.6;margin-top:6px;}
+.sp-textarea:focus{border-color:var(--gold);}
+.sp-color{width:44px;height:34px;border-radius:6px;border:1px solid var(--b2);cursor:pointer;padding:2px;background:var(--s2);}
+.sp-emoji-input{width:54px;text-align:center;font-size:18px;background:var(--s2);border:1px solid var(--b2);border-radius:7px;color:var(--txt);padding:5px;outline:none;transition:border-color .15s;}
+.sp-emoji-input:focus{border-color:var(--gold);}
+.sp-btn{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:7px;padding:9px 18px;cursor:pointer;transition:all .15s;font-weight:700;}
+.sp-btn-save{background:var(--invest);color:#000;}
+.sp-btn-save:hover{opacity:.85;}
+.sp-btn-danger{background:var(--red-d);color:var(--red);border:1px solid rgba(224,82,82,.3);}
+.sp-btn-danger:hover{background:var(--red);color:#fff;}
+.sp-btn-gold{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);}
+.sp-btn-gold:hover{background:var(--gold);color:#000;}
+.sp-btn-purple{background:rgba(167,139,250,.15);color:var(--trade);border:1px solid rgba(167,139,250,.3);}
+.sp-btn-purple:hover{background:var(--trade);color:#000;}
+.sp-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.sp-note{font-size:11px;color:var(--dim);line-height:1.55;}
+.sp-pillar-card{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:14px 16px;margin-bottom:8px;}
+.sp-pillar-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sp-pillar-icon{font-size:22px;}
+.sp-pillar-id{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;}
+.sp-pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sp-field{display:flex;flex-direction:column;gap:5px;}
+.sp-field-lbl{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.sp-theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sp-theme-card{border-radius:9px;padding:14px 12px;border:2px solid var(--b1);cursor:pointer;transition:all .15s;text-align:center;}
+.sp-theme-card:hover{border-color:var(--b2);}
+.sp-theme-card.active{border-color:var(--gold);}
+.sp-theme-preview{height:36px;border-radius:6px;margin-bottom:8px;}
+.sp-theme-name{font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.ed-venture-sel{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;}
+.ed-vs-btn{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:var(--s2);border:1px solid var(--b1);border-radius:5px;color:var(--dim);padding:6px 12px;cursor:pointer;transition:all .15s;user-select:none;}
+.ed-vs-btn:hover{border-color:var(--b2);color:var(--txt);}
+.ed-vs-btn.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700;}
+.ed-section{background:var(--s2);border:1px solid var(--b1);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.ed-sec-head{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--b1);background:rgba(0,0,0,.15);}
+.ed-sec-name-input{flex:1;background:var(--bg);border:1px solid var(--b2);border-radius:5px;color:var(--txt);font-family:'Fragment Mono',monospace;font-size:10px;padding:6px 10px;outline:none;transition:border-color .15s;}
+.ed-sec-name-input:focus{border-color:var(--gold);}
+.ed-sec-time-input{width:130px;background:var(--bg);border:1px solid var(--b2);border-radius:5px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:9px;padding:6px 9px;outline:none;transition:border-color .15s;}
+.ed-sec-time-input:focus{border-color:var(--gold);}
+.ed-del-btn{background:none;border:1px solid rgba(224,82,82,.25);border-radius:5px;color:var(--red);font-size:13px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.ed-del-btn:hover{background:var(--red);color:#fff;}
+.ed-items{padding:8px 14px;}
+.ed-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;background:var(--bg);border:1px solid var(--b1);border-radius:7px;padding:9px 11px;}
+.ed-item-inputs{flex:1;display:flex;flex-direction:column;gap:5px;}
+.ed-item-text{width:100%;background:var(--s1);border:1px solid var(--b2);border-radius:5px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:12px;padding:6px 10px;outline:none;transition:border-color .15s;}
+.ed-item-text:focus{border-color:var(--gold);}
+.ed-item-note{width:100%;background:var(--s1);border:1px solid var(--b1);border-radius:5px;color:var(--dim);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 10px;outline:none;transition:border-color .15s;}
+.ed-item-note:focus{border-color:var(--gold);}
+.ed-add-btn{width:100%;background:var(--s2);border:1px dashed var(--b2);border-radius:6px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:8px;cursor:pointer;transition:all .15s;margin-top:4px;}
+.ed-add-btn:hover{border-color:var(--gold);color:var(--gold);}
+.ed-add-sec-btn{width:100%;background:var(--s2);border:1px dashed var(--b2);border-radius:9px;color:var(--dim);font-family:'Fragment Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:12px;cursor:pointer;transition:all .15s;margin-top:8px;}
+.ed-add-sec-btn:hover{border-color:var(--invest);color:var(--invest);}
+.groq-status{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim);padding:10px 14px;background:var(--s2);border-radius:7px;border:1px solid var(--b1);margin-top:10px;min-height:38px;line-height:1.6;}
+.groq-status.ok{color:var(--invest);border-color:rgba(16,185,129,.3);}
+.groq-status.err{color:var(--red);border-color:rgba(224,82,82,.3);}
+.groq-status.working{color:var(--gold);}
+.sp-storage-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--b1);}
+.sp-storage-row:last-child{border-bottom:none;}
+.sp-storage-key{font-size:12px;color:var(--dim);}
+.sp-storage-val{font-family:'Fragment Mono',monospace;font-size:12px;color:var(--invest);}
+
+
+/* ── TASK EXPAND DRAWER ── */
+.cl-how-arr{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;color:var(--dim);font-size:9px;transition:color .15s,transform .15s;margin-top:1px;user-select:none;border-radius:3px;}
+.cl-how-arr:hover{color:var(--gold);}
+.cl-how-arr.open{color:var(--gold);transform:rotate(90deg);}
+.cl-how-arr-spacer{width:16px;flex-shrink:0;}
+.cl-si-how-arr{width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;color:var(--dim);font-size:8px;transition:color .15s,transform .15s;margin-top:1px;user-select:none;border-radius:3px;}
+.cl-si-how-arr:hover{color:var(--gold);}
+.cl-si-how-arr.open{color:var(--gold);transform:rotate(90deg);}
+.cl-si-how-arr-spacer{width:14px;flex-shrink:0;}
+.cl-ci-drawer{display:none;margin:8px 0 4px 0;background:var(--s2);border:1px solid var(--b1);border-radius:8px;overflow:hidden;}
+.cl-ci-drawer.open{display:block;}
+.cl-ci-drawer-inner{padding:12px 14px;}
+.cl-ci-drawer-inner p{font-size:12px;color:var(--txt);line-height:1.65;margin:0 0 8px 0;}
+.cl-ci-drawer-inner p:last-child{margin-bottom:0;}
+.cl-ci-drawer-inner strong{color:var(--gold);font-weight:700;}
+.cl-ci-drawer-step{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+.cl-ci-drawer-step:last-child{margin-bottom:0;}
+.cl-ci-drawer-num{font-family:'Fragment Mono',monospace;font-size:9px;font-weight:700;color:#000;background:var(--gold);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.cl-ci-drawer-step-text{font-size:12px;color:var(--txt);line-height:1.6;}
+.cl-ci-drawer-step-text em{color:var(--dim);font-style:normal;font-size:11px;}
+.cl-ci-drawer-label{font-family:'Fragment Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.cl-ci-drawer-url{font-family:'Fragment Mono',monospace;font-size:10px;color:var(--invest);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:4px 8px;margin-top:4px;word-break:break-all;}
+
 /* ── CHECKLIST NAV COLORS ── */
 .ntab-sq.active{border-bottom-color:var(--bridge)!important;color:var(--bridge)!important;}
 .ntab-ap.active{border-bottom-color:var(--bridge)!important;color:var(--bridge)!important;}
@@ -687,6 +800,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   <div class="ntab ntab-la" onclick="switchView('cl-la',this)">😂 Laughder</div>
   <div class="ntab ntab-re" onclick="switchView('cl-re',this)">🏠 RE Agent</div>
   <div class="ntab ntab-tr" onclick="switchView('cl-tr',this)">📈 Trading</div>
+  <div class="nav-sep" style="width:1px;height:22px;background:#2a2a38;margin:0 4px;align-self:center;flex-shrink:0;"></div>
+  <div class="ntab ntab-set" onclick="switchView('settings',this)">⚙ Settings</div>
   <div class="nav-r">
     <button class="nb nb-brief" id="nb-brief" onclick="runBriefing()">✦ Daily Brief</button>
     <button class="nb nb-decide" id="nb-decide" onclick="togglePanel('decide')">⚖ Decision</button>
@@ -2562,6 +2677,21 @@ const REV_TARGETS={
   'cl-tr':[{a:'Protecting capital',b:'Month 1–2'},{a:'$1,500–2,000/mo',b:'Month 3'},{a:'$2,000/mo',b:'Month 4–6'}],
 };
 
+
+
+
+// ── TASK HOW-TO DATA ──────────────────────────────────────
+const TASK_HOW_DATA = {"Plan content for the week — pick 3 service + city combos": [["Use the Topic Generation Prompt", "Open the Guidelines card below, copy the Topic Generation prompt, paste it into Claude or ChatGPT. It returns 3 post ideas — Mon, Wed, Fri — each with a title, keyword, and city."], ["Check Search Console before choosing topics", "Go to search.google.com/search-console → Performance → Queries. Filter position 8–20. Any keyword already showing there should be your priority — write a post targeting that exact query."], ["Write the 3 titles first, before anything else", "Format: [Service] in [City], Oregon | ServaSquad. Under 60 characters. Example: Electrician in Eugene Oregon | ServaSquad. The title IS the keyword."], ["Add to a simple content calendar", "Google Sheet: Date | Title | Keyword | City | Status. Check off each one as published Mon/Wed/Fri."]], "Write and publish Monday blog post": [["Copy the Post Writing Prompt from the Guidelines card", "Replace [keyword] with today's target and [city] with the city. Paste into Claude or ChatGPT. Returns 800 words."], ["Edit for 10 minutes", "Fix anything robotic. Add one locally specific fact about that Oregon city. Confirm the CTA link goes to servasquad.com/[city]-[service]/"], ["Add to WordPress", "wp-admin → New Post → paste content → H1 = exact keyword → Yoast SEO: meta title under 60 chars, meta description under 160 chars → set category to service type."], ["Publish then immediately request indexing", "Copy the URL → Search Console → URL Inspection → paste URL → Request Indexing. Without this, Google may take weeks to find the page."]], "Write and publish Wednesday blog post": [["Same process as Monday", "Copy the Post Writing Prompt → fill in today's keyword and city → paste into Claude → edit 10 min → publish."], ["Wednesday keyword should target a different city than Monday", "Rotate cities: if Monday was Eugene, Wednesday is Portland or Salem. Build coverage across all 5 cities systematically."], ["After publishing, update internal links", "Go to one older post and add a link to today's new post where it fits naturally. Every new post needs at least 2 incoming internal links to rank well."]], "Write and publish Friday blog post": [["Same process as Monday and Wednesday", "Copy Post Writing Prompt → keyword + city → Claude/ChatGPT → edit → publish."], ["Friday is a good day for service + Eugene posts", "Eugene is your home market. Posts targeting Eugene rank faster because you can build local links and share in local groups more effectively."], ["Request indexing and share in a Facebook group same day", "Don't let Friday posts sit unindexed over the weekend. Submit to Search Console immediately after publishing."]], "Send 5 backlink outreach emails": [["Find link targets with Google", "Search: 'Oregon home improvement blog', '[city] neighborhood association website', 'Eugene HOA site', 'Oregon real estate agent blog'. You need real websites with real audiences."], ["Find the contact email", "Look for Contact or About pages. Hunter.io finds emails free (25/month). Voila Norbert is another option."], ["Send a short, direct ask", "Subject: Quick link request. Body: Hi [name] — I run ServaSquad.com, a free Oregon contractor matching service. We have a guide on [topic] that might be useful for your readers. Would you be open to linking to it? Happy to return the favor. — E"], ["Log every email in a spreadsheet", "Columns: Date | Website | URL you want linked | Email sent to | Reply Y/N. Track 25/week. At 5–10% reply rate = 1–2 real backlinks per week."], ["Follow up once after 5 days", "Reply to your original email: Just bumping this in case it got buried — happy to make this easy. One follow-up doubles reply rate."]], "Send 5 backlink emails": [["Same process as the full backlink outreach task", "5 emails minimum every single day you're in this block. Volume is the game — most emails get no reply. The ones that do convert."], ["Never skip this even on review or audit days", "Backlinks compound. A link built today passes authority for years. Missing a day costs you more than it seems."], ["Use different targets each day", "Rotate through: local blogs, HOA sites, RE agent blogs, Oregon news sites, city neighborhood pages. Keep your outreach spreadsheet open and add new targets daily."]], "Send 5 backlink emails — never skip even on review day": [["Open your outreach spreadsheet", "Find 5 sites you haven't emailed yet. Aim for sites with real content and a real audience — not directories or link farms."], ["Write and send 5 personalized one-line asks", "Each email takes 3 minutes. That's 15 minutes total. Do not over-think the copy. Short and direct wins over long and polished."], ["Log sent emails before closing the spreadsheet", "Mark date and site for each one. Follow-ups on unanswered emails go out automatically 5 days later."]], "Submit any new pages to Search Console → Request Indexing": [["Copy the URL of every page published this week", "Go to your WordPress admin → Posts → find any published this week. Copy each URL."], ["Open Search Console → URL Inspection", "Go to search.google.com/search-console → select ServaSquad property → click URL Inspection in the left sidebar."], ["Paste URL → Request Indexing", "Paste the URL → press Enter → wait for result → click Request Indexing. Repeat for each URL. Google crawls within 24–72 hours instead of weeks."], ["Do this for every new page, every week", "Landing pages, blog posts, any new content. If it's not submitted, Google may not find it for months."]], "Share blog post in relevant city Facebook homeowner group": [["Find the right group for today's post city", "Search Facebook for '[city] community', '[city] homeowners', '[city] neighborhood'. Join groups with 1,000+ members that allow links. Keep a saved list of 10–15 groups."], ["Write a native post, not just a link", "Bad: Check out my article [link]. Good: If you're hiring an electrician in Eugene, here's what permits actually cost — and why some contractors skip them: [link]. Lead with value."], ["Post at 7–9 AM or 6–8 PM", "Peak Facebook engagement windows. Posts at midday get buried in the feed."], ["Reply to every comment in the first hour", "Early engagement tells Facebook's algorithm to show the post to more people. Check back 30 min after posting."]], "Share in relevant Facebook homeowner group": [["Same process as the main share task", "Find the city-specific group for today's post. Write a value-first native post with the link at the end."], ["Rotate groups — don't post to the same group every week", "Most groups have posting frequency limits. Spread across your list of saved groups. One group per post is ideal."]], "Search Console audit — check all ServaSquad pages": [["Open Performance → Pages, date range: Last 28 days", "search.google.com/search-console → Performance → Pages tab. Export to Google Sheets if you have more than 20 pages."], ["Flag pages with impressions but CTR under 2%", "Google is showing the page but nobody clicks. Fix: rewrite the title tag to be more specific and compelling. Change 'Plumber in Salem' to 'Licensed Plumber in Salem OR | Free Quotes Today'."], ["Flag pages at position 11–20", "These are on page 2. Fix: add 200+ words of useful content, add 2 internal links from other ServaSquad pages pointing to it, tighten the H1 to match the exact search query."], ["Fix one page per session — don't try to fix everything", "Pick the highest-impression page with the lowest CTR. Fix just that one. Republish it. Request indexing again. Small consistent fixes beat big overhauls."]], "Internal linking pass — every new post needs 2 landing page links + 2 post links": [["Open every post published this week", "Go to WordPress → Posts → filter by this week. Open each post in the editor."], ["Add 2 links to landing pages", "Find a natural place to mention a service. Link the anchor text to the relevant landing page. Example: 'if you need a licensed electrician in Eugene' → link to servasquad.com/eugene-electrician/"], ["Add 2 links to other blog posts", "Find related posts on ServaSquad. Link naturally. Example: a post about roofing costs can link to your roofing permit post."], ["Internal links spread authority and help both pages rank", "Google uses internal links to understand site structure and pass ranking signals between pages. Every unlinked new post is a missed opportunity."]], "Internal linking pass — all 35 landing pages should link to at least 3 blog posts": [["Open each landing page in WordPress", "Posts → Pages → find each service+city landing page. Open in editor."], ["Add 3 links to relevant blog posts", "Example: the Eugene Electrician landing page should link to your blog posts about electrical permit costs, how to find a licensed electrician in Eugene, and Oregon electrical code updates."], ["Use natural anchor text, not 'click here'", "The anchor text should describe the destination page. 'Oregon electrical permit costs' is better than 'read more here'. Google reads anchor text as a signal."]], "Check contact form — any new homeowner inquiries overnight?": [["Log into WordPress admin", "Go to servasquad.com/wp-admin → check your contact form plugin (Contact Form 7, WPForms, or Gravity Forms) → Entries or Submissions section."], ["For each submission, note: service type, city, project description, timeline, budget", "This is your lead. You now have a real homeowner who needs a contractor. This is what you sell."], ["Add every submission to your lead tracking sheet", "Columns: Date | Service | City | Description | Timeline | Budget | Status. Update this every morning."]], "Check form submissions — any new leads?": [["Same as the morning form check", "WP-admin → contact form plugin → Entries. Any new submissions since last check?"], ["Every submission = a lead you can sell to a contractor", "Don't let submissions sit. The faster you contact a contractor with a fresh lead, the more it's worth."]], "Check form submissions": [["WP-admin → contact form plugin → Entries", "Takes 2 minutes. Note any new submissions and add to lead tracking sheet."], ["Flag any leads in your current active contractor relationships", "If you already have a roofing contractor in Portland, a new Portland roofing lead goes to them first."]], "Check form submissions — close out the week": [["Review all submissions from the full week", "Make sure every lead from Monday–Friday is logged, contacted, and has a status in your tracking sheet."], ["Calculate this week's lead revenue", "Total leads sold × price per lead = week's revenue. Log in your metrics sheet."]], "For any new leads: identify the right contractor to contact": [["Match service type and city to your contractor list", "Who do you have for roofing in Portland? Plumbing in Eugene? If no contractor yet for that trade + city, this is a new outreach target."], ["If no contractor exists yet, reach out to 3 contractors in that trade/city today", "Search Google for '[trade] contractor [city] Oregon CCB licensed'. Find 3. Look up their contact info. You have a lead to offer them — that's your opening."], ["Prioritize contractors you've already worked with", "A known contractor pays faster, trusts you more, and is more likely to become a retainer client."]], "Contact contractor with lead in hand": [["Call or text — not email", "Contractors respond to calls and texts. Emails get ignored. Call first, text as backup."], ["Your opening: 'I have a homeowner in [city] who needs [service] — project is [description], timeline is [X]. Interested?'", "That's it. You have what they want. You don't need a sales pitch."], ["Agree on price before sending the lead", "Per-lead pricing by trade: Roofing $80–150, Electrical/Plumbing/HVAC $40–80, Handyman/Garage Door $20–40. Collect payment via Venmo, Zelle, or invoice before or same-day as lead delivery."], ["Send the lead details after agreement", "Name, phone, address, project description, timeline, budget. That's the package. Simple."]], "Follow up on any leads sent to contractors yesterday — did they respond?": [["Text or call every contractor you sent a lead to yesterday", "'Hey, did you get a chance to reach out to [homeowner name]? How did it go?' This keeps contractors accountable and builds the relationship."], ["Log the outcome in your tracking sheet", "Contractor reached out Y/N | Homeowner responded Y/N | Job quoted Y/N | Job won Y/N. This data tells you which contractors are worth sending leads to."], ["If a contractor didn't follow up on a lead, don't send them the next one", "Contractors who don't follow up waste your leads. Replace them with someone who will."]], "Update your lead tracking sheet: date received, service, city, contractor contacted, sold Y/N, price": [["Open your lead tracking Google Sheet", "Columns: Date received | Service | City | Homeowner description | Contractor contacted | Date contacted | Sold Y/N | Price | Notes"], ["Update every row from this week", "Any lead that came in but doesn't have a Sold status yet — follow up on it now."], ["Calculate running monthly revenue", "Total sold leads × per-lead price. This number tells you where you are vs your monthly target."]], "Competitor content gap — search your target keywords, look at page-one results": [["Pick 3 of your target keywords", "Example: 'plumber Portland Oregon', 'HVAC repair Eugene', 'roofing contractor Bend'."], ["Google each one and look at every page-1 result", "Click the top 3–5 results. What pages do they have that ServaSquad doesn't? What topics do they cover that you haven't written about?"], ["Add missing topics to your content calendar", "If a competitor has a page about 'average cost of roof replacement in Portland' and you don't — that goes on next week's list."], ["Also check: do they have pages for cities you haven't targeted yet?", "If a competitor ranks for 'plumber in Corvallis' and you have no Corvallis content — add it."]], "Fix any page-2 rankings — add 200 words, improve title, add internal links": [["Find page-2 rankings in Search Console", "Performance → Queries → filter average position 11–30. These are your fastest wins."], ["Open that page in WordPress and add 200+ words of genuine useful content", "Don't pad. Add a FAQ section, a cost table, or a step-by-step explanation of the hiring process for that trade in that city."], ["Rewrite the H1 and title tag to exactly match the search query", "If the query is 'licensed plumber Salem Oregon' your H1 should be 'Licensed Plumber in Salem, Oregon'. Exact match."], ["Add 2 internal links from other pages pointing to this page", "Go to 2 other pages on ServaSquad that naturally mention this service or city. Add a link from those pages to this one. Republish both."], ["Request indexing again in Search Console", "After making changes, resubmit the URL. Tell Google to re-crawl the updated page."]], "Research contractors for any new lead cities or trades you haven't covered yet": [["Identify gaps in your contractor network", "Open your contractor list. Which service + city combinations have no contractor yet? Those gaps mean you can't monetize leads from those queries."], ["Search Google for contractors in those trades/cities", "Search '[trade] contractor [city] Oregon'. Look for contractors with real websites, Google reviews, and CCB license numbers."], ["Reach out to 3 new contractors today", "Your pitch: 'I run ServaSquad.com — I generate homeowner leads for contractors in Oregon. I have leads coming in for [trade] in [city] and want to offer them to you. Interested?' Short and direct."]], "Research lead pricing for each service type": [["Review current per-lead pricing", "Roofing: $80–150. Electrical/Plumbing/HVAC: $40–80. Handyman/Garage Door: $20–40. These are market rates."], ["Check what competitors charge", "Search for HomeAdvisor, Thumbtack, Angi pricing for Oregon contractors. Their lead prices are public. Make sure you're competitive."], ["Consider raising prices for high-demand trades", "If roofing contractors keep buying leads immediately — raise the price. Supply and demand. Start at $80 and test up to $150."]], "Pinterest: create one infographic-style graphic for a top post": [["Open Canva — free tier is fine", "canva.com → create new design → Pinterest Pin (1000×1500px is the ideal size)."], ["Pick your top-traffic ServaSquad post", "Search Console → Performance → Pages → sort by clicks. Use the #1 post this week."], ["Create a simple graphic with: headline, 3–5 key stats or tips, your URL at the bottom", "Example: 'How Much Does a Plumber Cost in Portland, Oregon? [3 stats from your post]'. Clean design, readable text, ServaSquad URL at bottom."], ["Post to Pinterest with keyword-rich description", "Description should include: service + city + 'Oregon' + problem the homeowner has. 'Looking for plumber costs in Portland Oregon? Here's what licensed plumbers actually charge for common repairs.' Link to the full post."]], "Google Business Profile update — add a post, photo, or update this week": [["Log into your Google Business Profile", "Go to business.google.com or search 'ServaSquad' in Google while logged into your business account. Click Edit Profile or Add Update."], ["Add a post: recent project, tip, or offer", "Example: 'Looking for a licensed electrician in Eugene? ServaSquad matches Oregon homeowners with CCB-certified contractors — free, fast, and local.' Add a photo and a button linking to your Eugene electrician landing page."], ["GBP posts stay live for 7 days", "Post every week to keep the profile fresh. Google favors active GBP profiles in local search results."]], "Review lead form — is it capturing enough info?": [["Open your lead form on ServaSquad", "Go to servasquad.com → find your lead capture form. Fill it out yourself as a test. Is it asking for everything a contractor needs?"], ["Required fields: service type, city/zip, project description, timeline, rough budget", "These 5 fields are what makes a lead valuable to a contractor. Missing any of them makes the lead harder to sell."], ["Check form on mobile — most homeowners submit from phones", "If the form is hard to use on mobile, you're losing leads. Test on your phone. Every field should be easy to tap and fill."]], "Log weekly metrics": [["Open your metrics Google Sheet", "Columns: Week | Posts Published | Form Submissions | Leads Sold | Revenue | SC Clicks | SC Impressions | Backlinks Sent. Update every Friday."], ["Pull Search Console numbers", "Performance → Last 7 days → Total Clicks and Total Impressions. Both should be growing week over week."], ["Count form submissions", "WP-admin → contact form → Entries from this week. Every submission = one homeowner lead."], ["Log revenue", "Leads sold × price = week's revenue. Write the number. Even $0 is data — it tells you what to fix."], ["Identify the one thing that would most improve next week", "Was it publishing? Leads? Contractors? Pick one bottleneck and address it Monday morning."]], "Log weekly metrics: sessions, top page, Twitter followers": [["Check Google Analytics or Search Console for sessions", "Search Console → Performance → Last 7 days → Total Clicks = your session proxy. Or Google Analytics → Reports → Traffic."], ["Note your #1 page this week", "Search Console → Performance → Pages → sort by clicks. What's getting traffic? Double down on that topic."], ["Check Twitter follower count", "Open your motorsports Twitter account. Note the follower count. Compare to last week. Growing? Flat? Adjust content mix."]], "Log weekly metrics: sessions, top page, Twitter followers, revenue": [["Same as the standard weekly metrics log", "Sessions (Search Console clicks), top page, Twitter followers, plus any affiliate or ad revenue generated this week."], ["Check AdSense or affiliate revenue if applicable", "Google AdSense → Reports → Last 7 days. Or check affiliate dashboard. Log the number even if it's small."]], "Search Console: identify top 3 opportunities for next week": [["Open Search Console → Performance → Queries", "Date range: Last 28 days. Sort by Position. Filter to position 11–30. These are your fastest wins."], ["For each near-ranking query, find the page that ranks for it", "Click the query → Pages tab → see which URL is ranking. That page needs improvement."], ["Write down 3 targets: query | page | what to fix", "Example: 'plumber Portland Oregon' | servasquad.com/portland-plumbing/ | add 300 words, fix H1. These 3 become Monday's first task."]], "Follow up on any open contractor negotiations": [["Review your contractor outreach list", "Open your contractor spreadsheet. Who did you pitch a retainer to this week? Who bought a lead but hasn't paid yet? Who said 'maybe'?"], ["Follow up by call or text — not email", "One sentence: 'Hey [name], just checking in on that lead from [city] — did it pan out? Still happy to send more your way.' Keep it casual."], ["Push retainer pitch for anyone who bought 3+ leads this month", "'You've bought 8 leads from me this month at $80 each — that's $640. For $400/month I'll prioritize all [city] [trade] leads to you and guarantee minimum 8 leads. Want to lock that in?'"]], "Any contractors who bought leads this week — follow up": [["Text or call every contractor who bought a lead this week", "'Hey [name], just checking — how did that lead from [homeowner] go? Did you get the job?' This builds the relationship and gives you testimonial data."], ["Log the outcome", "Contractor reached homeowner Y/N | Job quoted Y/N | Job won Y/N | Homeowner feedback. This data makes your leads more valuable over time."]], "Any contractor who bought 3+ leads this week — pitch monthly retainer": [["Identify contractors who bought 3+ leads", "Open your lead tracking sheet. Filter by contractor name. Anyone with 3+ purchases this week is a retainer candidate."], ["Your pitch, word for word", "'You bought [X] leads from me this week at $[price] each — that's $[total]. For $400/month I'll send you every [trade] lead in [city] as priority. Guaranteed minimum [X] leads per month. Want to lock in?'"], ["If they say yes: invoice them for month 1 immediately", "Don't wait. Send the invoice the same day. Retainers that don't get invoiced same-day often fall through."]], "Monday after race weekend — publish full race recap": [["Publish as fast as possible after the race", "Race weekend search traffic peaks immediately and drops 80% within 48 hours. Speed is more important than perfection."], ["Structure: Result → Story → Data → Your Take", "Para 1: winner and result. Para 2: what happened and why. Para 3: standings update with real numbers. Para 4: your analysis of what this means."], ["H1 format: [Driver] Wins [Race Name] — [Year] Results", "Example: Max Verstappen Wins Monaco Grand Prix — 2026 F1 Results. This is exactly what people search within minutes of the checkered flag."], ["Post in the subreddit immediately after publishing", "r/formula1, r/NASCAR, or r/IndyCar. Write 2 sentences of your take, then link. Don't just drop the URL."]], "Non-race Monday — write driver profile or season analysis": [["Driver profiles rank permanently", "Best format: '[Driver Name] Career Stats, Wins, and Championship History'. People search this year-round not just during race weekends."], ["Season analysis targets championship search traffic", "'2026 F1 Championship Standings — Can [Driver] Still Win?' — high search volume all season."], ["Use real current data", "Check the official series website for accurate standings and stats. Inaccurate stats destroy credibility with motorsports fans instantly."]], "Engage with 10 motorsports conversations on Twitter/X": [["Go to Twitter/X and search your series", "Search 'F1', '#Formula1', 'NASCAR', 'IndyCar'. Filter by Latest. Find posts with real engagement (replies, likes) from the last few hours."], ["Reply to 10 posts with genuine takes", "Not 'great point!' — actually say something. 'Disagree — Hamilton's pace in sector 2 was elite all weekend, the strategy call cost him.' Real opinions get followers."], ["Reply to large accounts (100k+) for maximum exposure", "When you reply to a big account's post, their followers see your reply. This is free exposure to your target audience."]], "Write and publish ApexWire article — standings update or team analysis": [["Use the Topic Generation prompt from Guidelines", "Copy the ApexWire prompt, paste into Claude. It returns 5 ideas with timing and keyword rationale."], ["Standings updates work best mid-week", "Search volume for championship standings peaks Tuesday–Thursday. Title format: '2026 F1 Championship Standings After [Race] — [Driver] Leads by [X] Points'"], ["Team analysis works best when something notable happened", "Pit crew errors, strategy blunders, car upgrades, driver controversies. Write within 24–48 hours of the news for maximum search capture."]], "3 tweets + reply to 10 motorsports conversations": [["Tweet 1 (8 AM): a stat or number", "Numbers perform. 'Verstappen has led 847 laps this season — more than the next 3 drivers combined.' No opinion needed."], ["Tweet 2 (12 PM): your take with a link", "Opinion + link to your article. 'The Monaco result changes everything for the championship — here's why: [link]'"], ["Tweet 3 (5 PM): a question", "'Who wins the championship if Verstappen has one more DNF?' Questions get replies. Replies boost reach."], ["10 replies: find conversations happening now", "Search your series name → Latest → reply to 10 real conversations with genuine opinions. This is how you get followers without ads."]], "3 tweets + 10 replies": [["Same structure as 3 tweets + 10 conversations", "Stat tweet 8 AM, opinion+link tweet 12 PM, question tweet 5 PM. Then 10 genuine replies to current motorsports conversations."]], "3 tweets": [["Stat tweet (8 AM), opinion tweet (12 PM), question tweet (5 PM)", "Keep each under 200 characters. No hashtag spam. One link max per tweet. Real opinions > generic commentary."]], "3 tweets — hype upcoming race if applicable": [["If a race is this weekend, hype is the content", "Tweet 1: circuit facts people don't know. Tweet 2: your predicted podium. Tweet 3: 'Who wins [race name] this weekend?' poll or open question."], ["Race weekend content gets 3–5x normal engagement", "Your motorsports audience is most active the 48 hours before and after a race. That's when your tweets get the most reach."]], "3 tweets — ask followers to vote or rank something": [["Comedy rankings drive huge engagement on Twitter", "Example: 'Rank these Dave Chappelle specials: Killin' Them Softly / Sticks & Stones / The Closer. Go.' Fans love defending their picks."], ["Platform ranking questions also work well", "Example: 'Best comedy streaming platform right now: Netflix / HBO Max / Peacock / Prime?' Simple, fast, gets replies."]], "3 tweets — one must be a question to drive replies": [["Questions get 5–10x more replies than statements", "Replies boost Twitter's algorithm. More replies = more people see your account. Always include at least one question per day."], ["Comedy opinion questions work well for Laughder", "Example: 'Most underrated comedian working right now — go.' Or 'What's a comedy special you think everyone should watch?'"]], "3 tweets: key stat, driver quote, standings update": [["Stat tweet: find one number that surprises people", "Check the official series app or stats page for race data. Lap times, sector deltas, pit stop times, tire stints. One surprising number = high engagement."], ["Driver quote: press conference is posted within 2 hours", "F1, NASCAR, and IndyCar post official press conference clips on YouTube within 2 hours of race end. Find the most interesting 10-second quote."], ["Standings tweet: simple text format works", "P1: Verstappen 247pts | P2: Norris 198pts | P3: Hamilton 176pts. People retweet standings constantly — it's utility content."]], "3 tweets: comedy clip embed, comedian birthday, or opinion poll": [["Comedy clip embed: find a clean YouTube clip", "Search YouTube for a comedian's clean 2–3 minute bit. Embed it with 'Watch [comedian]'s best bit on [topic] — [link]'. Video tweets get more reach."], ["Comedian birthday: check Wikipedia", "Search '[month] [date] comedian birthday'. When a famous comedian has a birthday, tweet a tribute with their best special recommendation."], ["Opinion poll: use Twitter's native poll feature", "Create a poll: 'Best stand-up special ever? Option A / Option B / Option C / Option D'. Polls run for 24 hours and generate consistent engagement."]], "Check which ApexWire pages are getting organic clicks in Search Console": [["Open Search Console → Performance → Pages", "Select ApexWire property. Date range: Last 28 days. Sort by Clicks. See what's actually getting traffic."], ["Your top pages tell you what content to make more of", "If race previews get the most clicks — make more previews. If driver profiles rank well — write more profiles. Double down on what works."], ["Check for pages with impressions but no clicks", "These need better title tags. A race recap at position 6 with 500 impressions and 0 clicks has a title problem — not a content problem."]], "Add affiliate links to top-traffic pages where naturally relevant": [["Find your top 5 pages in Search Console", "Performance → Pages → sort by clicks. These pages have the most eyeballs."], ["Add relevant affiliate links naturally in the content", "Motorsports affiliates: Amazon (books, merch), F1 TV, motorsports gear sites. Add a link where it fits naturally — 'if you want to follow along with [driver]'s season, F1 TV is the best option'."], ["Never force affiliate links — it kills trust", "One or two per post max. If it doesn't fit naturally, don't add it. Authenticity is more valuable long-term than squeezing in links."]], "Write mid-week piece: 'on this day in motorsport', driver stats, or track guide": [["On this day in motorsport: check racing-reference.info", "Find a notable race that happened on today's date in history. Write 400–600 words about it. Title: 'On This Day In Motorsport: [Event] — [Date, Year]'. Evergreen content."], ["Driver stats page format", "'[Driver] Career F1 Statistics — Wins, Poles, Championships'. Include a table of wins by year. These rank permanently and get searched year-round."], ["Track guide format", "'[Circuit Name] F1 Track Guide — Key Corners, Lap Records, History'. People search these before every race weekend. Massive evergreen traffic potential."]], "Write and publish race preview if race is this weekend": [["Publish Thursday to capture Friday search spike", "People start searching for race previews Thursday evening before a race weekend. Thursday publish = best timing."], ["Preview structure: Circuit → Key Battles → Predicted Podium → Tire Strategy", "Cover the circuit's characteristics, the championship battles at stake, your predicted top 3, and expected tire strategies. 600–800 words."], ["Title format: [Race Name] Preview — Predictions and Analysis [Year]", "Example: 'Monaco Grand Prix 2026 Preview — Predictions, Favorite, and Race Analysis'. This is the exact search format."]], "No race this weekend — write a historical or analytical piece": [["Historical pieces get permanent traffic", "Example: 'The 10 Greatest Monaco Grand Prix Races Ever' or 'Why Senna Was Different: A Statistical Analysis'. These rank and stay ranked indefinitely."], ["Analytical pieces build credibility", "'Why Red Bull's Tire Strategy at Silverstone Was Genius' or 'How Mercedes Lost the 2026 Championship'. In-depth analysis attracts the serious fan who shares and returns."]], "Write qualifying preview or practice recap if race weekend": [["Practice recap: publish within 1 hour of session end", "Practice sessions get search traffic but it fades fast. Quick summary: fastest times, notable incidents, setup notes. 300–400 words is enough."], ["Qualifying preview: publish morning of qualifying", "'Who Will Take Pole at [Circuit] — Qualifying Preview'. Include current championship context and circuit-specific performance data."]], "Reach out to 2 large motorsports Twitter accounts — genuine engagement first": [["Find accounts with 50k–500k followers in motorsports", "Search Twitter for F1 analysts, NASCAR media personalities, IndyCar journalists. Not the official series accounts — individual commentators and journalists."], ["Engage genuinely before pitching anything", "Reply to their last 3 tweets with real opinions. Don't mention your site. Just engage like a knowledgeable fan."], ["After genuine engagement, DM with a specific compliment and a link to a relevant piece you wrote", "'Hey, really enjoyed your take on [topic] — I wrote something complementary on [specific angle] if you're interested: [link]'. No ask. Just sharing."]], "Reach out to 2 comedy Twitter accounts — genuine engagement first": [["Find comedy-focused accounts with real audiences", "Search Twitter for stand-up comedy reviewers, comedy podcast hosts, comedy journalists with 10k–200k followers."], ["Reply to their recent posts with genuine takes", "Be specific. 'Your ranking of Chappelle specials is interesting — I'd put Killin' Them Softly above Sticks & Stones because of the crowd work in the first 10 minutes.' Real opinions get noticed."], ["After a few genuine replies, share a relevant Laughder piece in DM", "No pitch. Just: 'Hey, wrote something you might find interesting — [link]'. That's it."]], "Internal linking pass on ApexWire pages": [["Open your 5 most recent ApexWire posts", "Find natural places to link to older content. A 2026 Monaco preview can link to your 2025 Monaco recap and your Hamilton driver profile."], ["Every new post should link to at least 2 older posts", "Internal links pass authority between pages and help readers find more of your content. Both improve rankings."], ["Also check older posts for chances to link to newer content", "If you wrote a tire strategy piece this week and you have an older post that mentions tire strategy — add a link from the old post to the new one."]], "Internal linking pass on Laughder pages": [["Open your 5 most recent Laughder posts", "Find natural cross-links. A 'Best Netflix Specials' list can link to specific comedian profiles. A comedian profile can link to a 'specials ranked' post."], ["Build a web of internal links across all comedian profiles and lists", "The goal: a reader who lands on any Laughder page should be able to click through to 3–5 other related pages without leaving the site."]], "Check Twitter follower growth week over week": [["Open your motorsports Twitter account", "Note today's follower count. Compare to last week's number (log it in your metrics sheet weekly). Growing? Flat? Declining?"], ["If flat: increase reply volume this week", "Follower growth on Twitter comes primarily from showing up in other people's conversations. If growth is flat, you need more replies, not more tweets."], ["If growing: identify what drove it", "Was there a viral reply? A post that got retweeted? Do more of that specific type of content."]], "Write and publish one comedian profile or complete special list": [["Comedian profile format", "Title: '[Comedian Name] Specials Ranked — Complete List [Year]'. Include every special with year, streaming platform, and 2–3 genuine sentences about it. These rank permanently."], ["Complete special list format", "'Every [Comedian] Special Ranked From Best to Worst'. Be genuinely opinionated — fans don't want a Wikipedia summary, they want a take."], ["Use the Post Writing Prompt from Guidelines", "Copy the Laughder writing prompt, fill in the comedian name as your keyword, paste into Claude. Edit to make opinions sound real and specific."]], "Write and publish one trending comedy news piece": [["Find what's trending in comedy today", "Check r/standupcomedy, Twitter comedy hashtags, Google Trends for comedian names. What are fans talking about right now?"], ["Must be something people are actively searching", "New special announced, comedian controversy, tour dates, award win, Netflix deal. If people aren't searching for it today, it won't get traffic."], ["Publish within 2 hours of the news breaking for best traffic capture", "Comedy news traffic is fast — it peaks within 24–48 hours then fades. Speed matters here."], ["Embed YouTube clip if available", "If there's a trailer, clip, or announcement video, embed it. Posts with video get more time on page which helps rankings."]], "Write and publish one database page": [["Database page types that rank permanently", "'Best Comedy Specials on Netflix 2026 (Updated)', 'Every Dave Chappelle Special Ranked', 'Best Dark Comedy Movies Streaming Now'. People search these year-round."], ["8–10 items minimum with genuine 2–3 sentence descriptions each", "No filler padding like 'This special is great and fans love it.' Say something specific: 'The crowd work in the first 15 minutes is the best of his career — he handles a heckler in a way that becomes the thesis of the whole show.'"], ["Update date in the title annually", "Title: 'Best Netflix Comedy Specials 2026 (Updated January)'. The year in the title signals freshness to Google and readers."]], "Write and publish a best-of list targeting a specific search query": [["Find a search query with real volume", "Google autocomplete is free: type 'best comedy' and see what it suggests. Google Trends shows relative search volume. AnswerThePublic.com shows comedy questions people ask."], ["Title must match the exact search query", "If people search 'best stand-up specials on Peacock' — your title is 'Best Stand-Up Specials on Peacock (2026 Complete List)'. Exact match."], ["8–10 items with real opinions and real descriptions", "The lists that rank are the ones that give a genuine recommendation, not just a title and a streaming platform. Write like you're recommending to a friend."]], "Check Search Console for Laughder — any impressions yet?": [["Open Search Console → select Laughder.com property", "If Laughder isn't verified yet: go to search.google.com/search-console → Add Property → enter laughder.com → verify via DNS or Google Analytics."], ["Performance → Last 28 days → check Total Impressions", "Even 10 impressions means Google has found the site. Zero impressions means the site isn't indexed yet — submit your sitemap."], ["Submit sitemap if not done yet", "WordPress → Yoast SEO → General → Features → XML Sitemaps → your sitemap URL is yourdomain.com/sitemap_index.xml. Submit this URL in Search Console → Sitemaps."], ["Note which queries are getting impressions", "These are the keywords Google thinks your site is relevant for. They guide what content to write more of."]], "Engage in r/standupcomedy — genuine contributions only, no link drops": [["Open r/standupcomedy on Reddit", "reddit.com/r/standupcomedy. Sort by Hot. Find posts with active discussions (20+ comments)."], ["Reply to 3–5 posts with real opinions", "'The reason that bit works is because he...' or 'I'd actually disagree — the Chappelle special people underrate is...' Real takes. Not 'great post!'"], ["Never drop links in comments unprompted", "Reddit bans you for link-dropping. Build a reputation first. After 10–15 genuine contributions, the community will click your profile and find Laughder organically."], ["Ask a question in one comment to start a thread", "'What's the most underrated special from the last 5 years?' in a relevant thread. Threads you start that get replies build your reputation fast."]], "Plan SOI call list for the week — who haven't you talked to in 90 days?": [["Open your CRM or contact spreadsheet", "Filter by Last Contacted date. Flag everyone you haven't spoken to in 90+ days. These are your calls for the week."], ["Aim for 25–30 people on your weekly list", "5 calls per day Monday–Friday = 25 contacts per week. Over a year that's 1,300 touchpoints. At a 3% conversion that's 39 referrals."], ["Prioritize people with any life change signals", "New job, recent marriage, new baby, kids leaving for college, divorce, retirement — all of these correlate with real estate moves. These people go to the top of your list."]], "CRM review — pipeline status, what needs follow-up this week": [["Open your CRM (Follow Up Boss, KVCore, or a simple spreadsheet)", "Review every active lead. What stage are they at? What's the next action? When is it due?"], ["Flag anything overdue for follow-up", "Any lead you haven't contacted in more than 7 days needs a touch today. Most leads go cold because agents stop following up too early."], ["Set specific next-action dates for every active lead", "Don't leave any lead without a next step. 'Call Tuesday at 10 AM' is better than 'follow up soon'. Vague plans don't happen."]], "Plan open house or showing schedule for the week": [["Check your brokerage's listing sheet for weekend open houses", "Which listings in your office need an open house host? Volunteer for 1–2 per weekend. This is your buyer lead source."], ["If you have active buyer clients: schedule showings for Saturday", "Group showings in geographic clusters to minimize driving. 4–6 homes in one Saturday afternoon is efficient."], ["Prepare showing packets", "For each home you're showing: print the listing sheet, recent sold comps within 0.5 miles, and your one-page buyer guide. Hand it to buyers at each showing."]], "Contact 5 people from SOI — text, call, or email": [["Call is best, text is second, email is last resort", "Phone calls have the highest conversion to real conversations. Texts are fine for quick reconnections. Emails rarely get responses for personal outreach."], ["Open with something personal, not real estate", "'Hey [name], I was thinking about [specific thing from last conversation] — how did that go?' Real question. Real conversation first."], ["Mention real estate naturally, never as the opener", "After a genuine 3–5 minute conversation: 'By the way, I've been doing real estate full time here in Eugene — loving it. Just wanted you to know in case you or anyone you know ever needs anything.' Then move on."], ["Log every contact immediately after hanging up", "CRM or spreadsheet: Name | Method (call/text/email) | What you talked about | RE interest level (low/medium/high) | Next follow-up date."]], "Contact 5 people from SOI": [["Same process as the detailed SOI contact task", "Call → real conversation → natural mention of real estate → log it → set follow-up reminder. 5 people every day you're in this block."]], "Farm outreach prep — identify 10 targets in your farm neighborhood": [["Your farm neighborhood: pick one neighborhood with 300–500 homes and stay consistent", "Geographic farming works through repetition. Same neighborhood, every month, for 12 months. Don't spread yourself thin."], ["Find 10 specific homeowners to contact this week", "County tax records (Oregon Secretary of State or your county assessor website) give you owner names and addresses. Or skip-trace through your MLS tools."], ["Prioritize: long-term owners (10+ years), corner lots, recently listed nearby", "Long-term owners are most likely to be thinking about downsizing. Recent listings in the neighborhood = proof of market activity you can reference."]], "Farm outreach — 10 handwritten notes or calls in target neighborhood": [["Handwritten note is the highest-response format in farming", "Buy simple note cards. Write 3 sentences: 'Hi [name], I'm the real estate agent who's been active in [neighborhood]. A home similar to yours just sold for $[X]. If you're ever curious what yours is worth I'd love to chat. — E [phone]'"], ["Notes beat postcards because they get opened", "Postcards go in the trash. A handwritten envelope gets opened every time. 10 notes per week for 52 weeks = 520 touchpoints in one neighborhood."], ["If calling instead: use the same 3-sentence structure as a voicemail script", "Leave voicemails. People check them. Your number shows up on caller ID. Both the voicemail and the callback are your goal."]], "Strategic partner call — attorney, CPA, or lender (Oregon Pacific, WaFd, SELCO)": [["Target: one strategic partner per week for the first 12 weeks", "Divorce attorneys, estate attorneys, CPAs who work with high-income clients, and mortgage lenders are the highest-referral strategic partners for real estate agents."], ["Your pitch is a referral exchange, not a favor", "'I work with buyers and sellers in Eugene. Whenever my clients need a [their service], I want you to be my go-to referral. In exchange, whenever your clients need a real estate agent I'd love to be top of mind. Can we grab coffee this week?'"], ["Specifically target Oregon Pacific Bank, WaFd, and SELCO lenders", "Local lenders have real referral relationships and refer to local agents. National lenders (Rocket, UWM) rarely refer. Local first."]], "Follow up any active leads from last 7 days": [["Open your CRM and filter by leads created in the last 7 days", "Every lead that came in this week needs a follow-up touch today if you haven't already contacted them."], ["Leads go cold in 24–48 hours", "After 48 hours without contact, lead conversion drops by 80%. Speed is the single most important factor in converting inbound real estate leads."], ["Follow-up method: call first, text second", "'Hi [name], this is E — I got your inquiry about [area] and wanted to reach out personally. What's most important to you in your search right now?' Open-ended question keeps the conversation going."]], "Lead nurture — work through all inquiries from last 30 days": [["Open your lead list and sort by date", "Any lead from the last 30 days that hasn't bought or opted out is still warm. Filter for these."], ["Send a value-add touchpoint — not 'just checking in'", "'Just checking in' is the least effective follow-up in real estate. Instead: 'I saw a new listing come up in [area] you were looking at — it's at [price] and has [feature they mentioned]. Worth a look?' Specific and useful."], ["Mark lead status after every contact attempt", "Tried/No answer | Spoke/Not ready yet | Spoke/Active again | Dead. Keeping status current tells you where to spend time."]], "Tired landlord follow-ups — these become your investor deals": [["Tired landlords are property owners who are done dealing with tenants", "They often sell below market for a fast, clean deal. These are your multifamily investment leads as well as listing opportunities."], ["Find them: 30–40 year owners of small multifamily in Lane County", "County assessor records show ownership duration. Filter for properties owned 20+ years with 2–8 units. These owners are likely retirement-age and considering selling."], ["Your approach: 'I help investors in Eugene exit their rental portfolios quietly — no listings, no showings, clean closes. Would you ever consider selling if the price was right?'", "This is a soft opener. You're not asking them to commit. You're asking a question that opens a conversation."]], "Follow up any open offers or pending transactions": [["Call or text your client about every open offer", "'Hey [name] — checking in on the offer on [address]. The agent said [update]. Here's what I recommend we do next: [action].' Keep them informed before they have to ask."], ["For pending transactions: check all deadlines", "Inspection deadline, financing deadline, appraisal deadline, closing date. Are all milestones on track? Any issue needs to be surfaced immediately — not the day it's due."], ["Call the other agent to keep communication open", "Good agents communicate with the other side's agent proactively. 'Just checking in — anything you need from our side to keep things on track?' This prevents surprises."]], "CRM audit — update all contacts, flag anyone for next week follow-up": [["Go through every contact in your CRM", "Update last contact date, current status, and next action for every record. Remove duplicates. Add anyone new you met this week."], ["Flag 5–10 people for follow-up next Monday", "Set specific reminders with a specific reason to reach out. 'Call Sarah — she mentioned she might want to downsize in spring. Check in on timeline.'"], ["Delete or archive dead leads", "A CRM full of dead leads is noise. Archive anyone who has explicitly said not interested or gone completely dark for 6+ months. Clean CRM = clear priorities."]], "Reply to every real estate comment and DM across all platforms": [["Check Facebook, Instagram, LinkedIn, and Nextdoor", "Real estate agents get business from Nextdoor more than almost any other platform in Eugene. Check it daily."], ["Every reply is a brand impression", "Even a simple 'Thanks for the kind words — happy to help anytime!' reply keeps you visible. People read comment sections."], ["Look for people asking real estate questions in community groups", "Nextdoor and Facebook groups are full of people asking 'should I sell now?', 'what's the market like?', 'anyone know a good agent?' These are your leads."]], "Showings or offers if active clients in pipeline": [["For showings: send a confirmation text morning of", "'Hey [name], confirming we're on for today at [time] — seeing [number] homes. First stop is [address] at [time]. See you there!'"], ["At every showing: ask discovery questions, not just 'what do you think?'", "'On a scale of 1–10, how does this compare to what you pictured? What's the one thing you'd change?' Better questions get better answers and help you find the right home faster."], ["For offers: write it the same day the client decides", "Don't wait until tomorrow. Deals die overnight. Write the offer, review it with the client on a call, get signatures, submit before 5 PM."]], "Plan RE prospecting strategy for next week": [["Review what channels produced real conversations this week", "Expired listings? Open house? SOI? Facebook group? Identify which one produced the most real conversations and double that next week."], ["Set a specific contact target for next week", "25 SOI contacts, 10 expired listing calls per day, 2 open houses, 1 strategic partner meeting. Write the numbers down. Vague goals don't happen."], ["Identify any new farm neighborhood targets", "Is there a neighborhood or zip code with a lot of activity you haven't targeted yet? Add it to the list for next week."]], "Review this week's wins and plan improvements": [["What produced real conversations or leads this week?", "Write down the one thing that worked best. Double it next week."], ["What did you skip that you shouldn't have?", "Honest assessment only. No excuses. If you skipped expired listing calls 3 days this week — that's why your pipeline is thin."], ["Set one specific improvement target for next week", "Not 'do better' — be specific. 'Call 10 expireds by 9 AM every day' or 'Do open house every Saturday until I have 3 active buyer clients'."]], "Plan open house or REIA meetup for weekend if applicable": [["Check REIA meetup schedule for Lane County", "Oregon Rental Housing Association and Lane County REIA both hold regular meetings. These are where landlords and investors network. Invaluable for multifamily leads."], ["If hosting or attending an open house this weekend: prep your materials", "10 copies of neighborhood sold comps, your buyer guide one-pager, business cards, sign-in sheet for collecting visitor info."], ["Set your goal for the event before you go", "'I will collect contact info from at least 5 visitors' or 'I will have 3 real conversations about their home search timeline.' Goals make attendance productive."]], "Pre-market scan — overnight moves, futures positioning, key news": [["Check ES and NQ futures before anything else", "ES = S&P 500 futures. NQ = Nasdaq 100 futures. Look at the overnight range and where they are relative to yesterday's close. A gap over 0.5% is meaningful."], ["Check the economic calendar", "forexfactory.com or investing.com/economic-calendar. Red-folder events today? CPI, FOMC, jobs data, Fed speakers. Do not open new positions 30 minutes before or after a major release."], ["Read 3 headlines max — not the full articles", "You need context, not noise. Skim 3 headlines from Reuters, Bloomberg, or AP. Understand the overnight narrative. Then close the news and trade the chart."], ["Write your plan for the session before market open", "If ES holds above [level] I look for longs. If it breaks below [level] I stand aside until noon. A written plan prevents emotional decisions."]], "Pre-market scan — check all positions, set alerts": [["Check every open position before market opens", "Where is each underlying? Has anything moved significantly overnight? Any news on companies you hold options in?"], ["Set price alerts on your platform for key levels", "thinkorswim: right-click any chart level → set alert. Set an alert at your stop level for every open position. This protects you from missing a move while focused elsewhere."], ["Check earnings calendar again", "earningswhispers.com. Any company reporting today or this week that you hold options in? Close before earnings — no exceptions."]], "Pre-market scan — mid-week position review": [["Same as daily pre-market scan, plus", "Look at where the week is shaping up. Are you ahead or behind your weekly P&L target? Does your position sizing need adjustment for the rest of the week?"], ["Mid-week is when most option decay accelerates", "Wednesday and Thursday are when theta decay accelerates on weekly options. Check if any of your positions are at 50% profit — if so, close them today."], ["Review your watchlist for new setups", "High IV rank stocks, upcoming earnings plays (to avoid), and any unusual options activity. Wednesday is when next-week setups start to become clear."]], "Pre-market scan — all positions checked": [["Thursday-specific: Friday expiration is tomorrow", "Any positions expiring Friday that aren't at 50%+ profit yet? Plan today whether to close, roll, or hold into Friday. Leaving decisions for Friday morning is a mistake."], ["Check for any end-of-week vol crush opportunities", "IV often spikes before major events and crushes after. If there's a major earnings report or economic data release tomorrow, check if any vol plays make sense."]], "Pre-market scan — final session of the week": [["Friday morning is risk management, not new positions", "Primary goal Friday morning: close anything expiring today that isn't already closed. No new positions on Friday unless exceptional setup."], ["Close all near-expiration positions before 2 PM", "Options lose predictability in the final 2 hours of Friday trading. Close them in the morning when there's still bid-ask spread worth closing into."], ["Review weekly P&L before market open", "Write down your P&L as of Thursday's close. Set a mental target for where you want to end the week. Don't give back gains chasing on Friday."]], "Options — all open positions, expiration dates": [["Open your brokerage platform and list every open option position", "Go to Monitor → Position Statement in thinkorswim, or Positions tab in Schwab. Write down: underlying, strategy, expiration date, current P&L, DTE (days to expiration)."], ["Flag anything under 21 DTE", "Inside 21 days gamma risk increases dramatically. Small stock moves cause big option moves. For anything under 21 DTE decide: close at current profit, roll to a later expiration, or accept assignment risk."], ["Close at 50% of max profit — no exceptions", "If a position is at 50% of max credit received, close it today. Mathematically, closing at 50% and redeploying is more efficient than holding for 100%. This is the core discipline."], ["Check max loss on every position", "If a position has moved against you, calculate current loss vs 2x the original credit received. At 2x = close immediately. No arguments, no 'it'll come back'."], ["Never hold through earnings", "Check earningswhispers.com for every underlying you hold. If earnings are before your expiration — close or roll today. Earnings gaps are position killers."]], "Futures — review any open swing trades": [["Check any open micro futures positions: MES (micro S&P), MNQ (micro Nasdaq), MGC (micro gold)", "Where is each position relative to your entry and your stop? Any position that hit your stop level should have been closed — if not, close it now."], ["Futures swings: use 2% of account as max risk per trade", "If you have $10K in your futures account, max risk per trade = $200. MES is $5 per point — a 40-point stop = $200 risk. Size appropriately."], ["Review the overnight range before making any decisions", "Futures trade 23 hours a day. Where did price go overnight? Is your position still in a favorable position or did it move against you while you slept?"]], "Be done by 8:00 AM sharp — business day starts": [["Hard stop at 8:00 AM", "Trading bleeds into your business day if you let it. Set a phone alarm for 7:55 AM. At 8:00 AM you close the trading platform. No exceptions."], ["If a position needs active management after 8 AM, set alerts instead", "Use your platform's price alerts so you get notified if a position hits a key level. You don't need to watch the screen — you need to be notified at key levels."], ["Why this matters: overtrading kills returns", "The most profitable traders trade less, not more. Staying in the market all day leads to overtrading, emotional decisions, and giving back gains. 6–8 AM is your window."]], "Done by 8:00 AM — business day starts": [["Same as the 8 AM hard stop", "Platform closed, alerts set, switch to business mode. The trading block is 6–8 AM. That's your window."]], "Done by 8:00 AM": [["Hard close at 8:00 AM", "Set alerts for any open positions. Close the platform. Move to your 8 AM RE Agent block."]], "Log every trade: entry, exit, reason, P&L": [["Your trade log is your most valuable trading document", "Without logging, you cannot improve. With logging, you have data. Data tells you exactly where your edge is and where you're losing money unnecessarily."], ["What to log: date | ticker | strategy | entry price | exit price | P&L | reason for entry | what happened | what you'd do differently", "Takes 3 minutes per trade. Do it immediately after closing, while it's fresh."], ["Review your log every Friday", "Look for patterns. Are you profitable in the morning but losing in the afternoon? Profitable in low-volatility but losing in high-volatility? The log shows you things you'd never see otherwise."]], "Log all trades taken today": [["Log every trade immediately after closing it", "Date | Ticker | Strategy (CSP/CC/spread/futures) | Entry | Exit | P&L | Why I entered | What happened. 3 minutes per trade."]], "Log trades": [["Same as full trade log — every trade from today", "Quick format if you're short on time: Ticker | Strategy | P&L | One-sentence note. Better than nothing. Do it now before the details fade."]], "Current week P&L vs weekly target — on pace?": [["Open your trading journal or spreadsheet", "Sum all P&L from Monday through today. Compare to your weekly target (example: 0.5–1% of account per week)."], ["If ahead of target: reduce position sizing for rest of week", "Protect your gains. Once you've hit your weekly target, trade smaller or stop entirely. Chasing more after a good week is where gains get given back."], ["If behind target: do NOT increase size to catch up", "This is the most dangerous instinct in trading. Behind target + increased size = blown week. Stick to your normal sizing. The target is weekly, not daily."]], "Win rate through this week — on pace?": [["Count wins vs losses from your trade log this week", "Win rate for options premium selling should be 65–75%. Below 65% means your setups or management need review. Above 75% might mean you're not taking enough risk."], ["More important than win rate: average win vs average loss", "A 60% win rate with 2:1 average win to average loss is more profitable than 80% win rate with 1:2 ratio. Check both numbers."]], "Look for new 45-DTE options setups on watchlist": [["Open your watchlist in your platform", "Your watchlist should include 10–20 underlyings you follow regularly — high liquidity, high IV rank, underlying you understand."], ["Filter for high IV Rank (IVR > 30)", "IV Rank above 30 means options are relatively expensive compared to their historical volatility. This is when selling premium has the best edge."], ["45 DTE target for premium selling", "45 days to expiration is the sweet spot for theta decay. You enter at 45 DTE and close at 21 DTE or 50% profit — whichever comes first. Never enter less than 21 DTE."], ["Check position sizing before entering", "New position: does it fit within your 5% per-position max and your overall portfolio delta target? If you're already long delta heavy, don't add another bullish position."]], "Check earnings announcements this week — close before earnings": [["Go to earningswhispers.com", "Filter for this week. See every company reporting earnings. Cross-reference with any options positions you hold."], ["Any position in an earnings-reporting stock must be closed before the report", "No exceptions. Options can gap 15–20% on earnings. Your defined-risk trade becomes undefined risk at that point."], ["If you want to play earnings: use a defined-risk spread, small size", "Only experienced traders should trade earnings. Even then: iron condor or vertical spread with clear max loss. No naked short options into earnings."]], "Futures: A+ setups only — uncertainty is not a trade": [["Define what A+ looks like for you before the market opens", "Example: A+ setup = trend direction confirmed, key level rejection, volume confirmation, entry within 5 points of support/resistance. If those conditions aren't met — no trade."], ["Uncertainty is not a trade", "When you're not sure, you don't trade. The cost of not trading is zero. The cost of a bad trade is real. Waiting for clarity is a skill, not a weakness."], ["Wednesday and Thursday are often choppier than Monday/Tuesday", "Mid-week can have conflicting signals. If the market isn't giving you A+ setups, do your 8 AM review and log off. Come back tomorrow."]], "Mid-week P&L check — on track?": [["Sum up P&L from Monday + Tuesday + today so far", "Compare to your weekly target. Are you at roughly 60% of your weekly target by Wednesday? That's good pace."], ["Adjust for rest of week if needed", "If you've hit 80%+ of weekly target by Wednesday: reduce size for Thursday/Friday. If you're at 20% or negative: stay normal size, do not increase to catch up."]], "Friday expiration positions — close or roll today, not tomorrow": [["Any option expiring this Friday must be closed or rolled today (Thursday)", "Friday morning is chaotic. Closing Thursday morning when there's still two sessions of time value left is always better than waiting."], ["Close for any profit", "If a position expiring Friday is at 30–40% profit — still close it. The last 10–30% of profit carries disproportionate risk in the final 24 hours."], ["Rolling: move to the same strike 30 DTE out", "If a position is at a loss and you believe in the underlying, roll it out 30 days at the same strike and collect additional credit. Only roll if the original thesis still holds."]], "Plan position adjustments needed before Friday close": [["Review every open position's DTE", "Anything expiring next week (7 DTE or less) needs a plan today: close, roll, or hold to expiration accepting assignment."], ["Check your overall portfolio delta", "If you're net long delta heavy and the market has been running, consider hedging with a small short call spread or reducing some long delta exposure."], ["Set price alerts for weekend gap scenarios", "Futures trade overnight and on weekends. If you hold any positions over the weekend, set alerts at your risk levels so you know if something moves against you."]], "Close near-expiration options not already managed": [["Any option expiring today: close at market open, first available fill", "Don't wait for a better price on expiring options. The risk of letting them go to expiration (assignment risk, pin risk) is almost never worth the extra premium."], ["Use a limit order 0.01 above the bid", "Place your closing order at the mid-price or just above the bid. If it doesn't fill in 5 minutes, cancel and re-enter at the bid. Don't let it go to the bell."]], "Futures: flat or minimal going into weekend": [["Close all micro futures positions before 2 PM Friday", "Weekend geopolitical events, economic announcements, and gap risk make holding futures over the weekend low-probability even if your trade thesis is correct."], ["If you want to hold: only with a hard stop and tiny size", "Weekend hold = cut position to 25% of normal size and set a hard stop that triggers automatically. Never go into the weekend with full size."]], "Weekly P&L vs target — write the number down": [["Open your trade log, sum all closed P&L for the week", "This is your official weekly P&L. Write it in your trading journal and your metrics sheet. The act of writing it down creates accountability."], ["Compare to your weekly target", "Above target: great week. What worked? Below target: acceptable if you stuck to your rules. Below target AND broke rules: journal about the rule break specifically."], ["Monthly P&L running total", "Add this week to your month-to-date total. Tracking monthly gives you a better picture of your actual edge than any single week."]], "Win rate this week": [["Count closed winners and losers from your trade log", "Wins ÷ (Wins + Losses) = win rate. Log this number every week."], ["Target win rate for options premium selling: 65–75%", "Below 65% for 3+ consecutive weeks: review your setup criteria. Are you entering on high-IVR underlyings? Are you giving positions enough room? Are you closing losers fast enough?"], ["Win rate without average win/loss size is incomplete", "A week with 8 wins and 2 losses at 80% win rate is a bad week if the 2 losses were 5x the size of the wins. Track both numbers."]], "Journal: what would you do differently next week?": [["Answer 3 specific questions in your trading journal", "1. What was my best trade this week and why? 2. What was my worst decision this week and why? 3. What is one specific rule I will follow more strictly next week?"], ["Be brutally honest — this journal is only for you", "Rationalizing mistakes in your journal means you'll make the same mistakes next week. Name the exact rule you broke and exactly why you broke it."], ["Set one rule for next week based on this review", "Not a goal — a rule. 'I will not trade after 7:45 AM under any circumstances.' Rules are binary. Either you followed it or you didn't."]], "Stock portfolio check — any rebalancing needed?": [["Open your Schwab equity account", "Review your long-term stock holdings. What's the current allocation? Has any position grown to more than 10% of the portfolio? That's a rebalance trigger."], ["Check dividend calendar if applicable", "Any upcoming ex-dividend dates? If you own dividend stocks, make sure you're holding through the ex-dividend date to capture the payment."], ["Rebalancing rule: trim anything over 10%, add to anything under 5%", "This forces you to sell high and buy low systematically. Set a quarterly rebalance reminder in your calendar, not just when markets are volatile."]], "Check Search Console — which keywords are you close to ranking for?": [["Open Google Search Console", "Go to search.google.com/search-console and select ServaSquad.com property."], ["Performance → Queries → sort by Position", "Filter to show positions 8–20. These are keywords where you're already showing up on page 1 or top of page 2 — the fastest wins available."], ["Any keyword at position 8–20 = write a post or fix the page targeting that exact query", "These keywords are one improvement away from driving real traffic. They're more valuable than starting a brand new keyword from scratch."]], "Pick topics that match those near-ranking queries": [["Cross-reference your Search Console position 8–20 list with your content calendar", "If Search Console shows you're at position 12 for 'plumber Eugene Oregon' — write or improve a post targeting exactly that phrase."], ["Prioritize queries that already have a page", "It's faster to improve an existing page from position 12 to position 3 than to write a new page from scratch. Fix first, create second."]], "Write titles first — under 60 chars — before writing the post": [["Title format: [Service] in [City], Oregon | ServaSquad", "Keep it under 60 characters. Google truncates longer titles in search results, which hurts click-through rates."], ["The title IS the keyword", "Whatever you put in the title is what you'll rank for. Don't write a clever title — write the exact phrase someone types into Google."], ["Write all 3 titles for the week before writing any content", "Once you have the 3 titles, the posts practically write themselves because you know exactly what keyword each one targets."]], "Log every email: date, site, URL targeted": [["Open your backlink outreach spreadsheet", "Columns: Date | Website | URL on their site that would link to yours | Email address | Sent Y/N | Reply Y/N | Link received Y/N"], ["Log the send immediately — don't do it from memory later", "You'll lose track of who you emailed if you batch-log at end of day. Log each email the moment you send it."]], "Target: 1–2 replies per 20 emails = real backlinks": [["5–10% reply rate is normal for cold outreach", "Don't get discouraged if most emails get no response. At 5% reply rate, 25 emails per week = 1–2 replies per week = 1–2 backlinks per week. Over 6 months = 25–50 backlinks."], ["Quality over quantity on link targets", "A link from a real Oregon news site or active neighborhood blog is worth 10x a link from a low-traffic directory. Target real sites with real audiences."]], "Blog posts published this week": [["Count: how many posts went live Mon–Fri?", "Target is 3 per week (Mon/Wed/Fri). If you hit 3, great. If you missed days, note which day and why. Pattern recognition helps you fix the bottleneck."]], "Total form submissions received": [["WP-admin → contact form plugin → Entries → filter by this week", "Every submission is a homeowner who raised their hand. This is your most important weekly metric."]], "Leads sold and revenue generated": [["How many leads did you sell to contractors this week?", "Leads sold × per-lead price = weekly revenue. Log the number. Even $0 is data."]], "Search Console sessions vs last week": [["Performance → Last 7 days → Total Clicks", "Compare to the previous 7-day period. Growing = content is working. Flat or declining = something needs attention."]], "Backlinks sent this week (target: 25)": [["Count outreach emails sent this week from your log", "Target: 25 per week = 5 per day. If you hit 25, you're on track. If not, the gap is where your future rankings are being lost."]], "r/formula1, r/NASCAR, or r/IndyCar — link your recap": [["Post in the correct subreddit for the series", "F1 race = r/formula1. NASCAR = r/NASCAR. IndyCar = r/IndyCar. Wrong subreddit gets your post removed."], ["Write 2 sentences of your take, then the link", "Don't just drop a URL. Example: 'Incredible strategy battle today — thought Norris had it locked up after the VSC. My full breakdown: [link]'. That gets clicks. A bare link does not."], ["Best time to post: within 2 hours of checkered flag", "Race conversation is most active immediately after the race. A link posted 12 hours later gets buried."]], "Circuit preview and key corners": [["The 2–3 corners that decide races at this circuit", "Every circuit has 1–2 key overtaking spots and 1–2 corners where car setup is most critical. Research these specifically. Fans who know the circuit will validate your knowledge — or call you out if you're wrong."], ["Include lap record and notable historical moments", "Lap record holder, year, and car. One memorable historical race at this circuit. This is the 'did you know' content that gets shared."]], "Key battles and storylines to watch": [["Championship battle context first", "How many points separate the top 3? What does each driver need from this race? This is what fans care about most going into a race weekend."], ["Team-specific storylines second", "Any car upgrades? Driver contract situations? Head-to-head teammate battles? These sub-stories drive engagement even for casual fans."]], "Predicted podium": [["Give 3 specific names with brief reasoning for each", "Don't hedge with 'it could be X or Y'. Pick 3. Be wrong sometimes. Having a real take is what makes your content worth reading."], ["Note if your prediction is contrarian", "If you're picking someone unusual — explain why specifically. 'I'm taking Hamilton P2 because of his S2 pace in FP3 and the tire compound switch that favors his driving style.'"]], "Tire strategy notes": [["Which compounds are available and which will teams choose?", "Check the official F1 tire announcements or equivalent for your series. Soft/Medium/Hard allocation and predicted strategy are key."], ["One-stop vs two-stop: what does the data suggest?", "Lap delta between compounds at this circuit, degradation data from FP runs, and pit lane time loss all factor in. Even a simple 'most teams will probably two-stop because the softs degrade fast here' is valuable."]], "H1 = exact search query — 'Netflix Comedy Specials 2026 Complete List'": [["Your H1 (the main headline of the page) should match the exact search phrase", "If someone searches 'best Netflix comedy specials 2026' — your H1 should be 'Best Netflix Comedy Specials 2026 (Complete List)'. Exact match wins."], ["Don't get creative with the H1", "Save creative writing for the body of the post. The H1 is for Google. Make it match what people type."]], "Real descriptions per item — no filler padding": [["Each item in your list needs 2–3 sentences of genuine observation", "Not: 'This special is hilarious and Dave Chappelle is at his best.' That's padding. Instead: 'The first 10 minutes of crowd work set up the entire theme of the special. By the time he gets to the main bit, you understand exactly why it lands the way it does.'"], ["Specificity is what separates ranked content from unranked content", "Google and readers both reward specific, useful information. Vague descriptions make your list indistinguishable from the 50 other lists on the same topic."]], "Must be something people are actually searching today": [["Check Google Trends to verify", "trends.google.com → enter the comedian or special name → set to Last 7 days. Is there a spike? That's search demand. Flat line = nobody searching right now."], ["Breaking comedy news has a 24–48 hour search window", "After 48 hours, news articles from major publications dominate and you can't out-rank them. Publish within the first 24 hours or wait for an anniversary/follow-up angle."]], "Embed a YouTube clip where available": [["Find an official or widely shared clip on YouTube", "Search '[comedian name] [special name] clip' on YouTube. Official clips from Netflix, HBO, or Comedy Central are best — they won't get taken down."], ["WordPress: paste the YouTube URL on its own line in the editor", "WordPress auto-embeds YouTube URLs. Just paste the full URL on its own paragraph line. No shortcodes needed."], ["Embedded video increases time on page", "Time on page is a ranking signal. A reader who watches a 3-minute clip on your page sends a strong signal to Google that your page is valuable."]], "Target a query with real search volume": [["Google autocomplete is your free keyword tool", "Type 'best comedy' in Google and see what it suggests. These suggestions are ranked by actual search volume. Start there."], ["AnswerThePublic.com shows comedy questions people ask", "Free tool — enter 'comedy specials' and it shows every question format people search. These become your list titles."], ["Long-tail is better than broad for a new site", "'Best dark comedy specials on Netflix 2026' is better to target than 'best comedy specials'. Lower competition, more specific intent, easier to rank."]], "8–10 items minimum with genuine descriptions — no padding": [["8–10 items is the minimum for a list that ranks", "Google favors comprehensive content. A '5 Best Specials' list ranks below a '10 Best Specials' list on the same topic, all else equal."], ["Every description must say something specific and useful", "If you can't say something specific about an item, remove it from the list. Padding hurts the entire page's quality score."]], "Close at 50% profit — no exceptions ever": [["50% of max profit = close the position, same day", "Example: you sold a put spread for $2.00 credit. When it's worth $1.00 (50% profit), close it. Don't hold for the last dollar."], ["The math behind 50%: you make money faster", "Closing at 50% in 21 days and redeploying capital into a new position beats holding for 100% in 45 days. More occurrences × consistent wins = better expected value over time."]], "Max loss: 2x credit received": [["Hard stop at 2x the original credit received", "Open a GTC closing order at 2x your credit received the same moment you open the position. Don't leave it as a mental stop."]], "Never hold through earnings": [["Earnings create binary risk that destroys options positions", "A stock can gap 15–20% on earnings. If you're short a put spread, a 15% gap down can turn a small profit into a max loss in one overnight move."], ["Check earningswhispers.com before opening any position", "Always verify there are no earnings announcements before your expiration date. If there are — choose a different underlying or expiration."]], "Close at 50% profit — no exceptions": [["Same rule as always — 50% of credit received, close it", "This is the single most important trade management rule. Automate it if your platform allows: set a GTC order to close at 50% the moment you open the position."]]};
+
+function toggleTaskDrawer(btn, drawerId) {
+  event.stopPropagation();
+  const drawer = document.getElementById(drawerId);
+  if (!drawer) return;
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
 function buildChecklistView(v){
   const el=document.getElementById('view-'+v);
   if(!el)return;
@@ -2702,22 +2832,33 @@ function buildChecklistView(v){
         <div class="cl-site-body">`;
 
       sec.items.forEach((item,ii)=>{
+        // Attach how-to steps if available
+        if (!item.how && TASK_HOW_DATA[item.text]) {
+          item.how = TASK_HOW_DATA[item.text];
+        }
         const done=clGet(clItemKey(v,st.phase,st.dayIdx,si,ii,false));
+        const drawId=`drw-${v}-${st.phase}-${st.dayIdx}-${si}-${ii}`;
         h+=`<div class="cl-ci${done?' cl-done':''}" onclick="clToggleItem('${v}',${st.phase},${st.dayIdx},${si},${ii})">
+          ${item.how?`<div class="cl-how-arr" onclick="event.stopPropagation();toggleTaskDrawer(this,'${drawId}')">▶</div>`:`<div class="cl-how-arr-spacer"></div>`}
           <div class="cl-ci-box">✓</div>
           <div class="cl-ci-content">
             <div class="cl-ci-text">${esc2(item.text)}</div>
             ${item.note?`<div class="cl-ci-note">${esc2(item.note)}</div>`:''}
           </div>
-        </div>`;
+        </div>
+        ${item.how?`<div class="cl-ci-drawer" id="${drawId}"><div class="cl-ci-drawer-inner">${item.how.map((s,idx)=>`<div class="cl-ci-drawer-step"><div class="cl-ci-drawer-num">${idx+1}</div><div class="cl-ci-drawer-step-text"><strong>${esc2(s[0])}</strong><br><em>${esc2(s[1])}</em></div></div>`).join('')}</div></div>`:''}`;
         if(item.subs&&item.subs.length){
           h+=`<div class="cl-sub-list">`;
           item.subs.forEach((sub,subi)=>{
             const sd=clGet(clItemKey(v,st.phase,st.dayIdx,si,ii,true,subi));
+            const subHow=TASK_HOW_DATA[sub];
+            const subDrwId=`drw-${v}-${st.phase}-${st.dayIdx}-${si}-${ii}-${subi}`;
             h+=`<div class="cl-si${sd?' cl-done':''}" onclick="event.stopPropagation();clToggleSub('${v}',${st.phase},${st.dayIdx},${si},${ii},${subi})">
+              ${subHow?`<div class="cl-si-how-arr" onclick="event.stopPropagation();toggleTaskDrawer(this,'${subDrwId}')">▶</div>`:`<div class="cl-si-how-arr-spacer"></div>`}
               <div class="cl-si-box">✓</div>
               <div class="cl-si-text">${esc2(sub)}</div>
-            </div>`;
+            </div>
+            ${subHow?`<div class="cl-ci-drawer" id="${subDrwId}" style="margin-left:32px;"><div class="cl-ci-drawer-inner">${subHow.map((s,idx)=>`<div class="cl-ci-drawer-step"><div class="cl-ci-drawer-num">${idx+1}</div><div class="cl-ci-drawer-step-text"><strong>${esc2(s[0])}</strong><br><em>${esc2(s[1])}</em></div></div>`).join('')}</div></div>`:''}`;
           });
           h+=`</div>`;
         }
@@ -2944,6 +3085,27 @@ const WEEKLY_SCHEDULE = [
 
 let calMode = 'daily';
 
+function buildSettingsView() {
+  const el = document.getElementById('view-settings');
+  if (!el) return;
+
+  const tabs = ['appearance','schedule','editor','groq','data'];
+  const tabLabels = {appearance:'Appearance',schedule:'Schedule',editor:'Task Editor',groq:'Groq AI',data:'Data'};
+
+  let tabHtml = tabs.map(t =>
+    '<div class="sp-tab' + (spCurrentTab===t?' active':'') + '" onclick="setSpTab(\'' + t + '\',this)">' + tabLabels[t] + '</div>'
+  ).join('');
+
+  el.innerHTML = '<div class="settings-wrap">' +
+    '<div class="settings-title">&#9881; Settings</div>' +
+    '<div class="settings-sub">Customize Empire OS — colors, pillars, schedule, tasks, and AI recast.</div>' +
+    '<div class="sp-tabs">' + tabHtml + '</div>' +
+    '<div class="sp-content"><div id="sp-tab-content"></div></div>' +
+    '</div>';
+
+  renderSpTab(spCurrentTab);
+}
+
 function buildCalendarView() {
   const el = document.getElementById('view-calendar');
   if (!el) return;
@@ -3029,10 +3191,809 @@ const _origSV2 = switchView;
 switchView = function(id, el) {
   _origSV2(id, el);
   if (id === 'calendar') buildCalendarView();
+  if (id === 'settings') buildSettingsView();
 };
 
 buildCalendarView();
 
+
+
+// ═══════════════════════════════════════════════════════
+// SETTINGS SYSTEM
+// ═══════════════════════════════════════════════════════
+
+const SETTINGS_KEY = 'empire_settings_v1';
+const CUSTOM_DATA_KEY = 'empire_custom_data_v1';
+
+// Default settings
+const DEFAULT_SETTINGS = {
+  groqKey: '',
+  theme: 'default',
+  font: 'default',
+  pillars: {
+    trade:   { name: 'Trading',      icon: '📈', color: '#a78bfa' },
+    invest:  { name: 'RE Investing', icon: '🏢', color: '#10b981' },
+    agent:   { name: 'RE Agent',     icon: '🏠', color: '#3b82f6' },
+    bridge:  { name: 'ServaSquad',   icon: '🔗', color: '#f59e0b' },
+    laugher: { name: 'Laughder',     icon: '😂', color: '#f43f5e' },
+  },
+  workHours: {
+    0: { on: false, start: '9:00 AM', end: '5:00 PM' },
+    1: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+    2: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+    3: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+    4: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+    5: { on: true,  start: '6:00 AM', end: '6:00 PM' },
+    6: { on: false, start: '9:00 AM', end: '5:00 PM' },
+  },
+  city: 'Eugene, OR',
+  targetIncome: 10000,
+  ventures: {
+    'cl-sq': { name: 'ServaSquad', icon: '🔗', color: '#f59e0b', enabled: true },
+    'cl-ap': { name: 'ApexWire',   icon: '⚡', color: '#f59e0b', enabled: true },
+    'cl-la': { name: 'Laughder',   icon: '😂', color: '#f43f5e', enabled: true },
+    'cl-re': { name: 'RE Agent',   icon: '🏠', color: '#3b82f6', enabled: true },
+    'cl-tr': { name: 'Trading',    icon: '📈', color: '#a78bfa', enabled: true },
+  },
+};
+
+let appSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || 'null') || JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+let customData  = JSON.parse(localStorage.getItem(CUSTOM_DATA_KEY) || 'null') || {};
+let spCurrentTab = 'appearance';
+let edCurrentVenture = 'cl-sq';
+let edCurrentDay = 'Monday';
+
+function saveSettings() {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
+}
+function saveCustomData() {
+  localStorage.setItem(CUSTOM_DATA_KEY, JSON.stringify(customData));
+}
+
+// ── OPEN / CLOSE ─────────────────────────────────────────────
+function openSettings() {
+  // Settings is now a full tab view
+  switchView('settings', document.querySelector('.ntab-set'));
+}
+function closeSettings() {
+  // no-op — settings is a full view tab now
+}
+function setSpTab(tab, el) {
+  spCurrentTab = tab;
+  document.querySelectorAll('.sp-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderSpTab(tab);
+}
+function renderSpTab(tab) {
+  const body = document.getElementById('sp-tab-content');
+  if (!body) return;
+  switch(tab) {
+    case 'appearance': body.innerHTML = renderAppearance(); break;
+    case 'schedule':   body.innerHTML = renderSchedule();   break;
+    case 'editor':     body.innerHTML = renderEditor();     break;
+    case 'groq':       body.innerHTML = renderGroq();       break;
+    case 'data':       body.innerHTML = renderDataTab();    break;
+    default:           body.innerHTML = renderAppearance(); break;
+  }
+}
+
+// ── RENDER SETTINGS TABS ──────────────────────────────────────
+
+
+// ── APPEARANCE ────────────────────────────────────────────────
+function renderAppearance() {
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Theme</div>
+    <div class="sp-theme-grid">
+      ${[
+        { id:'default', name:'Empire Dark', bg:'#040406', accent:'#10b981' },
+        { id:'midnight', name:'Midnight', bg:'#000000', accent:'#3b82f6' },
+        { id:'slate', name:'Slate Pro', bg:'#0a0f1e', accent:'#a78bfa' },
+      ].map(t => `
+        <div class="sp-theme-card${appSettings.theme===t.id?' active':''}" onclick="setTheme('${t.id}')">
+          <div class="sp-theme-preview" style="background:linear-gradient(135deg,${t.bg},${t.accent}22)"></div>
+          <div class="sp-theme-name">${t.name}</div>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Typography</div>
+    <div class="sp-row">
+      <div class="sp-label">Font Style</div>
+      <select class="sp-input" onchange="setFont(this.value)">
+        <option value="default" ${appSettings.font==='default'?'selected':''}>Default (Syne + Fragment Mono)</option>
+        <option value="mono" ${appSettings.font==='mono'?'selected':''}>Full Monospace</option>
+        <option value="sans" ${appSettings.font==='sans'?'selected':''}>Clean Sans-Serif</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Venture Tab Colors &amp; Icons</div>
+    <p class="sp-note">Color changes apply live. Click an icon to select it.</p>
+    ${Object.entries(appSettings.ventures).map(([id, v]) => `
+    <div class="sp-pillar-card" style="margin-bottom:10px;">
+      <div class="sp-pillar-head">
+        <div class="sp-pillar-icon" id="icon-display-${id}">${v.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="sp-field-lbl" style="margin-bottom:3px;">Name</div>
+          <input class="sp-input" style="font-size:13px;font-weight:600;" value="${v.name}"
+            oninput="appSettings.ventures['${id}'].name=this.value;applyAppearance()">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <input type="color" class="sp-color" id="picker-${id}" value="${v.color}" oninput="setVentureColor('${id}',this.value)">
+          <input class="sp-input" id="hex-${id}" style="width:88px;flex:none;font-family:'Fragment Mono',monospace;font-size:11px;" value="${v.color}" oninput="setVentureColorHex('${id}',this.value)">
+        </div>
+      </div>
+      <div class="sp-sec-title" style="margin-bottom:8px;">Choose Icon</div>
+      <div class="icon-picker" id="icon-picker-${id}">
+        ${['🔗','⚡','😂','🏠','📈','🚀','💡','🎯','🔥','💰','🏆','📊','🌐','🛠','📱','💼','🎪','🎬','🎙','📡','🏎','🎤','✦','★','◉','⬡','▲','◆'].map(em =>
+          `<span class="icon-opt${v.icon===em?' icon-opt-sel':''}" style="${v.icon===em?'border-color:'+v.color+';background:'+v.color+'22;':''}" onclick="setVentureIcon('${id}','${em}',this)">${em}</span>`
+        ).join('')}
+      </div>
+    </div>`).join('')}
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="applyAppearance()">✓ Apply All Changes</button>
+    </div>
+  </div>`;
+}
+
+function setTheme(id) {
+  appSettings.theme = id;
+  saveSettings();
+  applyTheme();
+  renderSpTab('appearance');
+}
+function applyTheme() {
+  const themes = {
+    default:  { bg:'#040406', s1:'#0c0c10', s2:'#111116', b1:'#1c1c28', b2:'#252535', txt:'#e6e6f0', dim:'#666680' },
+    midnight: { bg:'#000000', s1:'#080810', s2:'#0d0d18', b1:'#141428', b2:'#1e1e38', txt:'#e0e0ff', dim:'#5050a0' },
+    slate:    { bg:'#0a0f1e', s1:'#111827', s2:'#1a2535', b1:'#1e2d40', b2:'#283a52', txt:'#e2e8f0', dim:'#64748b' },
+  };
+  const t = themes[appSettings.theme] || themes.default;
+  const root = document.documentElement;
+  Object.entries(t).forEach(([k,v]) => root.style.setProperty('--'+k, v));
+}
+function setFont(f) {
+  appSettings.font = f;
+  saveSettings();
+  const fonts = {
+    default: "'DM Sans',sans-serif",
+    mono:    "'Fragment Mono',monospace",
+    sans:    "'Inter',sans-serif",
+  };
+  document.body.style.fontFamily = fonts[f] || fonts.default;
+}
+function setVentureColor(id, val) {
+  appSettings.ventures[id].color = val;
+  saveSettings();
+  applyAppearance();
+  // sync hex input
+  const hexInput = document.getElementById('hex-' + id);
+  if (hexInput) hexInput.value = val;
+}
+function setVentureColorHex(id, val) {
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    appSettings.ventures[id].color = val;
+    saveSettings();
+    applyAppearance();
+    // sync color picker
+    const picker = document.getElementById('picker-' + id);
+    if (picker) picker.value = val;
+  }
+}
+function setVentureIcon(id, val, el) {
+  appSettings.ventures[id].icon = val;
+  saveSettings();
+  // Update display
+  const disp = document.getElementById('icon-display-' + id);
+  if (disp) disp.textContent = val;
+  // Update picker selection highlight
+  const picker = document.getElementById('icon-picker-' + id);
+  if (picker) {
+    const color = appSettings.ventures[id].color;
+    picker.querySelectorAll('.icon-opt').forEach(o => {
+      o.classList.remove('icon-opt-sel');
+      o.style.borderColor = '';
+      o.style.background = '';
+    });
+    if (el) {
+      el.classList.add('icon-opt-sel');
+      el.style.borderColor = color;
+      el.style.background = color + '22';
+    }
+  }
+  applyAppearance();
+}
+function applyAppearance() {
+  applyTheme();
+  // Update nav tab text + inject dynamic color CSS
+  let styleEl = document.getElementById('empire-dynamic-styles');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'empire-dynamic-styles';
+    document.head.appendChild(styleEl);
+  }
+  let css = '';
+  const tabClassMap = {
+    'cl-sq': 'ntab-sq', 'cl-ap': 'ntab-ap', 'cl-la': 'ntab-la',
+    'cl-re': 'ntab-re', 'cl-tr': 'ntab-tr'
+  };
+  Object.entries(appSettings.ventures).forEach(([id, v]) => {
+    const tab = document.querySelector(`[onclick="switchView('${id}',this)"]`);
+    if (tab) {
+      const origText = `${v.icon} ${v.name}`;
+      tab.dataset.origText = origText;
+      if (!tab.dataset.checked) tab.textContent = origText;
+    }
+    // Override active tab border + color
+    const cls = tabClassMap[id];
+    if (cls) {
+      css += `.${cls}.active{border-bottom-color:${v.color}!important;color:${v.color}!important;}\n`;
+      css += `.${cls}:hover{color:${v.color}!important;}\n`;
+    }
+  });
+  styleEl.textContent = css;
+  showToast('Appearance updated');
+}
+
+// ── PILLARS ───────────────────────────────────────────────────
+function renderPillars() {
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Pillar Configuration</div>
+    <p class="sp-note">These pillars appear in your Daily OS goal strip and AI task generation.</p>
+    ${Object.entries(appSettings.pillars).map(([id, p]) => `
+    <div class="sp-pillar-row">
+      <div class="sp-pillar-head">
+        <div class="sp-pillar-icon">${p.icon}</div>
+        <div class="sp-pillar-name-lbl" style="color:${p.color}">${id.toUpperCase()}</div>
+      </div>
+      <div class="sp-pillar-grid">
+        <div class="sp-field">
+          <div class="sp-field-lbl">Name</div>
+          <input class="sp-input" value="${p.name}" oninput="appSettings.pillars['${id}'].name=this.value">
+        </div>
+        <div class="sp-field">
+          <div class="sp-field-lbl">Icon</div>
+          <input class="sp-emoji-input" value="${p.icon}" maxlength="2" oninput="appSettings.pillars['${id}'].icon=this.value">
+        </div>
+        <div class="sp-field">
+          <div class="sp-field-lbl">Color</div>
+          <input type="color" class="sp-color" value="${p.color}" oninput="appSettings.pillars['${id}'].color=this.value">
+        </div>
+        <div class="sp-field">
+          <div class="sp-field-lbl">Hex</div>
+          <input class="sp-input" value="${p.color}" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))appSettings.pillars['${id}'].color=this.value">
+        </div>
+      </div>
+    </div>`).join('')}
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="savePillars()">✓ Save Pillars</button>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Income Targets</div>
+    <div class="sp-row">
+      <div class="sp-label">Monthly Target</div>
+      <input class="sp-input" type="number" value="${appSettings.targetIncome}" oninput="appSettings.targetIncome=parseInt(this.value)||10000" placeholder="10000">
+      <span style="font-family:'Fragment Mono',monospace;font-size:10px;color:var(--dim)">/mo</span>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">City / Location</div>
+      <input class="sp-input" value="${appSettings.city}" oninput="appSettings.city=this.value" placeholder="Eugene, OR">
+    </div>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="saveSettings();showToast('Saved')">✓ Save</button>
+    </div>
+  </div>`;
+}
+function savePillars() {
+  saveSettings();
+  // Update goal strip
+  const pillMap = { agent:'gc-agent', laugher:'gc-laugher', bridge:'gc-bridge', invest:'gc-invest', trade:'gc-trade' };
+  Object.entries(appSettings.pillars).forEach(([id, p]) => {
+    const el = document.getElementById(pillMap[id]);
+    if (el) {
+      const card = el.closest('.gc');
+      if (card) {
+        const icon = card.querySelector('.gc-icon');
+        const name = card.querySelector('.gc-name');
+        if (icon) icon.textContent = p.icon;
+        if (name) name.textContent = p.name;
+        card.style.setProperty('--gc-c', p.color);
+      }
+    }
+  });
+  showToast('Pillars saved');
+}
+
+// ── SCHEDULE ──────────────────────────────────────────────────
+function renderSchedule() {
+  const DAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const TIMES = ['5:00 AM','5:30 AM','6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM'];
+
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Working Hours</div>
+    <p class="sp-note">Set your available working hours per day. Off days skip task generation.</p>
+    ${DAYS_FULL.map((d,i) => {
+      const a = appSettings.workHours[i];
+      const tOpts = TIMES.map(t => `<option${a.start===t?' selected':''}>${t}</option>`).join('');
+      const tOptsEnd = TIMES.map(t => `<option${a.end===t?' selected':''}>${t}</option>`).join('');
+      return `
+      <div class="sp-row" style="align-items:center;gap:8px;margin-bottom:8px;">
+        <div class="sp-label" style="min-width:90px">${d}</div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" ${a.on?'checked':''} onchange="appSettings.workHours[${i}].on=this.checked;saveSettings()" style="accent-color:var(--invest);">
+          <span style="font-family:'Fragment Mono',monospace;font-size:9px;color:var(--dim)">${a.on?'ON':'OFF'}</span>
+        </label>
+        <select class="sp-input" style="flex:none;width:100px;" onchange="appSettings.workHours[${i}].start=this.value;saveSettings()">${tOpts}</select>
+        <span style="color:var(--dim);font-size:11px">→</span>
+        <select class="sp-input" style="flex:none;width:100px;" onchange="appSettings.workHours[${i}].end=this.value;saveSettings()">${tOptsEnd}</select>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Calendar Block Editor</div>
+    <p class="sp-note">Edit the time blocks shown in the Daily calendar view.</p>
+    ${DAILY_SCHEDULE.map((row, ri) => row.blocks.map((b, bi) => `
+    <div class="sp-pillar-row" style="margin-bottom:6px;">
+      <div class="sp-row" style="margin-bottom:6px;">
+        <div class="sp-label" style="font-family:'Fragment Mono',monospace;font-size:9px;min-width:60px">${row.time}</div>
+        <input class="sp-input" value="${b.label}" placeholder="Label" oninput="DAILY_SCHEDULE[${ri}].blocks[${bi}].label=this.value">
+      </div>
+      <div class="sp-row" style="margin-bottom:6px;">
+        <div class="sp-label" style="min-width:60px;font-size:11px">Title</div>
+        <input class="sp-input" value="${b.title}" oninput="DAILY_SCHEDULE[${ri}].blocks[${bi}].title=this.value">
+      </div>
+      <div class="sp-row">
+        <div class="sp-label" style="min-width:60px;font-size:11px">Note</div>
+        <input class="sp-input" value="${b.note||''}" oninput="DAILY_SCHEDULE[${ri}].blocks[${bi}].note=this.value">
+      </div>
+    </div>`).join('')).join('')}
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="saveCalendarEdits()">✓ Save Calendar</button>
+    </div>
+  </div>`;
+}
+function saveCalendarEdits() {
+  // Persist calendar edits to customData
+  customData.dailySchedule = DAILY_SCHEDULE;
+  saveCustomData();
+  if (document.getElementById('view-calendar').classList.contains('active') || true) {
+    buildCalendarView();
+  }
+  showToast('Calendar saved');
+}
+
+// ── TASK EDITOR ───────────────────────────────────────────────
+function renderEditor() {
+  const ventures = Object.keys(CL_VENTURES);
+  const venture = CL_VENTURES[edCurrentVenture];
+  const days = Object.keys(venture.days);
+
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Select Venture</div>
+    <div class="ed-venture-sel">
+      ${ventures.map(v => `
+        <button class="ed-vs-btn${v===edCurrentVenture?' active':''}" onclick="edSelectVenture('${v}')">${CL_VENTURES[v].icon} ${CL_VENTURES[v].name}</button>
+      `).join('')}
+    </div>
+
+    <div class="sp-sec-title" style="margin-top:12px">Venture Info</div>
+    <div class="sp-row">
+      <div class="sp-label">Name</div>
+      <input class="sp-input" value="${venture.name}" oninput="CL_VENTURES['${edCurrentVenture}'].name=this.value">
+    </div>
+
+    <div class="sp-row">
+      <div class="sp-label">Eyebrow</div>
+      <input class="sp-input" value="${venture.eyebrow}" oninput="CL_VENTURES['${edCurrentVenture}'].eyebrow=this.value">
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Subtitle</div>
+      <input class="sp-input" value="${venture.sub}" oninput="CL_VENTURES['${edCurrentVenture}'].sub=this.value">
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Select Day to Edit</div>
+    <div class="ed-day-sel">
+      ${days.map(d => `
+        <button class="ed-vs-btn${d===edCurrentDay?' active':''}" onclick="edSelectDay('${d}')">${d}</button>
+      `).join('')}
+    </div>
+
+    <div id="ed-sections-container">
+      ${renderEditorSections()}
+    </div>
+
+    <button class="ed-add-sec-btn" onclick="edAddSection()">+ Add Time Block</button>
+
+    <div class="sp-btn-row" style="margin-top:12px">
+      <button class="sp-btn sp-btn-save" onclick="edSaveAll()">✓ Save All Changes</button>
+      <button class="sp-btn sp-btn-danger" onclick="edResetVenture()">↺ Reset Venture</button>
+    </div>
+  </div>`;
+}
+
+function renderEditorSections() {
+  const sections = CL_VENTURES[edCurrentVenture].days[edCurrentDay] || [];
+  if (!sections.length) return '<div style="color:var(--dim);font-size:12px;padding:12px 0">No sections for this day. Add one below.</div>';
+
+  return sections.map((sec, si) => `
+    <div class="ed-section" id="ed-sec-${si}">
+      <div class="ed-sec-head">
+        <input class="ed-sec-name-input" value="${esc2(sec.site)}" oninput="CL_VENTURES['${edCurrentVenture}'].days['${edCurrentDay}'][${si}].site=this.value" placeholder="Section name">
+        <input class="ed-sec-time-input" value="${esc2(sec.time)}" oninput="CL_VENTURES['${edCurrentVenture}'].days['${edCurrentDay}'][${si}].time=this.value" placeholder="9:00–10:00 AM">
+        <button class="ed-del-btn" onclick="edDeleteSection(${si})">×</button>
+      </div>
+      <div class="ed-items">
+        ${(sec.items || []).map((item, ii) => `
+          <div class="ed-item" id="ed-item-${si}-${ii}">
+            <div class="ed-item-inputs">
+              <input class="ed-item-text" value="${esc2(item.text)}" placeholder="Task text" oninput="CL_VENTURES['${edCurrentVenture}'].days['${edCurrentDay}'][${si}].items[${ii}].text=this.value">
+              <input class="ed-item-note" value="${esc2(item.note||'')}" placeholder="Note (optional)" oninput="CL_VENTURES['${edCurrentVenture}'].days['${edCurrentDay}'][${si}].items[${ii}].note=this.value">
+            </div>
+            <button class="ed-del-btn" onclick="edDeleteItem(${si},${ii})">×</button>
+          </div>
+        `).join('')}
+        <button class="ed-add-btn" onclick="edAddItem(${si})">+ Add Task</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function edSelectVenture(v) {
+  edCurrentVenture = v;
+  renderSpTab('editor');
+}
+function edSelectDay(d) {
+  edCurrentDay = d;
+  const container = document.getElementById('ed-sections-container');
+  if (container) container.innerHTML = renderEditorSections();
+  // Update day button styles
+  document.querySelectorAll('.ed-vs-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === d);
+  });
+}
+function edAddSection() {
+  if (!CL_VENTURES[edCurrentVenture].days[edCurrentDay]) {
+    CL_VENTURES[edCurrentVenture].days[edCurrentDay] = [];
+  }
+  CL_VENTURES[edCurrentVenture].days[edCurrentDay].push({
+    site: 'New Block', time: '9:00–10:00 AM', color: 'invest', items: []
+  });
+  const container = document.getElementById('ed-sections-container');
+  if (container) container.innerHTML = renderEditorSections();
+}
+function edAddItem(si) {
+  CL_VENTURES[edCurrentVenture].days[edCurrentDay][si].items.push({ text: 'New task', note: '' });
+  const container = document.getElementById('ed-sections-container');
+  if (container) container.innerHTML = renderEditorSections();
+}
+function edDeleteSection(si) {
+  if (!confirm('Delete this time block?')) return;
+  CL_VENTURES[edCurrentVenture].days[edCurrentDay].splice(si, 1);
+  const container = document.getElementById('ed-sections-container');
+  if (container) container.innerHTML = renderEditorSections();
+}
+function edDeleteItem(si, ii) {
+  CL_VENTURES[edCurrentVenture].days[edCurrentDay][si].items.splice(ii, 1);
+  const container = document.getElementById('ed-sections-container');
+  if (container) container.innerHTML = renderEditorSections();
+}
+function edSaveAll() {
+  customData.ventures = JSON.parse(JSON.stringify(CL_VENTURES));
+  saveCustomData();
+  buildChecklistView(edCurrentVenture);
+  showToast('Tasks saved');
+}
+function edResetVenture() {
+  if (!confirm('Reset ' + CL_VENTURES[edCurrentVenture].name + ' to defaults? This cannot be undone.')) return;
+  if (customData.ventures) delete customData.ventures[edCurrentVenture];
+  saveCustomData();
+  showToast('Reset to defaults — reload to apply');
+}
+
+// ── GROQ AI ───────────────────────────────────────────────────
+function renderGroq() {
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Groq API Key</div>
+    <p class="sp-note">Your API key is stored only in your browser localStorage — it never leaves your device. Get a free key at console.groq.com.</p>
+    <div class="sp-row">
+      <input class="sp-input" type="password" id="groq-key-input" value="${appSettings.groqKey||''}" placeholder="gsk_xxxxxxxxxxxxxxxx" oninput="appSettings.groqKey=this.value">
+    </div>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="saveGroqKey()">✓ Save Key</button>
+      <button class="sp-btn sp-btn-gold" onclick="testGroqKey()">⚡ Test Connection</button>
+    </div>
+    <div class="groq-status" id="groq-status">Key status: ${appSettings.groqKey ? '● Saved' : '○ Not set'}</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Recast Schedule with Groq AI</div>
+    <p class="sp-note">Groq runs Llama 3 at very fast inference. Recast rebuilds your daily checklist tasks from scratch based on your current goals, working hours, and pillar priorities.</p>
+    <div class="sp-row">
+      <div class="sp-label">Venture</div>
+      <select class="sp-input" id="groq-venture-sel">
+        ${Object.entries(CL_VENTURES).map(([id,v]) => `<option value="${id}">${v.icon} ${v.name}</option>`).join('')}
+      </select>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Focus</div>
+      <select class="sp-input" id="groq-focus-sel">
+        <option value="aggressive">Aggressive growth — maximize output</option>
+        <option value="balanced" selected>Balanced — sustainable daily pace</option>
+        <option value="minimal">Minimal — essentials only</option>
+      </select>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Context</div>
+      <textarea class="sp-textarea" id="groq-context" placeholder="Any additional context — current phase, recent wins, blockers, specific focus areas..."></textarea>
+    </div>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-purple" id="groq-recast-btn" onclick="groqRecast()">⚡ Recast with Groq</button>
+    </div>
+    <div class="groq-status" id="groq-recast-status">Ready — enter your key above and click Recast.</div>
+  </div>`;
+}
+
+function saveGroqKey() {
+  appSettings.groqKey = document.getElementById('groq-key-input').value.trim();
+  saveSettings();
+  const status = document.getElementById('groq-status');
+  if (status) {
+    status.textContent = appSettings.groqKey ? '● Key saved successfully' : '○ No key entered';
+    status.className = 'groq-status ' + (appSettings.groqKey ? 'success' : '');
+  }
+}
+
+async function testGroqKey() {
+  const status = document.getElementById('groq-status');
+  if (!appSettings.groqKey) {
+    status.textContent = '✗ No API key saved. Enter your key and click Save first.';
+    status.className = 'groq-status error';
+    return;
+  }
+  status.textContent = '⚡ Testing connection...';
+  status.className = 'groq-status loading';
+  try {
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${appSettings.groqKey}` },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: [{ role: 'user', content: 'Reply with exactly: CONNECTION OK' }],
+        max_tokens: 10,
+      })
+    });
+    const data = await resp.json();
+    if (data.choices && data.choices[0]) {
+      status.textContent = '✓ Connection successful — Groq API is working';
+      status.className = 'groq-status success';
+    } else {
+      throw new Error(data.error?.message || 'Unknown error');
+    }
+  } catch(e) {
+    status.textContent = '✗ Connection failed: ' + e.message;
+    status.className = 'groq-status error';
+  }
+}
+
+async function groqRecast() {
+  const status = document.getElementById('groq-recast-status');
+  const btn = document.getElementById('groq-recast-btn');
+  if (!appSettings.groqKey) {
+    status.textContent = '✗ No Groq API key. Add your key in the section above.';
+    status.className = 'groq-status error';
+    return;
+  }
+  const ventureId = document.getElementById('groq-venture-sel').value;
+  const focus = document.getElementById('groq-focus-sel').value;
+  const context = document.getElementById('groq-context').value;
+  const venture = CL_VENTURES[ventureId];
+  const pillars = Object.entries(appSettings.pillars).map(([id,p]) => `${p.icon} ${p.name}`).join(', ');
+  const workDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].filter((_,i) => appSettings.workHours[i]?.on).join(', ');
+
+  const prompt = `You are a productivity coach building a daily task checklist for an entrepreneur.
+
+VENTURE: ${venture.name}
+DESCRIPTION: ${venture.eyebrow}
+CURRENT GOAL: ${venture.sub}
+FOCUS LEVEL: ${focus}
+ALL PILLARS: ${pillars}
+WORKING DAYS: ${workDays}
+CITY: ${appSettings.city}
+MONTHLY INCOME TARGET: $${appSettings.targetIncome}
+ADDITIONAL CONTEXT: ${context || 'None'}
+
+Generate a complete daily task checklist for this venture covering all 5 weekdays (Monday through Friday).
+
+Respond ONLY with valid JSON in this exact structure:
+{
+  "Monday": [
+    {
+      "site": "Section Name",
+      "time": "9:00–10:00 AM",
+      "color": "invest",
+      "items": [
+        { "text": "Task title", "note": "Brief note or tip" },
+        { "text": "Task title 2", "note": "" }
+      ]
+    }
+  ],
+  "Tuesday": [...],
+  "Wednesday": [...],
+  "Thursday": [...],
+  "Friday": [...]
+}
+
+Color options: invest (green), bridge (amber), agent (blue), laugher (red/pink), trade (purple).
+Keep tasks specific, actionable, and realistic for one person.
+Each day should have 2-4 sections with 2-3 tasks each.`;
+
+  btn.disabled = true;
+  btn.textContent = '⚡ Recasting...';
+  status.textContent = 'Sending to Groq — Llama 3 generating your schedule...';
+  status.className = 'groq-status loading';
+
+  try {
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${appSettings.groqKey}` },
+      body: JSON.stringify({
+        model: 'llama3-70b-8192',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 3000,
+        temperature: 0.7,
+      })
+    });
+    const data = await resp.json();
+    if (!data.choices || !data.choices[0]) throw new Error(data.error?.message || 'No response from Groq');
+
+    const raw = data.choices[0].message.content;
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    // Apply to venture
+    CL_VENTURES[ventureId].days = parsed;
+    customData.ventures = customData.ventures || {};
+    customData.ventures[ventureId] = JSON.parse(JSON.stringify(CL_VENTURES[ventureId]));
+    saveCustomData();
+    buildChecklistView(ventureId);
+
+    status.textContent = '✓ Schedule recast complete! Switch to the ' + venture.name + ' tab to see your new tasks.';
+    status.className = 'groq-status success';
+  } catch(e) {
+    status.textContent = '✗ Recast failed: ' + e.message;
+    status.className = 'groq-status error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Recast with Groq';
+  }
+}
+
+// ── DATA TAB ──────────────────────────────────────────────────
+function renderDataTab() {
+  const stored = localStorage.getItem(CUSTOM_DATA_KEY);
+  const settings = localStorage.getItem(SETTINGS_KEY);
+  const clKeys = Object.keys(localStorage).filter(k => k.startsWith('empire_cl'));
+  const totalChecks = clKeys.length;
+
+  return `
+  <div class="sp-section">
+    <div class="sp-sec-title">Storage Overview</div>
+    <div class="sp-row"><div class="sp-label">Checklist items</div><div style="font-family:'Fragment Mono',monospace;font-size:12px;color:var(--invest)">${totalChecks} saved</div></div>
+    <div class="sp-row"><div class="sp-label">Custom data</div><div style="font-family:'Fragment Mono',monospace;font-size:12px;color:var(--dim)">${stored ? Math.round(stored.length/1024*10)/10 + 'KB' : 'None'}</div></div>
+    <div class="sp-row"><div class="sp-label">Settings</div><div style="font-family:'Fragment Mono',monospace;font-size:12px;color:var(--dim)">${settings ? Math.round(settings.length/1024*10)/10 + 'KB' : 'None'}</div></div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Export Data</div>
+    <p class="sp-note">Export all your settings and custom tasks as JSON. Save this file as a backup.</p>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-gold" onclick="exportData()">↓ Export All Data</button>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Import Data</div>
+    <p class="sp-note">Import a previously exported JSON backup. This will overwrite current settings.</p>
+    <textarea class="sp-textarea" id="import-json" placeholder='Paste your exported JSON here...'></textarea>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-save" onclick="importData()">↑ Import</button>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-sec-title">Reset Options</div>
+    <div class="sp-btn-row">
+      <button class="sp-btn sp-btn-danger" onclick="resetChecks()">↺ Clear All Checkmarks</button>
+      <button class="sp-btn sp-btn-danger" onclick="resetAllData()">⚠ Reset Everything</button>
+    </div>
+    <p class="sp-note" style="margin-top:8px">Reset Everything removes all settings, custom tasks, and checkmarks. The file itself is unchanged.</p>
+  </div>`;
+}
+
+function exportData() {
+  const data = {
+    settings: appSettings,
+    customData: customData,
+    exported: new Date().toISOString(),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'empire-os-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData() {
+  try {
+    const raw = document.getElementById('import-json').value.trim();
+    const data = JSON.parse(raw);
+    if (data.settings) { appSettings = data.settings; saveSettings(); }
+    if (data.customData) { customData = data.customData; saveCustomData(); }
+    showToast('Import successful — reload to apply all changes');
+    renderSpTab('data');
+  } catch(e) {
+    alert('Invalid JSON: ' + e.message);
+  }
+}
+
+function resetChecks() {
+  if (!confirm('Clear all checkmarks for all days?')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('empire_cl')).forEach(k => localStorage.removeItem(k));
+  buildAllChecklistViews();
+  showToast('All checkmarks cleared');
+}
+
+function resetAllData() {
+  if (!confirm('Reset EVERYTHING? This cannot be undone.')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('empire')).forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+
+// ── TOAST NOTIFICATION ────────────────────────────────────────
+function showToast(msg) {
+  let toast = document.getElementById('empire-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'empire-toast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--invest);color:#000;font-family:"Fragment Mono",monospace;font-size:11px;letter-spacing:.1em;padding:10px 20px;border-radius:8px;z-index:500;font-weight:700;transition:opacity .3s ease;pointer-events:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.style.opacity = '0', 2500);
+}
+
+// ── APPLY SAVED SETTINGS ON LOAD ─────────────────────────────
+function applySettingsOnLoad() {
+  if (appSettings.theme && appSettings.theme !== 'default') applyTheme();
+  if (appSettings.font && appSettings.font !== 'default') setFont(appSettings.font);
+  // Apply saved venture data if exists
+  if (customData.ventures) {
+    Object.entries(customData.ventures).forEach(([id, vData]) => {
+      if (CL_VENTURES[id]) CL_VENTURES[id] = vData;
+    });
+  }
+}
+
+applySettingsOnLoad();
+
 </script>
+
+<div class="view" id="view-settings"></div>
 </body>
-</html>
