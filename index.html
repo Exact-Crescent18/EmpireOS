@@ -1,6 +1,21 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Empire OS</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+
+<!-- PWA / Home Screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Empire OS">
+<meta name="theme-color" content="#0a0a0f">
+
+<!-- Inline SVG icon as data URI — works for touch-icon -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjM4IiBmaWxsPSIjMGEwYTBmIi8+PGNpcmNsZSBjeD0iOTAiIGN5PSI3OCIgcj0iNDIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4ZmY0NyIgc3Ryb2tlLXdpZHRoPSI2Ii8+PHBvbHlnb24gcG9pbnRzPSI3OCw2MiAxMTAsNzggNzgsOTQiIGZpbGw9IiNlOGZmNDciLz48cmVjdCB4PSI1MCIgeT0iMTMyIiB3aWR0aD0iODAiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiNlOGZmNDciIG9wYWNpdHk9IjAuNCIvPjxyZWN0IHg9IjY0IiB5PSIxNDYiIHdpZHRoPSI1MiIgaGVpZ2h0PSI2IiByeD0iMyIgZmlsbD0iI2U4ZmY0NyIgb3BhY2l0eT0iMC4yIi8+PC9zdmc+">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 
@@ -2062,6 +2077,87 @@ function resetAll(){
 
 /* ─── UTIL ───────────────────────────────────────────────────────────── */
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ─── HOME SCREEN ICON (canvas → apple-touch-icon) ──────────────────── */
+(function(){
+  try{
+    var c=document.createElement('canvas');
+    c.width=c.height=512;
+    var ctx=c.getContext('2d');
+
+    // Background — near-black with slight purple tint
+    var bg=ctx.createLinearGradient(0,0,512,512);
+    bg.addColorStop(0,'#0e0e18');
+    bg.addColorStop(1,'#070710');
+    ctx.fillStyle=bg;
+    // Rounded rect (r=110)
+    var r=110,w=512,h=512;
+    ctx.beginPath();
+    ctx.moveTo(r,0);ctx.lineTo(w-r,0);ctx.arcTo(w,0,w,r,r);
+    ctx.lineTo(w,h-r);ctx.arcTo(w,h,w-r,h,r);
+    ctx.lineTo(r,h);ctx.arcTo(0,h,0,h-r,r);
+    ctx.lineTo(0,r);ctx.arcTo(0,0,r,0,r);
+    ctx.closePath();ctx.fill();
+
+    // Outer glow ring
+    ctx.save();
+    ctx.shadowColor='rgba(232,255,71,0.35)';
+    ctx.shadowBlur=40;
+    ctx.strokeStyle='#e8ff47';
+    ctx.lineWidth=14;
+    ctx.beginPath();
+    ctx.arc(256,220,130,0,Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Inner filled circle (darker)
+    ctx.fillStyle='rgba(232,255,71,0.07)';
+    ctx.beginPath();
+    ctx.arc(256,220,124,0,Math.PI*2);
+    ctx.fill();
+
+    // "E" letter — bold, centered in circle
+    ctx.fillStyle='#e8ff47';
+    ctx.font='bold 180px "Arial Black",Arial,sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    // Shadow for depth
+    ctx.shadowColor='rgba(232,255,71,0.5)';
+    ctx.shadowBlur=30;
+    ctx.fillText('E',256,228);
+    ctx.shadowBlur=0;
+
+    // Bottom wordmark: EMPIRE OS
+    ctx.fillStyle='rgba(232,255,71,0.55)';
+    ctx.font='bold 42px "Arial",sans-serif';
+    ctx.letterSpacing='8px';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText('EMPIRE OS',256,406);
+
+    // Three color dots below wordmark (pillar indicator)
+    var dots=[['#e8ff47',196],['#4df0b4',256],['#6c8fff',316]];
+    dots.forEach(function(d){
+      ctx.fillStyle=d[0];
+      ctx.shadowColor=d[0];
+      ctx.shadowBlur=12;
+      ctx.beginPath();
+      ctx.arc(d[1],450,7,0,Math.PI*2);
+      ctx.fill();
+    });
+    ctx.shadowBlur=0;
+
+    // Inject as apple-touch-icon
+    var dataUrl=c.toDataURL('image/png');
+    var link=document.createElement('link');
+    link.rel='apple-touch-icon';
+    link.href=dataUrl;
+    // Remove old placeholder link
+    var old=document.querySelector('link[rel="apple-touch-icon"]');
+    if(old) old.parentNode.removeChild(old);
+    document.head.appendChild(link);
+  }catch(e){}
+})();
 </script>
 
 </body></html>
