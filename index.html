@@ -86,5 +86,1982 @@ body::before {
   font-family:'Syne',sans-serif; font-weight:800; font-size:22px;
   letter-spacing:-0.03em; color:var(--fg);
 }
+.panel-title span { color:var(--active-color,var(--fg)); }
+.panel-sub { font-size:11px; color:var(--fg3); margin-top:2px; }
+.date-chip {
+  font-family:'JetBrains Mono',monospace; font-size:10px;
+  color:var(--fg3); background:var(--surface);
+  border:1px solid var(--border); border-radius:20px;
+  padding:5px 10px; letter-spacing:0.05em; flex-shrink:0;
+}
 
-  
+/* ─── BOTTOM NAV ─────────────────────────────────────────────────── */
+#bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));
+  background:color-mix(in srgb,var(--bg) 85%,transparent);
+  border-top:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-around;
+  padding:8px env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);
+  z-index:100;
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+}
+.nav-item {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  cursor:pointer; padding:4px 6px; border-radius:10px;
+  -webkit-tap-highlight-color:transparent;
+  min-width:44px;
+}
+.nav-item:active { background:var(--surface); }
+.nav-icon { font-size:20px; line-height:1; }
+.nav-label {
+  font-family:'Syne',sans-serif; font-size:8px; font-weight:700;
+  letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--fg3); white-space:nowrap; transition:color 0.2s;
+}
+.nav-item.active .nav-label { color:var(--nav-active,var(--laughder)); }
+.nav-pip {
+  width:4px; height:4px; border-radius:50%;
+  background:var(--nav-active,transparent);
+  opacity:0; transition:opacity 0.2s;
+}
+.nav-item.active .nav-pip { opacity:1; }
+
+/* ─── HERO STATS ─────────────────────────────────────────────────── */
+.hero-stats { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:14px; }
+.hero-stat {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px; position:relative; overflow:hidden;
+}
+.hero-stat::before {
+  content:""; position:absolute; top:0; left:0; right:0;
+  height:2px; background:var(--stat-color,var(--fg3));
+}
+.stat-val {
+  font-family:'Syne',sans-serif; font-size:24px; font-weight:800;
+  letter-spacing:-0.03em; color:var(--fg);
+  font-variant-numeric:tabular-nums; line-height:1; margin-bottom:3px;
+}
+.stat-label { font-size:11px; color:var(--fg2); font-weight:500; }
+
+/* ─── CARDS ─────────────────────────────────────────────────────── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:9px; overflow:hidden; }
+.card-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 15px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+}
+.card-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--fg); }
+.card-chevron { font-size:11px; color:var(--fg3); transition:transform 0.2s; }
+.card.open .card-chevron { transform:rotate(180deg); }
+.card-body { display:none; padding:0 15px 15px; }
+.card.open .card-body { display:block; }
+
+/* ─── PIPELINE ───────────────────────────────────────────────────── */
+.pipeline { display:flex; flex-direction:column; gap:1px; }
+.pipe-row {
+  display:flex; align-items:center; gap:9px;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+}
+.pipe-row:last-child { border-bottom:none; }
+.pipe-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+  background:var(--pipe-color,var(--fg3));
+}
+.pipe-dot.live { box-shadow:0 0 7px var(--pipe-color,var(--fg3)); }
+.pipe-label { font-size:12px; color:var(--fg); flex:1; }
+.pipe-milestone {
+  font-family:'JetBrains Mono',monospace; font-size:9px;
+  padding:3px 7px; border-radius:6px; white-space:nowrap;
+}
+.pipe-milestone.live { background:rgba(77,240,180,0.13); color:#4df0b4; }
+.pipe-milestone.building { background:rgba(255,187,58,0.13); color:#ffbb3a; }
+.pipe-milestone.planned { background:rgba(255,255,255,0.05); color:var(--fg3); }
+.pipe-delete {
+  background:none; border:none; color:var(--fg3); cursor:pointer;
+  font-size:13px; padding:2px 4px; line-height:1;
+  -webkit-tap-highlight-color:transparent;
+}
+.pipe-delete:hover { color:#ff5c3a; }
+
+/* Add pipeline form */
+.pipe-add-form {
+  display:flex; gap:7px; margin-top:10px; align-items:flex-end; flex-wrap:wrap;
+}
+.pipe-add-form input, .pipe-add-form select {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--fg);
+  font-family:'Inter',sans-serif; font-size:12px;
+  padding:8px 10px; outline:none; -webkit-appearance:none;
+}
+.pipe-add-form input { flex:1; min-width:100px; }
+.pipe-add-form select { flex-shrink:0; }
+.pipe-add-btn {
+  background:var(--active-color,var(--fg3)); color:#000;
+  border:none; border-radius:var(--radius-sm); font-family:'Syne',sans-serif;
+  font-size:11px; font-weight:700; padding:8px 12px; cursor:pointer;
+  white-space:nowrap; -webkit-tap-highlight-color:transparent;
+}
+
+/* ─── CHECKLIST ──────────────────────────────────────────────────── */
+.checklist { display:flex; flex-direction:column; gap:7px; }
+.check-item {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 11px; background:var(--surface2);
+  border-radius:var(--radius-sm); cursor:pointer;
+  -webkit-tap-highlight-color:transparent; position:relative;
+}
+.check-item.done .check-text { text-decoration:line-through; color:var(--fg3); }
+.checkbox {
+  width:19px; height:19px; border-radius:5px;
+  border:1.5px solid var(--check-color,var(--fg3)); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.15s; margin-top:1px;
+}
+.check-item.done .checkbox { background:var(--check-color,var(--fg3)); border-color:var(--check-color,var(--fg3)); }
+.checkbox::after { content:"✓"; font-size:10px; color:#000; opacity:0; font-weight:700; }
+.check-item.done .checkbox::after { opacity:1; }
+.check-text { font-size:12px; color:var(--fg); line-height:1.4; flex:1; }
+.check-tag { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--fg3); margin-top:1px; }
+.check-del {
+  background:none; border:none; color:var(--fg3); font-size:13px;
+  cursor:pointer; padding:0 2px; line-height:1; flex-shrink:0;
+  -webkit-tap-highlight-color:transparent; align-self:center;
+}
+
+/* add-item form */
+.add-item-row {
+  display:flex; gap:7px; margin-top:9px;
+}
+.add-item-row input {
+  flex:1; background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--fg);
+  font-size:12px; padding:8px 10px; outline:none; -webkit-appearance:none;
+  font-family:'Inter',sans-serif;
+}
+.add-item-btn {
+  background:var(--active-color,var(--fg3)); color:#000; border:none;
+  border-radius:var(--radius-sm); font-family:'Syne',sans-serif;
+  font-size:12px; font-weight:700; padding:8px 13px; cursor:pointer;
+  -webkit-tap-highlight-color:transparent; white-space:nowrap;
+}
+
+/* ─── METRICS ────────────────────────────────────────────────────── */
+.metric-bar-wrap { margin-bottom:11px; }
+.metric-bar-top { display:flex; justify-content:space-between; margin-bottom:5px; }
+.metric-bar-label { font-size:11px; color:var(--fg2); }
+.metric-bar-val { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--fg); font-variant-numeric:tabular-nums; }
+.metric-bar-track { height:4px; background:var(--surface2); border-radius:99px; overflow:hidden; }
+.metric-bar-fill { height:100%; border-radius:99px; background:var(--bar-color,var(--fg3)); transition:width 0.5s cubic-bezier(.4,0,.2,1); }
+
+/* ─── INPUTS ─────────────────────────────────────────────────────── */
+.field-lbl {
+  font-family:'JetBrains Mono',monospace; font-size:9px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--fg3); margin-bottom:5px;
+}
+textarea, input[type="text"], input[type="number"] {
+  width:100%; background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--fg);
+  font-family:'Inter',sans-serif; font-size:12px;
+  padding:9px 11px; resize:none; outline:none;
+  transition:border-color 0.2s; -webkit-appearance:none;
+}
+textarea:focus, input[type="text"]:focus, input[type="number"]:focus {
+  border-color:var(--active-color,var(--laughder));
+}
+textarea { line-height:1.5; }
+select {
+  width:100%; background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--fg);
+  font-family:'Inter',sans-serif; font-size:12px;
+  padding:9px 11px; outline:none; -webkit-appearance:none;
+}
+
+.save-btn {
+  margin-top:8px; padding:10px 14px;
+  background:var(--active-color,var(--laughder)); color:#000;
+  border:none; border-radius:var(--radius-sm);
+  font-family:'Syne',sans-serif; font-size:12px; font-weight:700;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+  width:100%;
+}
+.save-btn:active { opacity:0.8; }
+
+/* ─── DIVIDER ────────────────────────────────────────────────────── */
+.divider { height:1px; background:var(--border); margin:12px 0; }
+
+/* ─── PHASE BANNER ───────────────────────────────────────────────── */
+.phase {
+  border-radius:var(--radius-sm); padding:11px 13px; margin-bottom:13px;
+  border-left:3px solid var(--active-color,var(--fg3));
+  background:color-mix(in srgb,var(--active-color,var(--fg3)) 8%,var(--surface));
+}
+.phase-title { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--fg); margin-bottom:2px; }
+.phase-sub { font-size:11px; color:var(--fg2); line-height:1.4; }
+
+/* ─── TRADING LOG ────────────────────────────────────────────────── */
+.trade-summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+.trade-stat {
+  background:var(--surface2); border-radius:var(--radius-sm);
+  padding:10px; text-align:center;
+}
+.trade-stat-val {
+  font-family:'Syne',sans-serif; font-size:17px; font-weight:800;
+  font-variant-numeric:tabular-nums; line-height:1; margin-bottom:3px;
+}
+.trade-stat-lbl { font-size:9px; color:var(--fg3); font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; }
+
+.trade-log-row {
+  display:grid; grid-template-columns:auto 1fr auto auto;
+  gap:8px; align-items:center;
+  padding:8px 0; border-bottom:1px solid var(--border);
+}
+.trade-log-row:last-child { border-bottom:none; }
+.trade-date { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--fg3); }
+.trade-desc { font-size:11px; color:var(--fg); }
+.trade-pnl { font-family:'JetBrains Mono',monospace; font-size:11px; font-variant-numeric:tabular-nums; }
+.trade-pnl.pos { color:#4df0b4; }
+.trade-pnl.neg { color:#ff5c3a; }
+.trade-del { background:none; border:none; color:var(--fg3); cursor:pointer; font-size:12px; padding:2px; }
+
+/* ─── PICKS LOG ──────────────────────────────────────────────────── */
+.picks-row {
+  display:grid; grid-template-columns:1fr 1fr auto auto;
+  gap:8px; align-items:center;
+  padding:8px 0; border-bottom:1px solid var(--border);
+}
+.picks-row:last-child { border-bottom:none; }
+.pick-game { font-size:11px; color:var(--fg); }
+.pick-pick { font-size:11px; color:var(--fg2); }
+.pick-result { font-family:'JetBrains Mono',monospace; font-size:10px; }
+.pick-result.win { color:#4df0b4; }
+.pick-result.loss { color:#ff5c3a; }
+.pick-result.pending { color:var(--fg3); }
+.pick-del { background:none; border:none; color:var(--fg3); cursor:pointer; font-size:12px; padding:2px; }
+
+/* ─── KNOWLEDGE CATEGORIES ───────────────────────────────────────── */
+.know-cats { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.know-cat {
+  font-family:'JetBrains Mono',monospace; font-size:9px;
+  letter-spacing:0.08em; text-transform:uppercase;
+  padding:5px 10px; border-radius:99px; cursor:pointer;
+  border:1px solid var(--border); color:var(--fg3);
+  transition:all 0.15s; -webkit-tap-highlight-color:transparent;
+}
+.know-cat.active {
+  background:var(--knowledge); color:#000;
+  border-color:var(--knowledge);
+}
+
+/* Study timer */
+.timer-display { text-align:center; padding:18px 0 8px; }
+.timer-dig {
+  font-family:'Syne',sans-serif; font-size:52px; font-weight:800;
+  letter-spacing:-0.04em; color:var(--knowledge);
+  font-variant-numeric:tabular-nums; line-height:1;
+}
+.timer-lbl { font-size:11px; color:var(--fg3); margin-top:6px; }
+.timer-presets { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-bottom:11px; }
+.timer-preset {
+  padding:9px; border-radius:var(--radius-sm);
+  border:1px solid var(--border); background:var(--surface2);
+  color:var(--fg); font-family:'Syne',sans-serif; font-size:12px;
+  font-weight:700; cursor:pointer; text-align:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.timer-preset.active { background:var(--knowledge); color:#000; border-color:var(--knowledge); }
+.timer-btns { display:flex; gap:8px; }
+.timer-btn {
+  flex:1; padding:11px; border-radius:var(--radius-sm);
+  border:1px solid var(--border); background:var(--surface2);
+  color:var(--fg); font-family:'Syne',sans-serif; font-size:12px;
+  font-weight:700; cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.timer-btn.primary { background:var(--knowledge); color:#000; border-color:var(--knowledge); }
+
+/* ─── CALENDAR ───────────────────────────────────────────────────── */
+.cal-view-tabs {
+  display:flex; gap:6px; margin-bottom:13px;
+}
+.cal-view-tab {
+  flex:1; padding:8px; border-radius:var(--radius-sm); cursor:pointer;
+  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  text-align:center; border:1px solid var(--border);
+  background:var(--surface2); color:var(--fg3);
+  -webkit-tap-highlight-color:transparent; transition:all 0.15s;
+}
+.cal-view-tab.active { background:var(--calendar); color:#000; border-color:var(--calendar); }
+
+.cal-date-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:13px;
+}
+.cal-date-lbl {
+  font-family:'Syne',sans-serif; font-size:15px; font-weight:800;
+  letter-spacing:-0.02em; color:var(--fg); text-align:center; flex:1;
+}
+.cal-nav-btn {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; color:var(--fg2); cursor:pointer;
+  padding:7px 13px; font-size:15px; -webkit-tap-highlight-color:transparent;
+  flex-shrink:0;
+}
+
+/* DAY VIEW */
+.time-blocks { display:flex; flex-direction:column; gap:5px; }
+.time-block {
+  display:grid; grid-template-columns:46px 1fr;
+  gap:0; min-height:52px;
+}
+.time-block-hour {
+  font-family:'JetBrains Mono',monospace; font-size:9px;
+  color:var(--fg3); padding-top:6px; flex-shrink:0;
+  letter-spacing:0.03em; line-height:1.2;
+}
+.time-block-slot {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:8px 11px;
+  min-height:52px; transition:border-color 0.15s;
+  position:relative; display:flex; flex-direction:column; gap:3px;
+}
+.time-block-slot:focus-within { border-color:var(--calendar); }
+.time-block-slot.has-event { border-color:color-mix(in srgb,var(--calendar) 60%,transparent); background:color-mix(in srgb,var(--calendar) 5%,var(--surface)); }
+.slot-task-label {
+  font-size:12px; color:var(--fg); font-family:'Inter',sans-serif;
+  background:transparent; border:none; outline:none; width:100%; padding:0;
+  line-height:1.3;
+}
+.slot-task-label::placeholder { color:var(--fg3); }
+.slot-tasks-list { display:flex; flex-direction:column; gap:3px; margin-top:2px; }
+.slot-task-item {
+  display:flex; align-items:center; gap:6px; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.slot-task-item.done .slot-task-text { text-decoration:line-through; color:var(--fg3); }
+.slot-task-cb {
+  width:14px; height:14px; border-radius:3px; flex-shrink:0;
+  border:1.5px solid var(--calendar); display:flex; align-items:center; justify-content:center;
+  transition:background 0.12s;
+}
+.slot-task-item.done .slot-task-cb { background:var(--calendar); border-color:var(--calendar); }
+.slot-task-cb::after { content:"✓"; font-size:8px; color:#000; opacity:0; font-weight:800; }
+.slot-task-item.done .slot-task-cb::after { opacity:1; }
+.slot-task-text { font-size:11px; color:var(--fg); flex:1; line-height:1.3; }
+.slot-task-del { background:none; border:none; color:var(--fg3); font-size:10px; cursor:pointer; padding:0 1px; flex-shrink:0; }
+.slot-add-row { display:flex; gap:5px; margin-top:4px; }
+.slot-add-inp {
+  flex:1; background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; color:var(--fg); font-family:'Inter',sans-serif;
+  font-size:11px; padding:5px 8px; outline:none; -webkit-appearance:none;
+}
+.slot-add-btn {
+  background:var(--calendar); color:#000; border:none; border-radius:6px;
+  font-size:11px; font-weight:700; padding:5px 9px; cursor:pointer;
+  -webkit-tap-highlight-color:transparent; font-family:'Syne',sans-serif;
+}
+
+/* WEEK VIEW */
+.week-grid {
+  display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:10px;
+}
+.week-day-col { display:flex; flex-direction:column; gap:3px; }
+.week-day-hdr {
+  font-family:'JetBrains Mono',monospace; font-size:8px; text-align:center;
+  color:var(--fg3); letter-spacing:0.05em; padding-bottom:4px;
+  border-bottom:1px solid var(--border); margin-bottom:2px;
+}
+.week-day-hdr.today { color:var(--calendar); }
+.week-day-num {
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  text-align:center; color:var(--fg); line-height:1.2;
+}
+.week-day-num.today { color:var(--calendar); }
+.week-task-item {
+  background:var(--surface2); border-radius:4px; padding:4px 6px;
+  font-size:9px; color:var(--fg2); line-height:1.3; cursor:pointer;
+  -webkit-tap-highlight-color:transparent; position:relative;
+}
+.week-task-item.done { opacity:0.4; text-decoration:line-through; }
+.week-task-item::before {
+  content:""; position:absolute; left:0; top:0; bottom:0;
+  width:2px; border-radius:2px 0 0 2px; background:var(--calendar);
+}
+.week-add-btn {
+  background:none; border:1px dashed var(--border); border-radius:4px;
+  color:var(--fg3); font-size:10px; padding:4px; cursor:pointer; text-align:center;
+  -webkit-tap-highlight-color:transparent; width:100%;
+}
+
+/* MONTH VIEW */
+.month-grid {
+  display:grid; grid-template-columns:repeat(7,1fr); gap:2px;
+}
+.month-day-hdr {
+  font-family:'JetBrains Mono',monospace; font-size:8px;
+  color:var(--fg3); text-align:center; padding:4px 0; letter-spacing:0.04em;
+}
+.month-cell {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:6px; padding:5px 4px; min-height:52px;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+  transition:border-color 0.15s; position:relative;
+}
+.month-cell:active { background:var(--surface2); }
+.month-cell.today { border-color:var(--calendar); }
+.month-cell.other-month { opacity:0.35; }
+.month-cell-num {
+  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  color:var(--fg3); line-height:1; margin-bottom:3px;
+}
+.month-cell.today .month-cell-num { color:var(--calendar); }
+.month-event-dot {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--calendar); margin:1px auto;
+}
+.month-event-label {
+  font-size:8px; color:var(--fg2); white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis; line-height:1.2;
+  background:color-mix(in srgb,var(--calendar) 15%,transparent);
+  border-radius:3px; padding:1px 3px; margin-top:1px;
+}
+
+/* ─── AI BRAINSTORM ──────────────────────────────────────────────── */
+.ai-resp {
+  background:var(--surface2); border-radius:var(--radius-sm);
+  padding:13px; margin-bottom:11px;
+  border-left:3px solid var(--brainstorm);
+}
+.ai-role { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--brainstorm); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:7px; }
+.ai-text { font-size:12px; line-height:1.65; color:var(--fg); white-space:pre-line; }
+.ai-btn {
+  width:100%; padding:12px; border-radius:var(--radius-sm); border:none;
+  font-family:'Syne',sans-serif; font-size:12px; font-weight:700;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.ai-btn.primary { background:var(--brainstorm); color:#000; }
+.ai-btn.secondary { background:var(--surface2); color:var(--fg); border:1px solid var(--border); margin-top:7px; }
+.ai-btn:active { opacity:0.8; }
+
+/* ─── SETTINGS ───────────────────────────────────────────────────── */
+.settings-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 0; border-bottom:1px solid var(--border);
+}
+.settings-row:last-child { border-bottom:none; }
+.settings-lbl { font-size:13px; color:var(--fg); }
+.settings-sub { font-size:11px; color:var(--fg3); margin-top:2px; }
+.toggle {
+  width:44px; height:26px; border-radius:13px;
+  background:var(--surface3); border:1px solid var(--border);
+  position:relative; cursor:pointer; transition:background 0.2s;
+  flex-shrink:0; -webkit-tap-highlight-color:transparent;
+}
+.toggle.on { background:var(--active-color,var(--servasquad)); border-color:var(--active-color,var(--servasquad)); }
+.toggle::after {
+  content:""; position:absolute; top:3px; left:3px;
+  width:18px; height:18px; border-radius:50%;
+  background:#fff; transition:transform 0.2s;
+}
+.toggle.on::after { transform:translateX(18px); }
+.settings-section-lbl {
+  font-family:'JetBrains Mono',monospace; font-size:9px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--fg3); margin:16px 0 8px;
+}
+
+/* ─── UTILITY ────────────────────────────────────────────────────── */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; }
+.mt8 { margin-top:8px; } .mt12 { margin-top:12px; } .mb10 { margin-bottom:10px; }
+.overflow-x { overflow-x:auto; }
+.empty-msg { font-size:12px; color:var(--fg3); text-align:center; padding:16px 0; }
+
+@media (orientation:landscape) and (max-height:500px) {
+  .hero-stats { grid-template-columns:repeat(4,1fr); }
+  .stat-val { font-size:20px; }
+  .timer-dig { font-size:40px; }
+}
+</style>
+
+<div id="app">
+  <div id="main">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         LAUGHDER.COM
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel active" id="panel-laughder" style="--active-color:var(--laughder)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Laughder</span>.com</div><div class="panel-sub">Comedy & Entertainment</div></div>
+        <div class="date-chip" id="date-chip-ld"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat" style="--stat-color:var(--laughder)">
+          <div class="stat-val" id="ld-total">0</div>
+          <div class="stat-label">Total Followers</div>
+        </div>
+        <div class="hero-stat" style="--stat-color:var(--laughder)">
+          <div class="stat-val" id="ld-rev">$0</div>
+          <div class="stat-label">Monthly Revenue</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-title">Phase 1 — Audience Building</div>
+        <div class="phase-sub">Consistent content → 10K followers → first monetization unlock</div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">💰 Monetization Pipeline</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="pipeline" id="pipeline-laughder"></div>
+          <div class="pipe-add-form">
+            <input type="text" id="pipe-laughder-lbl" placeholder="Revenue stream...">
+            <select id="pipe-laughder-status">
+              <option value="live">Live</option>
+              <option value="building" selected>Building</option>
+              <option value="planned">Planned</option>
+            </select>
+            <button class="pipe-add-btn" onclick="addPipeItem('laughder')">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📊 Platform Growth</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="metric-bar-wrap"><div class="metric-bar-top"><div class="metric-bar-label">YouTube</div><div class="metric-bar-val" id="ld-yt-lbl">0 subs</div></div><div class="metric-bar-track"><div class="metric-bar-fill" id="ld-yt-bar" style="--bar-color:#ff3333;width:0%"></div></div></div>
+          <div class="metric-bar-wrap"><div class="metric-bar-top"><div class="metric-bar-label">TikTok</div><div class="metric-bar-val" id="ld-tt-lbl">0</div></div><div class="metric-bar-track"><div class="metric-bar-fill" id="ld-tt-bar" style="--bar-color:var(--laughder);width:0%"></div></div></div>
+          <div class="metric-bar-wrap"><div class="metric-bar-top"><div class="metric-bar-label">Instagram</div><div class="metric-bar-val" id="ld-ig-lbl">0</div></div><div class="metric-bar-track"><div class="metric-bar-fill" id="ld-ig-bar" style="--bar-color:#e040fb;width:0%"></div></div></div>
+          <div class="divider"></div>
+          <div class="grid3 mb10">
+            <div><div class="field-lbl">YouTube</div><input type="number" id="inp-ld-yt" placeholder="0" oninput="ldMetrics()"></div>
+            <div><div class="field-lbl">TikTok</div><input type="number" id="inp-ld-tt" placeholder="0" oninput="ldMetrics()"></div>
+            <div><div class="field-lbl">Instagram</div><input type="number" id="inp-ld-ig" placeholder="0" oninput="ldMetrics()"></div>
+          </div>
+          <div><div class="field-lbl">Monthly Revenue ($)</div><input type="number" id="inp-ld-rev" placeholder="0" oninput="ldRevenue()"></div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">✅ Today's Tasks</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="tasks-laughder"></div>
+          <div class="add-item-row">
+            <input type="text" id="task-laughder-inp" placeholder="Add task..." onkeydown="if(event.key==='Enter')addTask('laughder')">
+            <button class="add-item-btn" onclick="addTask('laughder')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📝 Notes & Ideas</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <textarea id="note-laughder" rows="5" placeholder="Content ideas, hooks, upcoming bits..." oninput="saveNote('laughder',this.value)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SERVASQUAD
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-servasquad" style="--active-color:var(--servasquad)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>ServaSquad</span></div><div class="panel-sub">Contractor Lead Generation</div></div>
+        <div class="date-chip" id="date-chip-sq"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat" style="--stat-color:var(--servasquad)">
+          <div class="stat-val" id="sq-leads">0</div><div class="stat-label">Leads / Month</div>
+        </div>
+        <div class="hero-stat" style="--stat-color:var(--servasquad)">
+          <div class="stat-val" id="sq-rev">$0</div><div class="stat-label">Monthly Revenue</div>
+        </div>
+      </div>
+      <div class="phase"><div class="phase-title">Phase 1 — First Paying Contractor</div><div class="phase-sub">One roofer or HVAC company on a monthly retainer proves the model.</div></div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">💰 Monetization Pipeline</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="pipeline" id="pipeline-servasquad"></div>
+          <div class="pipe-add-form">
+            <input type="text" id="pipe-servasquad-lbl" placeholder="Revenue stream...">
+            <select id="pipe-servasquad-status"><option value="live">Live</option><option value="building" selected>Building</option><option value="planned">Planned</option></select>
+            <button class="pipe-add-btn" onclick="addPipeItem('servasquad')">+ Add</button>
+          </div>
+          <div class="divider"></div>
+          <div class="grid2">
+            <div><div class="field-lbl">Monthly Leads</div><input type="number" id="inp-sq-leads" placeholder="0" oninput="setStat('sq-leads',this.value,false)"></div>
+            <div><div class="field-lbl">Revenue ($)</div><input type="number" id="inp-sq-rev" placeholder="0" oninput="setStat('sq-rev',this.value,true)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">✅ Today's Tasks</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="tasks-servasquad"></div>
+          <div class="add-item-row">
+            <input type="text" id="task-servasquad-inp" placeholder="Add task..." onkeydown="if(event.key==='Enter')addTask('servasquad')">
+            <button class="add-item-btn" onclick="addTask('servasquad')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📝 Notes</div><div class="card-chevron">▾</div></div><div class="card-body"><textarea id="note-servasquad" rows="5" placeholder="Prospects, scripts, what's working..." oninput="saveNote('servasquad',this.value)"></textarea></div></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         RUBBERMARBLES
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-rubber" style="--active-color:var(--rubber)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>RubberMarbles</span></div><div class="panel-sub">Motorsport Media · F1 / IndyCar / NASCAR</div></div>
+        <div class="date-chip"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat" style="--stat-color:var(--rubber)">
+          <div class="stat-val" id="rm-followers">0</div><div class="stat-label">Total Followers</div>
+        </div>
+        <div class="hero-stat" style="--stat-color:var(--rubber)">
+          <div class="stat-val" id="rm-rev">$0</div><div class="stat-label">Monthly Revenue</div>
+        </div>
+      </div>
+      <div class="phase"><div class="phase-title">Phase 1 — Content Flywheel</div><div class="phase-sub">Volume before monetization. Niche audience = premium sponsorships.</div></div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">💰 Monetization Pipeline</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="pipeline" id="pipeline-rubber"></div>
+          <div class="pipe-add-form">
+            <input type="text" id="pipe-rubber-lbl" placeholder="Revenue stream...">
+            <select id="pipe-rubber-status"><option value="live">Live</option><option value="building" selected>Building</option><option value="planned">Planned</option></select>
+            <button class="pipe-add-btn" onclick="addPipeItem('rubber')">+ Add</button>
+          </div>
+          <div class="divider"></div>
+          <div class="grid2">
+            <div><div class="field-lbl">Total Followers</div><input type="number" id="inp-rm-f" placeholder="0" oninput="setStat('rm-followers',this.value,false)"></div>
+            <div><div class="field-lbl">Revenue ($)</div><input type="number" id="inp-rm-rev" placeholder="0" oninput="setStat('rm-rev',this.value,true)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">✅ Today's Tasks</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="tasks-rubber"></div>
+          <div class="add-item-row">
+            <input type="text" id="task-rubber-inp" placeholder="Add task..." onkeydown="if(event.key==='Enter')addTask('rubber')">
+            <button class="add-item-btn" onclick="addTask('rubber')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📝 Notes</div><div class="card-chevron">▾</div></div><div class="card-body"><textarea id="note-rubber" rows="5" placeholder="Story angles, upcoming races, collab ideas..." oninput="saveNote('rubber',this.value)"></textarea></div></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SPORTS MEDIA
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-sports" style="--active-color:var(--sports)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Sports</span> Media</div><div class="panel-sub">Picks · Analysis · Social</div></div>
+        <div class="date-chip"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat" style="--stat-color:var(--sports)">
+          <div class="stat-val" id="sp-record">—</div><div class="stat-label">Picks Record</div>
+        </div>
+        <div class="hero-stat" style="--stat-color:var(--sports)">
+          <div class="stat-val" id="sp-followers">0</div><div class="stat-label">Followers</div>
+        </div>
+      </div>
+      <div class="phase"><div class="phase-title">Phase 1 — Build the Public Record</div><div class="phase-sub">A verified track record is the product. Document every pick publicly.</div></div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">💰 Monetization Pipeline</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="pipeline" id="pipeline-sports"></div>
+          <div class="pipe-add-form">
+            <input type="text" id="pipe-sports-lbl" placeholder="Revenue stream...">
+            <select id="pipe-sports-status"><option value="live">Live</option><option value="building" selected>Building</option><option value="planned">Planned</option></select>
+            <button class="pipe-add-btn" onclick="addPipeItem('sports')">+ Add</button>
+          </div>
+          <div class="divider"></div>
+          <div class="grid2">
+            <div><div class="field-lbl">Followers</div><input type="number" id="inp-sp-f" placeholder="0" oninput="setStat('sp-followers',this.value,false)"></div>
+            <div><div class="field-lbl">Record (e.g. 47-31)</div><input type="text" id="inp-sp-rec" placeholder="W-L" oninput="document.getElementById('sp-record').textContent=this.value||'—'"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">🎯 Log a Pick</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="grid3 mb10">
+            <div><div class="field-lbl">Game</div><input type="text" id="pick-game" placeholder="LAL vs GSW"></div>
+            <div><div class="field-lbl">Pick</div><input type="text" id="pick-pick" placeholder="LAL -4.5"></div>
+            <div><div class="field-lbl">Result</div>
+              <select id="pick-result">
+                <option value="pending">Pending</option>
+                <option value="win">Win ✓</option>
+                <option value="loss">Loss ✗</option>
+              </select>
+            </div>
+          </div>
+          <button class="save-btn" onclick="addPick()">Log Pick</button>
+          <div class="divider"></div>
+          <div id="picks-list"><div class="empty-msg">No picks logged yet</div></div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">✅ Today's Tasks</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="tasks-sports"></div>
+          <div class="add-item-row">
+            <input type="text" id="task-sports-inp" placeholder="Add task..." onkeydown="if(event.key==='Enter')addTask('sports')">
+            <button class="add-item-btn" onclick="addTask('sports')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📝 Analysis Notes</div><div class="card-chevron">▾</div></div><div class="card-body"><textarea id="note-sports" rows="5" placeholder="Game notes, injury reports, edges..." oninput="saveNote('sports',this.value)"></textarea></div></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TRADING
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-trading" style="--active-color:var(--trading)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Trading</span></div><div class="panel-sub">Options Premium · Micro Futures</div></div>
+        <div class="date-chip"></div>
+      </div>
+      <!-- Summary stats auto-calculated -->
+      <div class="trade-summary-grid">
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-today" style="color:var(--trading)">$0</div><div class="trade-stat-lbl">Today</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-month">$0</div><div class="trade-stat-lbl">This Month</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-alltime">$0</div><div class="trade-stat-lbl">All Time</div></div>
+      </div>
+      <div class="trade-summary-grid">
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-winrate">—</div><div class="trade-stat-lbl">Win Rate</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-wins" style="color:#4df0b4">0</div><div class="trade-stat-lbl">Wins</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" id="tr-losses" style="color:#ff5c3a">0</div><div class="trade-stat-lbl">Losses</div></div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">➕ Log Trade</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="grid3 mb10">
+            <div><div class="field-lbl">Instrument</div><input type="text" id="tr-inst" placeholder="MES / SPY"></div>
+            <div><div class="field-lbl">P&L ($)</div><input type="number" id="tr-pnl-inp" placeholder="+150"></div>
+            <div><div class="field-lbl">Result</div>
+              <select id="tr-res">
+                <option value="win">Win</option>
+                <option value="loss">Loss</option>
+                <option value="scratch">Scratch</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb10"><div class="field-lbl">Note (optional)</div><input type="text" id="tr-note-inp" placeholder="Setup, what worked..."></div>
+          <button class="save-btn" onclick="addTrade()">Log Trade</button>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📋 Trade Log</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div id="trade-log-list"><div class="empty-msg">No trades logged yet</div></div>
+        </div>
+      </div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">✅ Pre-Market Checklist</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="tasks-trading"></div>
+          <div class="add-item-row">
+            <input type="text" id="task-trading-inp" placeholder="Add checklist item..." onkeydown="if(event.key==='Enter')addTask('trading')">
+            <button class="add-item-btn" onclick="addTask('trading')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         KNOWLEDGE
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-knowledge" style="--active-color:var(--knowledge)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Knowledge</span></div><div class="panel-sub">Study · Research · Growth</div></div>
+        <div class="date-chip"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat" style="--stat-color:var(--knowledge)">
+          <div class="stat-val" id="kn-streak">0🔥</div><div class="stat-label">Day Streak</div>
+        </div>
+        <div class="hero-stat" style="--stat-color:var(--knowledge)">
+          <div class="stat-val" id="kn-week-hrs">0h</div><div class="stat-label">This Week</div>
+        </div>
+      </div>
+      <!-- Study Timer -->
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">⏱ Focus Timer</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="timer-presets">
+            <button class="timer-preset active" onclick="setTimer(25*60,this)">25m</button>
+            <button class="timer-preset" onclick="setTimer(45*60,this)">45m</button>
+            <button class="timer-preset" onclick="setTimer(60*60,this)">60m</button>
+            <button class="timer-preset" onclick="setTimer(90*60,this)">90m</button>
+          </div>
+          <div class="timer-display">
+            <div class="timer-dig" id="timer-dig">25:00</div>
+            <div class="timer-lbl" id="timer-lbl">Select duration · Press Start</div>
+          </div>
+          <div class="timer-btns">
+            <button class="timer-btn primary" id="timer-start" onclick="timerToggle()">Start</button>
+            <button class="timer-btn" onclick="timerReset()">Reset</button>
+          </div>
+        </div>
+      </div>
+      <!-- Knowledge Categories -->
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">📚 Study Areas</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="know-cats" id="know-cats">
+            <div class="know-cat active" onclick="toggleKnowCat(this)">All</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">History</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Rhetoric</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Bible</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Science</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Business</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Trading</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Philosophy</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Speaking</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Real Estate</div>
+            <div class="know-cat" onclick="toggleKnowCat(this)">Psychology</div>
+          </div>
+          <div class="divider"></div>
+          <!-- Currently reading -->
+          <div class="field-lbl">Currently studying</div>
+          <input type="text" id="kn-current" placeholder="e.g. $100M Offers — Alex Hormozi" oninput="saveNote('kn-current',this.value)" style="margin-bottom:11px;">
+          <div class="field-lbl">Notes & Takeaways</div>
+          <textarea id="note-knowledge" rows="4" placeholder="What I'm learning and how to apply it..." oninput="saveNote('knowledge',this.value)"></textarea>
+        </div>
+      </div>
+      <!-- Research Queue -->
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">🔍 Research Queue</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="checklist" id="research-queue"></div>
+          <div class="add-item-row">
+            <input type="text" id="research-inp" placeholder="Something to look into..." onkeydown="if(event.key==='Enter')addResearch()">
+            <button class="add-item-btn" onclick="addResearch()">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- Weekly Goal -->
+      <div class="card">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">🎯 Weekly Goal</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="metric-bar-wrap">
+            <div class="metric-bar-top"><div class="metric-bar-label">Study hours (10h/wk goal)</div><div class="metric-bar-val" id="kn-bar-lbl">0 / 10h</div></div>
+            <div class="metric-bar-track"><div class="metric-bar-fill" id="kn-bar" style="--bar-color:var(--knowledge);width:0%"></div></div>
+          </div>
+          <div class="grid2 mt8">
+            <div><div class="field-lbl">Hours this week</div><input type="number" id="inp-kn-hrs" step="0.5" placeholder="0" oninput="updateKnHours(this.value)"></div>
+            <div><div class="field-lbl">Streak (days)</div><input type="number" id="inp-kn-streak" placeholder="0" oninput="setKnStreak(this.value)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CALENDAR
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-calendar" style="--active-color:var(--calendar)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Planner</span></div><div class="panel-sub">Day · Week · Month</div></div>
+        <div class="date-chip" id="cal-date-chip"></div>
+      </div>
+      <!-- View tabs -->
+      <div class="cal-view-tabs">
+        <div class="cal-view-tab active" id="cal-tab-day" onclick="setCalView('day')">Day</div>
+        <div class="cal-view-tab" id="cal-tab-week" onclick="setCalView('week')">Week</div>
+        <div class="cal-view-tab" id="cal-tab-month" onclick="setCalView('month')">Month</div>
+      </div>
+      <!-- Nav row -->
+      <div class="cal-date-nav">
+        <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+        <div class="cal-date-lbl" id="cal-date-lbl"></div>
+        <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+      </div>
+      <!-- Content -->
+      <div id="cal-content"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BRAINSTORM
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-brainstorm" style="--active-color:var(--brainstorm)">
+      <div class="panel-hdr">
+        <div><div class="panel-title">⚡ <span>Think</span></div><div class="panel-sub">Strategic Brainstorm</div></div>
+      </div>
+      <div class="ai-resp">
+        <div class="ai-role">Empire OS — Strategic Advisor</div>
+        <div class="ai-text" id="ai-intro">Describe your situation, a decision you're facing, or an opportunity you're evaluating. Get a strategic read — no generic advice.</div>
+      </div>
+      <div class="field-lbl mb10" style="margin-bottom:6px;">What are you thinking about?</div>
+      <textarea id="bs-input" rows="4" placeholder="e.g. Should I go all-in on Laughder this month? I have 8 hours a week to commit..." style="margin-bottom:10px;"></textarea>
+      <div class="grid2 mb10">
+        <button class="ai-btn primary" onclick="runAI('analyze')">⚡ Analyze</button>
+        <button class="ai-btn secondary" style="margin-top:0;" onclick="runAI('challenge')">🔥 Challenge Me</button>
+      </div>
+      <button class="ai-btn secondary" onclick="runAI('opportunity')">🎯 Find My Next Move</button>
+      <div id="bs-output" style="display:none; margin-top:14px;">
+        <div class="ai-resp" id="bs-resp-box">
+          <div class="ai-role" id="bs-resp-role">CHIEF STRATEGIST</div>
+          <div class="ai-text" id="bs-resp-text"></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="card open">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">💡 Idea Capture</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <textarea id="note-brainstorm" rows="5" placeholder="Raw ideas, shower thoughts, business concepts..." oninput="saveNote('brainstorm',this.value)"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr" onclick="toggleCard(this)"><div class="card-title">🗓 90-Day Commitments</div><div class="card-chevron">▾</div></div>
+        <div class="card-body">
+          <div class="field-lbl">Commitment #1</div>
+          <textarea id="commit-1" rows="2" placeholder="Laughder: exactly what in 90 days?" oninput="saveNote('commit-1',this.value)" style="margin-bottom:9px;"></textarea>
+          <div class="field-lbl">Commitment #2</div>
+          <textarea id="commit-2" rows="2" placeholder="ServaSquad: exactly what in 90 days?" oninput="saveNote('commit-2',this.value)" style="margin-bottom:9px;"></textarea>
+          <div class="field-lbl">Commitment #3</div>
+          <textarea id="commit-3" rows="2" placeholder="Wild card..." oninput="saveNote('commit-3',this.value)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SETTINGS
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-settings" style="--active-color:var(--settings)">
+      <div class="panel-hdr">
+        <div><div class="panel-title"><span>Settings</span></div></div>
+        <div class="date-chip" id="date-chip-settings"></div>
+      </div>
+      <!-- Appearance -->
+      <div class="settings-section-lbl">Appearance</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:4px 15px 8px;">
+          <div class="settings-row">
+            <div><div class="settings-lbl">Dark Mode</div><div class="settings-sub">Force dark theme</div></div>
+            <div class="toggle on" id="toggle-dark" style="--active-color:var(--settings)" onclick="toggleDark(this)"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Business info -->
+      <div class="settings-section-lbl">Your Info</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:8px 15px 14px;">
+          <div class="field-lbl">Your name</div>
+          <input type="text" id="cfg-name" placeholder="E" oninput="saveCfg('name',this.value)" style="margin-bottom:10px;">
+          <div class="field-lbl">Primary goal (90 days)</div>
+          <input type="text" id="cfg-goal" placeholder="e.g. 10K Laughder followers + 1 ServaSquad client" oninput="saveCfg('goal',this.value)" style="margin-bottom:10px;">
+          <div class="field-lbl">Weekly available hours</div>
+          <input type="number" id="cfg-hours" placeholder="40" oninput="saveCfg('hours',this.value)">
+        </div>
+      </div>
+      <!-- Nav labels -->
+      <div class="settings-section-lbl">Business Labels</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:8px 15px 14px;">
+          <div class="field-lbl">Custom label for Sports Media tab</div>
+          <input type="text" id="cfg-sports-lbl" placeholder="Sports Media" oninput="saveCfg('sportsLbl',this.value);updateNavLabel('sports',this.value||'Sports')">
+        </div>
+      </div>
+      <!-- AI Schedule -->
+      <div class="settings-section-lbl">🤖 AI Schedule — Gemini Auto-Planner</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:8px 15px 14px;">
+          <div style="background:color-mix(in srgb,var(--calendar) 8%,var(--surface2));border:1px solid color-mix(in srgb,var(--calendar) 30%,transparent);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;">
+            <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--calendar);margin-bottom:4px;">How it works</div>
+            <div style="font-size:11px;color:var(--fg2);line-height:1.6;">Enter your Gemini API key and Empire OS will auto-generate a full month of daily time-block schedules on the 1st of each month. You can also trigger it manually anytime. Gemini builds your schedule around your goals, businesses, and weekly hours.</div>
+          </div>
+          <div class="field-lbl">Gemini API Key</div>
+          <input type="password" id="gemini-key" placeholder="AIza…" oninput="saveCfg('geminiKey',this.value)" style="margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:12px;">
+          <div class="field-lbl">Schedule style</div>
+          <select id="gemini-style" onchange="saveCfg('scheduleStyle',this.value)" style="width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--fg);font-size:13px;margin-bottom:10px;">
+            <option value="balanced">Balanced — mix all pillars daily</option>
+            <option value="focused">Deep Focus — block full days per pillar</option>
+            <option value="morning-heavy">Morning Heavy — hardest work 5–11am</option>
+          </select>
+          <div class="field-lbl">Wake time</div>
+          <select id="gemini-wake" onchange="saveCfg('wakeTime',this.value)" style="width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--fg);font-size:13px;margin-bottom:12px;">
+            <option value="5am">5:00 AM</option>
+            <option value="6am">6:00 AM</option>
+            <option value="7am" selected>7:00 AM</option>
+            <option value="8am">8:00 AM</option>
+          </select>
+          <button class="save-btn" onclick="generateMonthSchedule(false)" id="gemini-gen-btn" style="margin-bottom:8px;">✨ Generate This Month's Schedule</button>
+          <div id="gemini-status" style="font-size:11px;color:var(--fg3);text-align:center;margin-top:4px;display:none;min-height:16px;"></div>
+          <div style="margin-top:10px;padding:8px 12px;background:var(--surface2);border-radius:var(--radius-sm);font-size:10px;color:var(--fg3);line-height:1.5;">
+            Auto-generates on the 1st of each month when you open the app. Get a free Gemini API key at <span style="color:var(--calendar)">aistudio.google.com</span>
+          </div>
+        </div>
+      </div>
+      <!-- Live Stats Connections -->
+      <div class="settings-section-lbl">📡 Live Stats — Connected Accounts</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:8px 15px 14px;">
+          <div style="background:color-mix(in srgb,var(--calendar) 8%,var(--surface2));border:1px solid color-mix(in srgb,var(--calendar) 30%,transparent);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;">
+            <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--calendar);margin-bottom:4px;">ℹ How live stats work</div>
+            <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Paste your public channel URL or username for each platform. Empire OS will fetch your latest follower count via each platform's public embed API when you tap Refresh. No login or API key required for public accounts.</div>
+          </div>
+          <!-- Laughder.com channels -->
+          <div class="field-lbl" style="margin-top:4px;">Laughder — YouTube channel URL</div>
+          <input type="text" id="live-ld-yt" placeholder="https://youtube.com/@YourChannel" oninput="saveLive('ld-yt',this.value)" style="margin-bottom:8px;">
+          <div class="field-lbl">Laughder — TikTok username</div>
+          <input type="text" id="live-ld-tt" placeholder="@yourhandle" oninput="saveLive('ld-tt',this.value)" style="margin-bottom:8px;">
+          <div class="field-lbl">Laughder — Instagram username</div>
+          <input type="text" id="live-ld-ig" placeholder="@yourhandle" oninput="saveLive('ld-ig',this.value)" style="margin-bottom:8px;">
+          <div class="divider"></div>
+          <div class="field-lbl">RubberMarbles — YouTube channel URL</div>
+          <input type="text" id="live-rm-yt" placeholder="https://youtube.com/@RubberMarbles" oninput="saveLive('rm-yt',this.value)" style="margin-bottom:8px;">
+          <div class="field-lbl">RubberMarbles — X/Twitter handle</div>
+          <input type="text" id="live-rm-x" placeholder="@rubbermarbles" oninput="saveLive('rm-x',this.value)" style="margin-bottom:8px;">
+          <div class="divider"></div>
+          <div class="field-lbl">Sports Media — X/Twitter handle</div>
+          <input type="text" id="live-sp-x" placeholder="@yourpicksaccount" oninput="saveLive('sp-x',this.value)" style="margin-bottom:8px;">
+          <div class="field-lbl">Sports Media — Instagram username</div>
+          <input type="text" id="live-sp-ig" placeholder="@yourhandle" oninput="saveLive('sp-ig',this.value)" style="margin-bottom:12px;">
+          <button class="save-btn" onclick="refreshLiveStats()" id="live-refresh-btn">⟳ Refresh All Stats</button>
+          <div id="live-status" style="font-size:11px;color:var(--fg3);text-align:center;margin-top:8px;display:none;"></div>
+          <div style="margin-top:10px;padding:9px 12px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <div style="font-size:10px;color:var(--fg3);line-height:1.5;">
+              <strong style="color:var(--fg2);">Note:</strong> YouTube, TikTok, Instagram and X don't offer free public subscriber/follower counts via API. The Refresh button opens a helper that reads the count from each page — or you can manually paste in updated numbers on each pillar tab. For true automation, a paid social analytics service (Sprout Social, Hootsuite, etc.) would connect via API key.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Data -->
+      <div class="settings-section-lbl">Data</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:8px 15px 14px;">
+          <button class="save-btn" style="background:var(--surface2);color:var(--fg);border:1px solid var(--border);" onclick="if(confirm('Clear ALL data? This cannot be undone.'))resetAll()">🗑 Reset All Data</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- ─── BOTTOM NAV ──────────────────────────────────────────────── -->
+  <nav id="bottom-nav">
+    <div class="nav-item active" data-panel="laughder" onclick="go('laughder',this)" style="--nav-active:var(--laughder)">
+      <div class="nav-icon">🎭</div><div class="nav-label">Laughder</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="servasquad" onclick="go('servasquad',this)" style="--nav-active:var(--servasquad)">
+      <div class="nav-icon">🔧</div><div class="nav-label" id="nav-lbl-servasquad">Squad</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="rubber" onclick="go('rubber',this)" style="--nav-active:var(--rubber)">
+      <div class="nav-icon">🏎</div><div class="nav-label">Rubber</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="sports" onclick="go('sports',this)" style="--nav-active:var(--sports)">
+      <div class="nav-icon">📊</div><div class="nav-label" id="nav-lbl-sports">Sports</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="trading" onclick="go('trading',this)" style="--nav-active:var(--trading)">
+      <div class="nav-icon">📈</div><div class="nav-label">Trading</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="knowledge" onclick="go('knowledge',this)" style="--nav-active:var(--knowledge)">
+      <div class="nav-icon">📚</div><div class="nav-label">Study</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="calendar" onclick="go('calendar',this)" style="--nav-active:var(--calendar)">
+      <div class="nav-icon">📅</div><div class="nav-label">Day Plan</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="brainstorm" onclick="go('brainstorm',this)" style="--nav-active:var(--brainstorm)">
+      <div class="nav-icon">⚡</div><div class="nav-label">Think</div><div class="nav-pip"></div>
+    </div>
+    <div class="nav-item" data-panel="settings" onclick="go('settings',this)" style="--nav-active:var(--settings)">
+      <div class="nav-icon">⚙️</div><div class="nav-label">Settings</div><div class="nav-pip"></div>
+    </div>
+  </nav>
+</div>
+
+<script>
+/* ─── STORE ─────────────────────────────────────────────────────────── */
+var S = {};
+try { S = JSON.parse(localStorage.getItem('eos3')||'{}'); } catch(e){}
+function persist(){ try{localStorage.setItem('eos3',JSON.stringify(S));}catch(e){} }
+
+/* ─── DEFAULT DATA ───────────────────────────────────────────────────── */
+var DEFAULT_PIPELINES = {
+  laughder:[
+    {lbl:'YouTube AdSense',status:'building'},
+    {lbl:'TikTok Creator Fund / LIVE gifts',status:'building'},
+    {lbl:'Brand sponsorships',status:'planned'},
+    {lbl:'Merch / digital products',status:'planned'},
+    {lbl:'Patreon membership',status:'planned'}
+  ],
+  servasquad:[
+    {lbl:'Monthly contractor retainer',status:'building'},
+    {lbl:'Per-lead pricing',status:'planned'},
+    {lbl:'White-label to agencies',status:'planned'}
+  ],
+  rubber:[
+    {lbl:'YouTube AdSense',status:'building'},
+    {lbl:'Motorsport brand sponsorships',status:'planned'},
+    {lbl:'Affiliate (sim gear, tickets)',status:'planned'},
+    {lbl:'Paid newsletter',status:'planned'}
+  ],
+  sports:[
+    {lbl:'Free picks — audience building',status:'live'},
+    {lbl:'Substack premium newsletter',status:'building'},
+    {lbl:'Discord VIP community',status:'planned'},
+    {lbl:'Sportsbook affiliate links',status:'planned'},
+    {lbl:'Sponsorships / brand deals',status:'planned'}
+  ]
+};
+
+var DEFAULT_TASKS = {
+  laughder:[
+    {text:'Film 1 short-form video',tag:'CONTENT'},
+    {text:'Engage 20+ comments on recent posts',tag:'GROWTH'},
+    {text:'Research 3 trending formats',tag:'RESEARCH'}
+  ],
+  servasquad:[
+    {text:'Cold call 5 roofing companies',tag:'OUTREACH'},
+    {text:'Build lead gen landing page for 1 niche',tag:'SETUP'},
+    {text:'Draft contractor pitch one-pager',tag:'SALES'}
+  ],
+  rubber:[
+    {text:'Post race recap / hot take',tag:'CONTENT'},
+    {text:'Engage motorsport community (X, Reddit)',tag:'GROWTH'}
+  ],
+  sports:[
+    {text:"Post today's picks with full reasoning",tag:'CONTENT'},
+    {text:'Analyze line movement tonight',tag:'ANALYSIS'},
+    {text:'Post previous pick result + breakdown',tag:'ACCOUNTABILITY'}
+  ],
+  trading:[
+    {text:'Review overnight MES / MGC / MCL levels',tag:'PREP'},
+    {text:'Check economic calendar',tag:'PREP'},
+    {text:'Scan open options — manage expiring',tag:'MANAGE'},
+    {text:'Log trade + outcome in journal',tag:'JOURNAL'}
+  ]
+};
+
+/* ─── CALENDAR GLOBALS (must be before init) ─────────────────────────── */
+var calDate=new Date();
+var calView='day';
+var DAYS_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTHS_CAL=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var SLOT_HOURS=['5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm'];
+
+/* ─── INIT ───────────────────────────────────────────────────────────── */
+(function init(){
+  // Date chip
+  var d = new Date();
+  var DAYS=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var ds = DAYS[d.getDay()]+' '+MONTHS[d.getMonth()]+' '+d.getDate();
+  ['date-chip-ld','date-chip-sq','date-chip-settings'].forEach(function(id){
+    var el=document.getElementById(id); if(el)el.textContent=ds;
+  });
+
+  // Reset daily checks at new day
+  var today = new Date().toDateString();
+  if(S.lastDay !== today){ S.checks={}; S.lastDay=today; persist(); }
+
+  // Pipelines
+  ['laughder','servasquad','rubber','sports'].forEach(function(k){
+    if(!S['pipe_'+k]) S['pipe_'+k] = DEFAULT_PIPELINES[k];
+    renderPipeline(k);
+  });
+
+  // Tasks
+  ['laughder','servasquad','rubber','sports','trading'].forEach(function(k){
+    if(!S['tasks_'+k]) S['tasks_'+k] = DEFAULT_TASKS[k]||[];
+    renderTasks(k);
+  });
+
+  // Research queue
+  if(!S.research) S.research=[];
+  renderResearch();
+
+  // Notes
+  ['laughder','servasquad','rubber','sports','knowledge','brainstorm','commit-1','commit-2','commit-3'].forEach(function(k){
+    var el=document.getElementById('note-'+k)||document.getElementById(k);
+    if(el && S['note_'+k]) el.value=S['note_'+k];
+  });
+
+  // Number inputs
+  var numMap={
+    'inp-ld-yt':ldMetrics,'inp-ld-tt':ldMetrics,'inp-ld-ig':ldMetrics,
+    'inp-ld-rev':ldRevenue
+  };
+  Object.keys(numMap).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&S[id]!==undefined){el.value=S[id];numMap[id]();}
+  });
+  var plainNums=[
+    ['inp-sq-leads','sq-leads',false],['inp-sq-rev','sq-rev',true],
+    ['inp-rm-f','rm-followers',false],['inp-rm-rev','rm-rev',true],
+    ['inp-sp-f','sp-followers',false],
+    ['inp-kn-hrs',null,false],['inp-kn-streak',null,false]
+  ];
+  plainNums.forEach(function(cfg){
+    var el=document.getElementById(cfg[0]);
+    if(el&&S[cfg[0]]!==undefined){
+      el.value=S[cfg[0]];
+      if(cfg[1])setStat(cfg[1],S[cfg[0]],cfg[2]);
+      if(cfg[0]==='inp-kn-hrs') updateKnHours(S[cfg[0]]);
+      if(cfg[0]==='inp-kn-streak') setKnStreak(S[cfg[0]]);
+    }
+  });
+
+  // Text inputs
+  var textMap=['inp-sp-rec','kn-current','cfg-name','cfg-goal','cfg-hours','cfg-sports-lbl'];
+  textMap.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&S[id])el.value=S[id];
+  });
+  if(S['inp-sp-rec']) document.getElementById('sp-record').textContent=S['inp-sp-rec'];
+  if(S['kn-current']){var el=document.getElementById('kn-current');if(el)el.value=S['kn-current'];}
+
+  // Picks
+  if(!S.picks) S.picks=[];
+  renderPicks();
+
+  // Trades
+  if(!S.trades) S.trades=[];
+  renderTrades();
+  calcTradeStats();
+
+  // Calendar
+  calDate = new Date();
+  calView = 'day';
+  renderCalContent();
+
+  // Auto-generate schedule on 1st of month
+  if(new Date().getDate()===1 || !S.scheduleMonth){
+    setTimeout(function(){ generateMonthSchedule(true); }, 800);
+  }
+
+  // Gemini settings restore
+  if(S.cfg){
+    if(S.cfg.geminiKey){var gk=document.getElementById('gemini-key');if(gk)gk.value=S.cfg.geminiKey;}
+    if(S.cfg.scheduleStyle){var gs=document.getElementById('gemini-style');if(gs)gs.value=S.cfg.scheduleStyle;}
+    if(S.cfg.wakeTime){var gw=document.getElementById('gemini-wake');if(gw)gw.value=S.cfg.wakeTime;}
+  }
+
+  // Live stats inputs
+  if(S.live){
+    ['ld-yt','ld-tt','ld-ig','rm-yt','rm-x','sp-x','sp-ig'].forEach(function(k){
+      var el=document.getElementById('live-'+k);
+      if(el&&S.live[k]) el.value=S.live[k];
+    });
+  }
+
+  // Theme
+  if(S.darkMode===false){
+    document.documentElement.setAttribute('data-theme','light');
+    var t=document.getElementById('toggle-dark');
+    if(t)t.classList.remove('on');
+  }
+
+  // Knowledge category
+  if(S.knowCat){
+    document.querySelectorAll('.know-cat').forEach(function(el){
+      el.classList.toggle('active', el.textContent===S.knowCat);
+    });
+  }
+
+  // Commit textareas
+  ['commit-1','commit-2','commit-3'].forEach(function(k){
+    var el=document.getElementById(k);
+    if(el&&S['note_'+k])el.value=S['note_'+k];
+  });
+
+  // Sports label
+  if(S['cfg-sports-lbl']) updateNavLabel('sports', S['cfg-sports-lbl']||'Sports');
+})();
+
+/* ─── NAVIGATION ─────────────────────────────────────────────────────── */
+function go(name, navEl){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  var panel=document.getElementById('panel-'+name);
+  if(panel) panel.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var nav=navEl||document.querySelector('.nav-item[data-panel="'+name+'"]');
+  if(nav) nav.classList.add('active');
+  document.getElementById('main').scrollTop=0;
+  if(name==='calendar') renderCalContent();
+}
+
+function updateNavLabel(key,val){
+  var el=document.getElementById('nav-lbl-'+key);
+  if(el) el.textContent=val.substring(0,7);
+}
+
+/* ─── CARDS ─────────────────────────────────────────────────────────── */
+function toggleCard(hdr){ hdr.parentElement.classList.toggle('open'); }
+
+/* ─── PIPELINE ───────────────────────────────────────────────────────── */
+function renderPipeline(key){
+  var items=S['pipe_'+key]||[];
+  var el=document.getElementById('pipeline-'+key);
+  if(!el)return;
+  if(!items.length){ el.innerHTML='<div class="empty-msg">No items yet — add below</div>'; return; }
+  el.innerHTML=items.map(function(item,i){
+    var dotCls=item.status==='live'?'live':'';
+    var mileCls=item.status;
+    return '<div class="pipe-row">'+
+      '<div class="pipe-dot '+dotCls+'" style="--pipe-color:'+(item.status==='live'?'#4df0b4':item.status==='building'?'#ffbb3a':'var(--fg3)')+'"></div>'+
+      '<div class="pipe-label">'+esc(item.lbl)+'</div>'+
+      '<span class="pipe-milestone '+mileCls+'">'+item.status+'</span>'+
+      '<button class="pipe-delete" onclick="delPipeItem(\''+key+'\','+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+}
+
+function addPipeItem(key){
+  var lbl=document.getElementById('pipe-'+key+'-lbl').value.trim();
+  var status=document.getElementById('pipe-'+key+'-status').value;
+  if(!lbl)return;
+  if(!S['pipe_'+key]) S['pipe_'+key]=[];
+  S['pipe_'+key].push({lbl:lbl,status:status});
+  persist();
+  renderPipeline(key);
+  document.getElementById('pipe-'+key+'-lbl').value='';
+}
+
+function delPipeItem(key,i){
+  S['pipe_'+key].splice(i,1);
+  persist(); renderPipeline(key);
+}
+
+/* ─── TASKS ──────────────────────────────────────────────────────────── */
+function renderTasks(key){
+  var el=document.getElementById('tasks-'+key);
+  if(!el)return;
+  var tasks=S['tasks_'+key]||[];
+  var checks=S.checks||{};
+  if(!tasks.length){ el.innerHTML='<div class="empty-msg">No tasks — add below</div>'; return; }
+  el.innerHTML=tasks.map(function(t,i){
+    var isDone=!!(checks[key+'_'+i]);
+    var color='var(--'+key+',' + (key==='servasquad'?'var(--servasquad)':key==='rubber'?'var(--rubber)':key==='sports'?'var(--sports)':key==='trading'?'var(--trading)':'var(--laughder)')+')';
+    return '<div class="check-item'+(isDone?' done':'')+'" onclick="toggleTask(\''+key+'\','+i+',this)" style="--check-color:'+color+'">'+
+      '<div class="checkbox"></div>'+
+      '<div style="flex:1"><div class="check-text">'+esc(t.text)+'</div>'+(t.tag?'<div class="check-tag">'+esc(t.tag)+'</div>':'')+'</div>'+
+      '<button class="check-del" onclick="event.stopPropagation();delTask(\''+key+'\','+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleTask(key,i,el){
+  if(!S.checks) S.checks={};
+  var k=key+'_'+i;
+  S.checks[k]=!S.checks[k];
+  el.classList.toggle('done',!!S.checks[k]);
+  persist();
+}
+
+function addTask(key){
+  var el=document.getElementById('task-'+key+'-inp');
+  var txt=(el&&el.value.trim())||'';
+  if(!txt)return;
+  if(!S['tasks_'+key]) S['tasks_'+key]=[];
+  S['tasks_'+key].push({text:txt,tag:''});
+  persist(); renderTasks(key);
+  if(el) el.value='';
+}
+
+function delTask(key,i){
+  S['tasks_'+key].splice(i,1);
+  persist(); renderTasks(key);
+}
+
+/* ─── RESEARCH QUEUE ─────────────────────────────────────────────────── */
+function renderResearch(){
+  var el=document.getElementById('research-queue');
+  if(!el)return;
+  var items=S.research||[];
+  if(!items.length){ el.innerHTML='<div class="empty-msg">Nothing in queue — add ideas through the day</div>'; return; }
+  el.innerHTML=items.map(function(item,i){
+    return '<div class="check-item'+(item.done?' done':'')+'" onclick="toggleResearch('+i+',this)" style="--check-color:var(--knowledge)">'+
+      '<div class="checkbox"></div>'+
+      '<div style="flex:1"><div class="check-text">'+esc(item.text)+'</div></div>'+
+      '<button class="check-del" onclick="event.stopPropagation();delResearch('+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+}
+
+function addResearch(){
+  var el=document.getElementById('research-inp');
+  var txt=(el&&el.value.trim())||'';
+  if(!txt)return;
+  if(!S.research) S.research=[];
+  S.research.push({text:txt,done:false});
+  persist(); renderResearch();
+  if(el) el.value='';
+}
+
+function toggleResearch(i,el){
+  S.research[i].done=!S.research[i].done;
+  el.classList.toggle('done',S.research[i].done);
+  persist();
+}
+
+function delResearch(i){
+  S.research.splice(i,1); persist(); renderResearch();
+}
+
+/* ─── NOTES ──────────────────────────────────────────────────────────── */
+function saveNote(key,val){ S['note_'+key]=val; persist(); }
+
+/* ─── LAUGHDER METRICS ───────────────────────────────────────────────── */
+function ldMetrics(){
+  var yt=parseInt(document.getElementById('inp-ld-yt').value)||0;
+  var tt=parseInt(document.getElementById('inp-ld-tt').value)||0;
+  var ig=parseInt(document.getElementById('inp-ld-ig').value)||0;
+  var total=yt+tt+ig;
+  document.getElementById('ld-total').textContent=total.toLocaleString();
+  var setBar=function(barId,lblId,n,suffix){
+    var b=document.getElementById(barId); if(b) b.style.width=Math.min(100,(n/10000)*100)+'%';
+    var l=document.getElementById(lblId); if(l) l.textContent=n.toLocaleString()+(suffix||'');
+  };
+  setBar('ld-yt-bar','ld-yt-lbl',yt,' subs');
+  setBar('ld-tt-bar','ld-tt-lbl',tt,'');
+  setBar('ld-ig-bar','ld-ig-lbl',ig,'');
+  S['inp-ld-yt']=yt; S['inp-ld-tt']=tt; S['inp-ld-ig']=ig; persist();
+}
+function ldRevenue(){
+  var n=parseFloat(document.getElementById('inp-ld-rev').value)||0;
+  document.getElementById('ld-rev').textContent='$'+n.toLocaleString();
+  S['inp-ld-rev']=n; persist();
+}
+
+/* ─── GENERIC STAT ───────────────────────────────────────────────────── */
+function setStat(statId,val,money){
+  var n=parseFloat(val)||0;
+  var el=document.getElementById(statId);
+  if(el) el.textContent=(money?'$':'')+n.toLocaleString();
+  S['inp-'+statId]=val; persist();
+}
+
+/* ─── KNOWLEDGE ──────────────────────────────────────────────────────── */
+function toggleKnowCat(el){
+  document.querySelectorAll('.know-cat').forEach(function(c){c.classList.remove('active');});
+  el.classList.add('active');
+  S.knowCat=el.textContent; persist();
+}
+function updateKnHours(val){
+  var h=parseFloat(val)||0;
+  var pct=Math.min(100,(h/10)*100);
+  document.getElementById('kn-bar').style.width=pct+'%';
+  document.getElementById('kn-bar-lbl').textContent=h+' / 10h';
+  document.getElementById('kn-week-hrs').textContent=h+'h';
+  S['inp-kn-hrs']=val; persist();
+}
+function setKnStreak(val){
+  var n=parseInt(val)||0;
+  document.getElementById('kn-streak').textContent=n+'🔥';
+  S['inp-kn-streak']=val; persist();
+}
+
+/* ─── TIMER ──────────────────────────────────────────────────────────── */
+var timerTotal=25*60, timerLeft=25*60, timerRunning=false, timerInterval=null;
+function setTimer(secs,btn){
+  timerReset();
+  timerTotal=secs; timerLeft=secs;
+  document.querySelectorAll('.timer-preset').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  renderTimer();
+}
+function renderTimer(){
+  var m=Math.floor(timerLeft/60), s=timerLeft%60;
+  document.getElementById('timer-dig').textContent=pad(m)+':'+pad(s);
+}
+function pad(n){return n<10?'0'+n:''+n;}
+function timerToggle(){
+  if(timerRunning){
+    clearInterval(timerInterval); timerRunning=false;
+    document.getElementById('timer-start').textContent='Resume';
+    document.getElementById('timer-lbl').textContent='Paused';
+  } else {
+    timerRunning=true;
+    document.getElementById('timer-start').textContent='Pause';
+    document.getElementById('timer-lbl').textContent='Focus session active ●';
+    timerInterval=setInterval(function(){
+      timerLeft--;
+      renderTimer();
+      if(timerLeft<=0){
+        clearInterval(timerInterval); timerRunning=false;
+        document.getElementById('timer-start').textContent='Start';
+        document.getElementById('timer-lbl').textContent='✓ Session complete!';
+      }
+    },1000);
+  }
+}
+function timerReset(){
+  clearInterval(timerInterval); timerRunning=false;
+  timerLeft=timerTotal; renderTimer();
+  document.getElementById('timer-start').textContent='Start';
+  document.getElementById('timer-lbl').textContent='Select duration · Press Start';
+}
+
+/* ─── PICKS ──────────────────────────────────────────────────────────── */
+function addPick(){
+  var game=document.getElementById('pick-game').value.trim();
+  var pick=document.getElementById('pick-pick').value.trim();
+  var result=document.getElementById('pick-result').value;
+  if(!game||!pick)return;
+  var d=new Date();
+  S.picks.unshift({game:game,pick:pick,result:result,date:d.getMonth()+1+'/'+d.getDate()});
+  persist(); renderPicks();
+  document.getElementById('pick-game').value='';
+  document.getElementById('pick-pick').value='';
+  document.getElementById('pick-result').value='pending';
+}
+function renderPicks(){
+  var el=document.getElementById('picks-list');
+  if(!el)return;
+  var picks=S.picks||[];
+  if(!picks.length){ el.innerHTML='<div class="empty-msg">No picks logged yet</div>'; return; }
+  el.innerHTML=picks.map(function(p,i){
+    var cls=p.result==='win'?'win':p.result==='loss'?'loss':'pending';
+    var lbl=p.result==='win'?'✓ WIN':p.result==='loss'?'✗ LOSS':'…';
+    return '<div class="picks-row">'+
+      '<div class="pick-game">'+esc(p.game)+'</div>'+
+      '<div class="pick-pick">'+esc(p.pick)+'</div>'+
+      '<span class="pick-result '+cls+'">'+lbl+'</span>'+
+      '<button class="pick-del" onclick="delPick('+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+  // Update record stat
+  var wins=picks.filter(function(p){return p.result==='win';}).length;
+  var losses=picks.filter(function(p){return p.result==='loss';}).length;
+  if(wins+losses>0) document.getElementById('sp-record').textContent=wins+'-'+losses;
+}
+function delPick(i){ S.picks.splice(i,1); persist(); renderPicks(); }
+
+/* ─── TRADES ─────────────────────────────────────────────────────────── */
+function addTrade(){
+  var inst=document.getElementById('tr-inst').value.trim();
+  var pnl=parseFloat(document.getElementById('tr-pnl-inp').value)||0;
+  var res=document.getElementById('tr-res').value;
+  var note=document.getElementById('tr-note-inp').value.trim();
+  if(!inst)return;
+  var d=new Date();
+  S.trades.unshift({
+    inst:inst, pnl:pnl, res:res, note:note,
+    date:d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),
+    month:d.getMonth()+'-'+d.getFullYear()
+  });
+  persist(); renderTrades(); calcTradeStats();
+  document.getElementById('tr-inst').value='';
+  document.getElementById('tr-pnl-inp').value='';
+  document.getElementById('tr-note-inp').value='';
+}
+function renderTrades(){
+  var el=document.getElementById('trade-log-list');
+  if(!el)return;
+  var trades=S.trades||[];
+  if(!trades.length){ el.innerHTML='<div class="empty-msg">No trades logged yet</div>'; return; }
+  el.innerHTML=trades.map(function(t,i){
+    var cls=t.pnl>0?'pos':t.pnl<0?'neg':'';
+    var sign=t.pnl>0?'+':'';
+    return '<div class="trade-log-row">'+
+      '<div class="trade-date">'+t.date.slice(5)+'</div>'+
+      '<div class="trade-desc">'+esc(t.inst)+(t.note?' — '+esc(t.note):'')+'</div>'+
+      '<div class="trade-pnl '+cls+'">'+sign+'$'+Math.abs(t.pnl).toFixed(0)+'</div>'+
+      '<button class="trade-del" onclick="delTrade('+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+}
+function delTrade(i){ S.trades.splice(i,1); persist(); renderTrades(); calcTradeStats(); }
+function calcTradeStats(){
+  var trades=S.trades||[];
+  var today=new Date();
+  var todayStr=today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+  var monthKey=today.getMonth()+'-'+today.getFullYear();
+  var todayPnl=0, monthPnl=0, allPnl=0, wins=0, losses=0;
+  trades.forEach(function(t){
+    allPnl+=t.pnl;
+    if(t.date===todayStr) todayPnl+=t.pnl;
+    if(t.month===monthKey) monthPnl+=t.pnl;
+    if(t.res==='win') wins++;
+    if(t.res==='loss') losses++;
+  });
+  var fmt=function(n){ return (n>=0?'+$':'-$')+Math.abs(n).toFixed(0); };
+  var color=function(n){ return n>=0?'#4df0b4':'#ff5c3a'; };
+  var el=function(id,val,c){ var e=document.getElementById(id); if(e){e.textContent=val; if(c)e.style.color=c;} };
+  el('tr-today',fmt(todayPnl),color(todayPnl));
+  el('tr-month',fmt(monthPnl),color(monthPnl));
+  el('tr-alltime',fmt(allPnl),color(allPnl));
+  el('tr-wins',wins,'#4df0b4');
+  el('tr-losses',losses,'#ff5c3a');
+  var wr=wins+losses>0?Math.round((wins/(wins+losses))*100)+'%':'—';
+  el('tr-winrate',wr,null);
+}
+
+/* ─── CALENDAR ───────────────────────────────────────────────────────── */
+
+function calKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function todayKey(){ return calKey(new Date()); }
+function isToday(d){ return calKey(d)===todayKey(); }
+
+function setCalView(v){
+  calView=v;
+  ['day','week','month'].forEach(function(n){
+    var el=document.getElementById('cal-tab-'+n);
+    if(el) el.classList.toggle('active', n===v);
+  });
+  renderCalContent();
+}
+
+function calNav(dir){
+  if(calView==='day'){
+    calDate.setDate(calDate.getDate()+dir);
+  } else if(calView==='week'){
+    calDate.setDate(calDate.getDate()+(dir*7));
+  } else {
+    calDate.setMonth(calDate.getMonth()+dir);
+  }
+  renderCalContent();
+}
+
+function renderCalContent(){
+  var lbl=document.getElementById('cal-date-lbl');
+  if(calView==='day'){
+    if(lbl) lbl.textContent=DAYS_FULL[calDate.getDay()]+', '+MONTHS_CAL[calDate.getMonth()]+' '+calDate.getDate()+' '+calDate.getFullYear();
+    renderDayView();
+  } else if(calView==='week'){
+    var mon=new Date(calDate); mon.setDate(calDate.getDate()-calDate.getDay());
+    var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+    if(lbl) lbl.textContent=MONTHS_CAL[mon.getMonth()]+' '+mon.getDate()+' – '+MONTHS_CAL[sun.getMonth()]+' '+sun.getDate()+', '+sun.getFullYear();
+    renderWeekView();
+  } else {
+    if(lbl) lbl.textContent=MONTHS_CAL[calDate.getMonth()]+' '+calDate.getFullYear();
+    renderMonthView();
+  }
+}
+
+function renderDayView(){
+  if(!S.calendar) S.calendar={};
+  var key=calKey(calDate);
+  var dayData=S.calendar[key]||{};
+  var html='<div>';
+  SLOT_HOURS.forEach(function(hr,i){
+    var slotKey='h'+i;
+    var slot=dayData[slotKey]||{tasks:[]};
+    var tasks=slot.tasks||[];
+    var hasEvent=tasks.length>0||!!slot.label;
+    html+='<div class="time-block">';
+    html+='<div class="time-block-hour">'+hr+'</div>';
+    html+='<div class="time-block-slot'+(hasEvent?' has-event':'')+'" id="slot-'+key+'-'+i+'">';
+    // tasks list
+    tasks.forEach(function(t,ti){
+      html+='<div class="slot-task-item'+(t.done?' done':'')+'" onclick="toggleSlotTask(\''+key+'\','+i+','+ti+')">';
+      html+='<div class="slot-task-cb"></div>';
+      html+='<div class="slot-task-text" style="font-size:12px;color:var(--fg)">'+esc(t.text)+'</div>';
+      html+='<div onclick="event.stopPropagation();delSlotTask(\''+key+'\','+i+','+ti+')" style="margin-left:auto;color:var(--fg3);font-size:14px;padding:0 4px;cursor:pointer;">×</div>';
+      html+='</div>';
+    });
+    // add row
+    html+='<div style="display:flex;gap:6px;margin-top:'+(tasks.length?'5px':'0')+'">';
+    html+='<input class="slot-add-inp" id="sinp-'+key+'-'+i+'" placeholder="Add task at '+hr+'…" onkeydown="if(event.key===\'Enter\'){addSlotTask(\''+key+'\','+i+',this.value);this.value=\'\'}">';
+    html+='<button class="slot-add-btn" onclick="(function(){var el=document.getElementById(\'sinp-'+key+'-'+i+'\');addSlotTask(\''+key+'\','+i+',el.value);el.value=\'\'})()">+</button>';
+    html+='</div>';
+    html+='</div></div>';
+  });
+  html+='</div>';
+  document.getElementById('cal-content').innerHTML=html;
+}
+
+function addSlotTask(dayKey,slotIdx,text){
+  text=(text||'').trim();
+  if(!text) return;
+  if(!S.calendar) S.calendar={};
+  if(!S.calendar[dayKey]) S.calendar[dayKey]={};
+  var slot=S.calendar[dayKey]['h'+slotIdx]||{tasks:[]};
+  if(!slot.tasks) slot.tasks=[];
+  slot.tasks.push({text:text,done:false});
+  S.calendar[dayKey]['h'+slotIdx]=slot;
+  persist();
+  renderDayView();
+}
+
+function toggleSlotTask(dayKey,slotIdx,taskIdx){
+  if(!S.calendar||!S.calendar[dayKey]) return;
+  var slot=S.calendar[dayKey]['h'+slotIdx];
+  if(!slot||!slot.tasks) return;
+  slot.tasks[taskIdx].done=!slot.tasks[taskIdx].done;
+  persist();
+  renderDayView();
+}
+
+function delSlotTask(dayKey,slotIdx,taskIdx){
+  if(!S.calendar||!S.calendar[dayKey]) return;
+  var slot=S.calendar[dayKey]['h'+slotIdx];
+  if(!slot||!slot.tasks) return;
+  slot.tasks.splice(taskIdx,1);
+  persist();
+  renderDayView();
+}
+
+function renderWeekView(){
+  if(!S.calendar) S.calendar={};
+  var startOfWeek=new Date(calDate);
+  startOfWeek.setDate(calDate.getDate()-calDate.getDay()); // Sunday
+  var html='<div class="week-grid">';
+  for(var d=0;d<7;d++){
+    var day=new Date(startOfWeek);
+    day.setDate(startOfWeek.getDate()+d);
+    var key=calKey(day);
+    var dayData=S.calendar[key]||{};
+    var todayCls=isToday(day)?' today':'';
+    html+='<div>';
+    html+='<div class="week-day-hdr'+todayCls+'">'+DAYS_SHORT[day.getDay()]+'<br>'+day.getDate()+'</div>';
+    // collect all tasks for this day
+    var allTasks=[];
+    SLOT_HOURS.forEach(function(hr,i){
+      var slot=dayData['h'+i]||{};
+      (slot.tasks||[]).forEach(function(t){
+        allTasks.push({hr:hr,text:t.text,done:t.done});
+      });
+    });
+    if(allTasks.length){
+      allTasks.forEach(function(t){
+        html+='<div class="week-task-item" style="'+(t.done?'opacity:0.4;text-decoration:line-through':'')+'" title="'+esc(t.hr)+': '+esc(t.text)+'">'+esc(t.text)+'</div>';
+      });
+    } else {
+      html+='<div style="font-size:9px;color:var(--fg3);padding:4px 2px;">Empty</div>';
+    }
+    html+='</div>';
+  }
+  html+='</div>';
+  // tap a day to go to day view
+  html+='<div style="font-size:11px;color:var(--fg3);text-align:center;margin-top:14px;">Tap Day tab to add tasks to a specific time slot</div>';
+  document.getElementById('cal-content').innerHTML=html;
+}
+
+function renderMonthView(){
+  if(!S.calendar) S.calendar={};
+  var year=calDate.getFullYear(), month=calDate.getMonth();
+  var firstDay=new Date(year,month,1);
+  var lastDay=new Date(year,month+1,0);
+  var startOffset=firstDay.getDay(); // 0=Sun
+  var html='<div class="month-grid">';
+  // day headers
+  DAYS_SHORT.forEach(function(d){
+    html+='<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--fg3);text-align:center;padding:4px 0;border-bottom:1px solid var(--border)">'+d+'</div>';
+  });
+  // blank cells before month start
+  for(var b=0;b<startOffset;b++){
+    html+='<div class="month-cell" style="opacity:0.2"></div>';
+  }
+  // day cells
+  for(var day=1;day<=lastDay.getDate();day++){
+    var d=new Date(year,month,day);
+    var key=calKey(d);
+    var dayData=S.calendar[key]||{};
+    var taskCount=0;
+    SLOT_HOURS.forEach(function(hr,i){
+      var slot=dayData['h'+i]||{};
+      taskCount+=(slot.tasks||[]).length;
+    });
+    var todayCls=isToday(d)?' today':'';
+    html+='<div class="month-cell'+todayCls+'" onclick="calDate=new Date('+year+','+month+','+day+');setCalView(\'day\')">';
+    html+='<div class="month-cell-num">'+day+'</div>';
+    if(taskCount>0){
+      html+='<div class="month-event-label">'+taskCount+' task'+(taskCount>1?'s':'')+'</div>';
+    }
+    html+='</div>';
+  }
+  html+='</div>';
+  document.getElementById('cal-content').innerHTML=html;
+}
+
+/* ─── AI SCHEDULE (GEMINI) ───────────────────────────────────────────── */
+function buildSchedulePrompt(){
+  var name=S.cfg&&S.cfg.name?S.cfg.name:'E';
+  var goal=S.cfg&&S.cfg.goal?S.cfg.goal:'grow all business pillars';
+  var hours=S.cfg&&S.cfg.hours?S.cfg.hours:'50';
+  var style=S.cfg&&S.cfg.scheduleStyle?S.cfg.scheduleStyle:'balanced';
+  var wake=S.cfg&&S.cfg.wakeTime?S.cfg.wakeTime:'7am';
+  var now=new Date();
+  var year=now.getFullYear(), month=now.getMonth();
+  var daysInMonth=new Date(year,month+1,0).getDate();
+  var monthName=MONTHS_CAL[month];
+
+  return 'You are a productivity coach building a detailed daily schedule for '+name+' for the month of '+monthName+' '+year+' ('+daysInMonth+' days).\n\n'+
+  'CONTEXT:\n'+
+  '- Primary 90-day goal: '+goal+'\n'+
+  '- Available hours per week: '+hours+'\n'+
+  '- Schedule style: '+style+'\n'+
+  '- Wake time: '+wake+'\n\n'+
+  'BUSINESSES TO SCHEDULE:\n'+
+  '1. Laughder.com — comedy/entertainment content (TikTok, YouTube, Instagram). Needs: daily content creation, filming, editing, posting\n'+
+  '2. ServaSquad — contractor lead generation. Needs: outreach calls, CRM updates, client management\n'+
+  '3. RubberMarbles — motorsports media (F1, IndyCar, NASCAR). Needs: articles, social posts, race coverage\n'+
+  '4. Sports Media & Picks — sports content + betting picks. Needs: research, analysis, posting picks\n'+
+  '5. Trading — options premium selling + micro futures (MES, MGC, MCL). Needs: pre-market scan, trade execution 9:30-11am, review\n'+
+  '6. Knowledge — study blocks (rhetoric, history, Bible, science). Needs: 1 focused study session per day\n\n'+
+  'OUTPUT FORMAT — return ONLY valid JSON, no markdown, no explanation:\n'+
+  '{"schedule":{"1":{"h0":"","h1":"","h2":"","h3":"","h4":"","h5":"","h6":"","h7":"","h8":"","h9":"","h10":"","h11":"","h12":"","h13":"","h14":"","h15":"","h16":"","h17":""},...}}\n\n'+
+  'The keys h0-h17 map to these time slots: h0=5am, h1=6am, h2=7am, h3=8am, h4=9am, h5=10am, h6=11am, h7=12pm, h8=1pm, h9=2pm, h10=3pm, h11=4pm, h12=5pm, h13=6pm, h14=7pm, h15=8pm, h16=9pm, h17=10pm.\n'+
+  'Use short action labels like "📹 Film Laughder sketch", "📞 ServaSquad outreach (5 calls)", "📈 Pre-market scan + MES trade", "📚 Study: Rhetoric ch.4", "🏁 RubberMarbles race preview", "🏈 Post picks + analysis".\n'+
+  'Leave early morning/late night slots empty string "" if before wake time or after 10pm wind-down.\n'+
+  'Include ALL '+daysInMonth+' days (keys "1" through "'+daysInMonth+'"). Vary tasks across the month. Weekends ('+getWeekendsOfMonth(year,month)+') can be lighter.';
+}
+
+function getWeekendsOfMonth(year,month){
+  var weekends=[];
+  var d=new Date(year,month,1);
+  while(d.getMonth()===month){
+    if(d.getDay()===0||d.getDay()===6) weekends.push(d.getDate());
+    d.setDate(d.getDate()+1);
+  }
+  return weekends.join(', ');
+}
+
+function generateMonthSchedule(auto){
+  var key=S.cfg&&S.cfg.geminiKey;
+  if(!key){
+    if(!auto){
+      var status=document.getElementById('gemini-status');
+      if(status){status.style.display='block';status.style.color='var(--rubber)';status.textContent='⚠ Add your Gemini API key in Settings first.';}
+    }
+    return;
+  }
+  // Check if already generated this month
+  var now=new Date();
+  var monthKey=now.getFullYear()+'-'+(now.getMonth()+1);
+  if(auto && S.scheduleMonth===monthKey) return; // already done this month
+
+  var btn=document.getElementById('gemini-gen-btn');
+  var status=document.getElementById('gemini-status');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Generating…';}
+  if(status){status.style.display='block';status.style.color='var(--fg3)';status.textContent='Asking Gemini to plan your '+MONTHS_CAL[now.getMonth()]+' schedule…';}
+
+  var prompt=buildSchedulePrompt();
+  fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+encodeURIComponent(key),{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      contents:[{parts:[{text:prompt}]}],
+      generationConfig:{temperature:0.7,maxOutputTokens:8192}
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var text='';
+    try{ text=data.candidates[0].content.parts[0].text; }catch(e){}
+    // Strip markdown code blocks if present
+    text=text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    var parsed;
+    try{ parsed=JSON.parse(text); }catch(e){
+      // Try to extract JSON object
+      var m=text.match(/\{[\s\S]*\}/);
+      if(m) try{ parsed=JSON.parse(m[0]); }catch(e2){}
+    }
+    if(!parsed||!parsed.schedule){
+      throw new Error('Could not parse Gemini response');
+    }
+    // Write into calendar store
+    if(!S.calendar) S.calendar={};
+    var year=now.getFullYear(), month=now.getMonth();
+    Object.keys(parsed.schedule).forEach(function(dayNum){
+      var d=new Date(year,month,parseInt(dayNum));
+      var dk=calKey(d);
+      if(!S.calendar[dk]) S.calendar[dk]={};
+      var slots=parsed.schedule[dayNum];
+      Object.keys(slots).forEach(function(slotKey){
+        var label=slots[slotKey];
+        if(label){
+          if(!S.calendar[dk][slotKey]) S.calendar[dk][slotKey]={tasks:[]};
+          // Only add if slot is empty (don't overwrite user tasks)
+          if(!S.calendar[dk][slotKey].tasks||S.calendar[dk][slotKey].tasks.length===0){
+            S.calendar[dk][slotKey].tasks=[{text:label,done:false}];
+          }
+        }
+      });
+    });
+    S.scheduleMonth=monthKey;
+    persist();
+    if(btn){btn.disabled=false;btn.textContent='✨ Generate This Month\'s Schedule';}
+    if(status){status.style.color='var(--servasquad)';status.textContent='✓ '+MONTHS_CAL[now.getMonth()]+' schedule loaded into your calendar!';}
+    // Re-render calendar if open
+    var calPanel=document.getElementById('panel-calendar');
+    if(calPanel&&calPanel.classList.contains('active')) renderCalContent();
+  })
+  .catch(function(err){
+    if(btn){btn.disabled=false;btn.textContent='✨ Generate This Month\'s Schedule';}
+    if(status){status.style.color='var(--rubber)';status.textContent='⚠ Error: '+(err.message||'Check your API key and try again');}
+  });
+}
+
+/* ─── LIVE STATS ─────────────────────────────────────────────────────── */
+function saveLive(key,val){
+  if(!S.live) S.live={};
+  S.live[key]=val;
+  persist();
+}
+function refreshLiveStats(){
+  var btn=document.getElementById('live-refresh-btn');
+  var status=document.getElementById('live-status');
+  if(btn) btn.textContent='⟳ Opening…';
+  if(status){ status.style.display='block'; status.textContent='Opening your channels in new tabs — check each for current stats…'; }
+  var links=[];
+  if(S.live&&S.live['ld-yt']&&S.live['ld-yt'].startsWith('http')) links.push(S.live['ld-yt']);
+  if(S.live&&S.live['rm-yt']&&S.live['rm-yt'].startsWith('http')) links.push(S.live['rm-yt']);
+  if(S.live&&S.live['ld-tt']) links.push('https://tiktok.com/'+S.live['ld-tt'].replace(/^@/,'@'));
+  if(S.live&&S.live['ld-ig']) links.push('https://instagram.com/'+S.live['ld-ig'].replace(/^@/,''));
+  if(S.live&&S.live['sp-ig']) links.push('https://instagram.com/'+S.live['sp-ig'].replace(/^@/,''));
+  if(S.live&&S.live['rm-x']) links.push('https://x.com/'+S.live['rm-x'].replace(/^@/,''));
+  if(S.live&&S.live['sp-x']) links.push('https://x.com/'+S.live['sp-x'].replace(/^@/,''));
+  if(links.length===0){
+    if(status) status.textContent='Add your channel URLs/handles above first.';
+    if(btn) btn.textContent='⟳ Refresh All Stats';
+    return;
+  }
+  links.forEach(function(url){ window.open(url,'_blank'); });
+  setTimeout(function(){
+    if(btn) btn.textContent='⟳ Refresh All Stats';
+    if(status) status.textContent='✓ Opened '+links.length+' channel'+(links.length>1?'s':'')+'. Update your pillar stats manually from what you see.';
+    S.live.lastRefresh=new Date().toISOString();
+    persist();
+  },1500);
+}
+
+/* ─── AI BRAINSTORM ──────────────────────────────────────────────────── */
+var AI_POOL = {
+  analyze:[
+    {role:'CHIEF STRATEGIST',text:"Here's the core tension: you're building multiple things simultaneously, which means you're building all of them slowly.\n\nThe question isn't which one is best — it's which one has the highest probability of producing cash in 90 days given your actual constraints.\n\nLaughder.com has the highest asymmetry — content compounds, algorithms amplify, and audiences don't stop when times are hard. ServaSquad is your fastest path to predictable monthly cash. One paying contractor at $1,500/mo changes your runway immediately.\n\nMy read: 70% of your focused time on Laughder (content volume wins), 20% on ServaSquad (close first client), 10% on everything else. Don't let the rest become a distraction that costs you the win on both."},
+    {role:'CHIEF STRATEGIST',text:"The highest-leverage move right now doesn't require money — it requires consistency over 60 days.\n\nThe Laughder flywheel: 1 video/day on TikTok and Reels → algorithm tests it → winners get amplified → you double down on winning formats. Most creators quit in week 3. You won't. That's your edge.\n\nMeanwhile ServaSquad requires 5 conversations to find 1 interested contractor. That's not failure — that's the funnel. Start the 5 conversations."}
+  ],
+  challenge:[
+    {role:'STRATEGIC CHALLENGER',text:"Let me push back on something you haven't said out loud yet: you might be using 'building multiple businesses' as a hedge against committing fully to any one of them.\n\nBecause if none of them have to work — if you always have another one to switch to — then you never have to face the moment where you went all in and it didn't work.\n\nThat's not strategy. That's optionality as a comfort mechanism.\n\nWhat would you do if you ONLY had Laughder.com? What changes? What gets more serious? That version of you is probably the one that wins."},
+    {role:'STRATEGIC CHALLENGER',text:"Here's what I challenge: the assumption that more channels equals more safety. In reality, 6 underfunded channels are weaker than 1 fully-funded channel.\n\nYour attention is the scarcest resource you have. Every hour you give to Trading is an hour not given to Laughder. Every hour of RubberMarbles is an hour not given to ServaSquad.\n\nWhere are you actually winning? Put more there."}
+  ],
+  opportunity:[
+    {role:'OPPORTUNITY ENGINE',text:"Your three highest-leverage moves right now:\n\n1. LAUGHDER → Post daily for 30 days straight. Not 'when you have something good' — every day. Volume is how you find what works. 30 posts = 30 data points. The best 3 tell you exactly what to double down on.\n\n2. SERVASQUAD → Cold call 10 roofers or HVAC companies this week. Script: 'I generate exclusive local leads for contractors. I'm looking for one company to work with exclusively. Can I show you a sample lead?' One yes changes your monthly cash flow permanently.\n\n3. SPORTS MEDIA → Start posting picks NOW with full reasoning. Every pick, every result, public. A 60% win rate over 50 documented picks is a product. Get to 50 first."},
+    {role:'OPPORTUNITY ENGINE',text:"The single opportunity most people in your position miss: the value of a documented track record compounds faster than the asset itself.\n\nEvery Laughder video you post is public proof you show up. Every ServaSquad client you land is a case study. Every pick you log publicly is part of a record that becomes sellable.\n\nThe people who win don't work harder than you. They document better. Start treating documentation as the product, not the byproduct."}
+  ]
+};
+var aiIdx={analyze:0,challenge:0,opportunity:0};
+function runAI(type){
+  var pool=AI_POOL[type];
+  var item=pool[aiIdx[type]%pool.length];
+  aiIdx[type]++;
+  document.getElementById('bs-resp-role').textContent=item.role;
+  document.getElementById('bs-resp-text').textContent=item.text;
+  var out=document.getElementById('bs-output');
+  out.style.display='block';
+  out.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ─── SETTINGS ───────────────────────────────────────────────────────── */
+function toggleDark(el){
+  el.classList.toggle('on');
+  var isDark=el.classList.contains('on');
+  S.darkMode=isDark; persist();
+  if(isDark) document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme','light');
+}
+function saveCfg(key,val){ S['cfg-'+key]=val; persist(); }
+function resetAll(){
+  try{localStorage.removeItem('eos3');}catch(e){}
+  location.reload();
+}
+
+/* ─── UTIL ───────────────────────────────────────────────────────────── */
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+
+</body></html>
