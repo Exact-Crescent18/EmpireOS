@@ -1,3 +1,119 @@
+
+
+index(1).html
+HTML
+This is Empire OS. I dont want change to the style at all, but I would like time alerts based on the calendar block, when  I need to move on to a new task, I would like tts alerts letting me know to move on. Also for the calendar I want to be able to drag block to extend there time blocks. This will just push all block after them extend with it.
+
+
+
+I'll keep the existing Empire OS design completely intact: same dark theme, colors, typography, spacing, calendar layout, and controls. These will be functional upgrades to the existing calendar, not a redesign.
+
+I would implement the two features as follows:
+
+Automatic spoken task-transition alerts: When a calendar block ends, Empire OS announces that it's time to move on and identifies the next scheduled task. For example: "Time to move on. Your next task is ServaSquad lead generation."
+
+Drag-to-extend calendar blocks: Drag the bottom edge of a scheduled block downward to extend it. Every subsequent block that day shifts forward by the same amount. No overlapping blocks, lost tasks, or overwritten appointments.
+
+Initial upgraded file created
+Download Empire OS — Calendar Upgrades
+
+The JavaScript syntax check passed. However, I wasn't able to complete the final edge-case patch for shifting blocks near the end of the day. I would treat this as a preliminary build rather than a production-ready replacement.
+
+A couple of important limitations:
+
+Voice alerts require Empire OS to remain open and active in the browser. Background browser suspension can delay them.
+
+Speech must be enabled through the test button initially.
+
+The data analysis capability I use to edit and validate the HTML file should become available again in approximately 24 hours, though that's an estimate. I don't want to tell you this is fully finished when that final validation remains outstanding.
+
+
+Empire_OS_calendar_upgrades.html
+HTML
+ok the time slot drag function should move as I drag and I should be able to remove time as well. Remove the shadow on the left side of the nav items and it should click to every 5 minutes. Also check the mobile version to make sure the side nav is visible on mobile.
+Yes. The resize interaction should work more like a live calendar editor, not a one-time adjustment.
+
+I’ll make these changes to the existing Empire OS version:
+
+Live resizing: Drag the bottom edge and have the block resize continuously as you move—not only after releasing the mouse.
+
+Resize in both directions: Drag down to add time and up to remove time. Keep a minimum duration of 5 minutes.
+
+Move later blocks: When a block grows or shrinks, shift subsequent blocks by the same amount while preserving their durations and order.
+
+5-minute increments: Snap resizing to 5-minute intervals instead of whole hours.
+
+Navigation shadow: Remove the shadow on the left side of the navigation items.
+
+Mobile navigation: Check the responsive layout and ensure the side navigation remains visible and usable on mobile.
+
+I can’t safely modify and validate the file in this turn because the file-generation capability used for the previous edit hit its usage limit. It is expected to become available again in approximately 24 hours. I don't want to hand you another untested version—especially with calendar blocks shifting and potentially overlapping.
+
+This might also interest you.
+
+
+
+Can you try my last prompt again
+
+Worked for 7m 14s
+Updated Empire OS:
+
+Download Empire OS — Calendar Upgrades v2
+
+Changes made
+Live resizing: The block and later blocks move as you drag, not just after releasing.
+
+Add or remove time: Drag down to extend; drag up to shorten.
+
+5-minute snapping: Every resize increment is 5 minutes, with a 5-minute minimum duration.
+
+Automatic schedule shifting: All later blocks move by the same amount, preserving their durations and order.
+
+End-of-day protection: Resizing cannot push the schedule beyond the 24-hour timeline.
+
+Navigation: Removed nav-item shadows and added a compact left-side navigation rail on mobile portrait and landscape layouts. All nine destinations remain accessible.
+
+Validation
+JavaScript syntax passed Resize logic tests passed
+
+I tested live movement in both directions, 5-minute snapping, later-block shifting, minimum duration, and end-of-day limits. I also checked the responsive CSS and navigation markup. A full visual browser preview wasn't possible because the headless browser stalled, so I can't claim screenshot-level mobile testing.
+
+To resize: Open Calendar, click Edit, then drag the handle at the bottom of a task block.
+
+
+Empire_OS_calendar_upgrades_v2.html
+HTML
+Give me the entire html code to copy
+
+Worked for 26s
+Here is the entire 143 KB HTML source code, in a plain-text file you can open and copy:
+
+Open the complete Empire OS HTML source (.txt)
+
+Or download the ready-to-use HTML file:
+
+Download Empire OS (.html)
+
+The TXT file is an exact copy of the HTML source. Open it, press Cmd+A, then Cmd+C to copy the entire code.
+
+
+Empire_OS_calendar_upgrades_v2_source.txt
+Document
+
+Empire_OS_calendar_upgrades_v2.html
+HTML
+This might also interest you.
+
+
+
+
+Are you interested in this ad?
+
+
+
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -46,6 +162,7 @@
   --radius: 14px;
   --radius-sm: 9px;
   --nav-h: 68px;
+  --cal-hour-px: 72px;
 
   color-scheme: dark;
   font-family: 'Inter', system-ui, sans-serif;
@@ -495,6 +612,18 @@ select {
   position:relative; display:flex; flex-direction:column; gap:3px;
 }
 .time-block-slot:focus-within { border-color:var(--calendar); }
+.time-block-slot { overflow:visible; }
+.slot-resize-handle {
+  height:9px; margin:4px -2px -5px; border-radius:5px;
+  cursor:ns-resize; touch-action:none; position:relative; flex-shrink:0;
+}
+.slot-resize-handle::after {
+  content:""; display:block; width:34px; height:3px; border-radius:4px;
+  background:var(--calendar); opacity:.55; margin:3px auto 0;
+}
+.slot-resize-handle:active::after { opacity:1; }
+.time-block-slot.resizing { border-color:var(--calendar); }
+
 .time-block-slot.has-event { border-color:color-mix(in srgb,var(--calendar) 60%,transparent); background:color-mix(in srgb,var(--calendar) 5%,var(--surface)); }
 .slot-task-label {
   font-size:12px; color:var(--fg); font-family:'Inter',sans-serif;
@@ -685,6 +814,99 @@ select {
   .time-block-slot { min-height:38px; padding:5px 8px; }
   .slot-task-text { font-size:10px; }
 }
+
+
+/* ─── CALENDAR: TRUE 5-MINUTE TIMELINE ─────────────────────────────── */
+.day-timeline { position:relative; width:100%; margin:0 0 16px; }
+.timeline-hour-row {
+  position:absolute; left:0; right:0; display:grid;
+  grid-template-columns:46px minmax(0,1fr); border-bottom:1px solid var(--border);
+}
+.timeline-hour-main {
+  position:relative; min-width:0; border-left:1px solid var(--border);
+  padding:7px 7px 5px; display:flex; align-items:flex-start;
+}
+.timeline-hour-row:nth-child(odd) .timeline-hour-main { background:color-mix(in srgb,var(--surface) 25%,transparent); }
+.timeline-add-inline { display:flex; align-items:center; gap:5px; width:100%; min-width:0; }
+.timeline-add-inline .slot-add-inp { min-width:0; height:29px; padding:5px 7px; }
+.timeline-add-inline .slot-icon-btn,
+.timeline-add-inline .slot-add-btn { flex-shrink:0; padding:4px 7px; }
+.timeline-event.time-block-slot {
+  position:absolute; left:46px; right:0; z-index:2;
+  min-height:0; height:auto; padding:6px 9px 10px;
+  display:flex; flex-direction:column; gap:3px;
+  overflow:visible; box-shadow:none;
+}
+.timeline-event .slot-task-item { min-height:14px; }
+.timeline-event .slot-task-text { overflow-wrap:anywhere; }
+.timeline-event.short-event { padding:1px 5px 2px; border-radius:5px; gap:0; }
+.timeline-event.short-event .slot-task-item { min-height:0; }
+.timeline-event.short-event .slot-task-cb { display:none; }
+.timeline-event.short-event .slot-task-text { font-size:9px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.timeline-event.resizing { z-index:8; border-color:var(--calendar); }
+.slot-resize-handle {
+  position:absolute; left:0; right:0; bottom:-7px; z-index:5;
+  width:100%; height:15px; margin:0; padding:0;
+  cursor:ns-resize; touch-action:none; flex-shrink:0;
+}
+.slot-resize-handle::after {
+  content:""; display:block; width:40px; height:4px; border-radius:4px;
+  background:var(--calendar); opacity:.7; margin:5px auto 0;
+}
+.slot-resize-handle:active::after { opacity:1; }
+.slot-duration-readout {
+  position:absolute; right:7px; bottom:5px; font:9px 'JetBrains Mono',monospace;
+  color:var(--fg3); pointer-events:none; white-space:nowrap;
+}
+.timeline-event.short-event .slot-duration-readout { display:none; }
+.day-timeline.is-resizing { user-select:none; -webkit-user-select:none; }
+.day-timeline.is-resizing * { cursor:ns-resize !important; }
+
+/* Remove any nav-item shadow; the active rail remains a flat accent, not a glow. */
+#bottom-nav, #bottom-nav .nav-item, #bottom-nav .nav-item.active {
+  box-shadow:none !important; filter:none !important; text-shadow:none !important;
+}
+
+/* Portrait phones: retain a visible, compact left-side navigation rail. */
+@media (max-width:700px) and (orientation:portrait) {
+  :root { --nav-h:0px; --cal-hour-px:64px; }
+  #app { flex-direction:row; min-width:0; }
+  #main { flex:1 1 auto; min-width:0; width:calc(100% - 58px); padding-bottom:0; }
+  #bottom-nav {
+    position:relative; inset:auto; order:-1; flex:0 0 58px;
+    width:58px; min-width:58px; height:100%; min-height:0;
+    flex-direction:column; align-items:center; justify-content:flex-start; gap:8px;
+    overflow-y:auto; overflow-x:hidden; scrollbar-width:none;
+    padding:calc(env(safe-area-inset-top,0px) + 9px) 3px calc(env(safe-area-inset-bottom,0px) + 9px) env(safe-area-inset-left,0px);
+    border-top:none; border-right:1px solid var(--border); border-left:none;
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  }
+  #bottom-nav::-webkit-scrollbar { display:none; }
+  .nav-item { width:48px; min-width:48px; min-height:46px; padding:6px 2px; gap:2px; border:0; }
+  .nav-icon { font-size:21px; }
+  .nav-label { display:none; }
+  .nav-pip { width:4px; height:4px; }
+  .panel { padding:14px 11px calc(20px + env(safe-area-inset-bottom,0px)) 11px; }
+}
+
+/* Landscape phones: keep every nav destination reachable in the left rail. */
+@media (max-width:700px) and (orientation:landscape) {
+  #bottom-nav { width:54px; flex:0 0 54px; justify-content:flex-start; overflow-y:auto; overflow-x:hidden; scrollbar-width:none; padding:6px 2px; }
+  #bottom-nav::-webkit-scrollbar { display:none; }
+  .nav-item { width:48px; min-width:48px; min-height:36px; padding:4px 2px; border-left:0; }
+  .nav-label { display:none; }
+  .nav-icon { font-size:19px; }
+}
+
+/* Wider phone viewports in landscape are still compact vertically. */
+@media (orientation:landscape) and (max-height:520px) {
+  #bottom-nav { width:54px; flex:0 0 54px; justify-content:flex-start; overflow-y:auto; overflow-x:hidden; scrollbar-width:none; padding:6px 2px; }
+  #bottom-nav::-webkit-scrollbar { display:none; }
+  .nav-item { width:48px; min-width:48px; min-height:36px; padding:4px 2px; border-left:0; }
+  .nav-label { display:none; }
+  .nav-icon { font-size:19px; }
+}
+
 </style>
 
 <div id="app">
@@ -1161,6 +1383,17 @@ select {
           </div>
         </div>
       </div>
+      <!-- Calendar voice alerts -->
+      <div class="settings-section-lbl">🔊 Calendar Voice Alerts</div>
+      <div class="card">
+        <div class="card-body" style="display:block; padding:4px 15px 8px;">
+          <div class="settings-row">
+            <div><div class="settings-lbl">Spoken task transitions</div><div class="settings-sub">Announce when a scheduled block ends and name the next task</div></div>
+            <div class="toggle" id="toggle-voice-alerts" onclick="toggleVoiceAlerts(this)"></div>
+          </div>
+          <button class="save-btn" onclick="testVoiceAlerts()" style="margin-top:8px;">▶ Test Voice Alert / Enable Audio</button>
+        </div>
+      </div>
       <!-- Business info -->
       <div class="settings-section-lbl">Your Info</div>
       <div class="card">
@@ -1258,31 +1491,31 @@ select {
 
   <!-- ─── BOTTOM NAV ──────────────────────────────────────────────── -->
   <nav id="bottom-nav">
-    <div class="nav-item active" data-panel="laughder" onclick="go('laughder',this)" style="--nav-active:var(--laughder)">
+    <div class="nav-item active" data-panel="laughder" onclick="go('laughder',this)" role="button" tabindex="0" aria-label="Laughder" title="Laughder" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('laughder',this)}" style="--nav-active:var(--laughder)">
       <div class="nav-icon">🎭</div><div class="nav-label">Laughder</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="servasquad" onclick="go('servasquad',this)" style="--nav-active:var(--servasquad)">
+    <div class="nav-item" data-panel="servasquad" onclick="go('servasquad',this)" role="button" tabindex="0" aria-label="ServaSquad" title="ServaSquad" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('servasquad',this)}" style="--nav-active:var(--servasquad)">
       <div class="nav-icon">🔧</div><div class="nav-label" id="nav-lbl-servasquad">Squad</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="rubber" onclick="go('rubber',this)" style="--nav-active:var(--rubber)">
+    <div class="nav-item" data-panel="rubber" onclick="go('rubber',this)" role="button" tabindex="0" aria-label="RubberMarbles" title="RubberMarbles" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('rubber',this)}" style="--nav-active:var(--rubber)">
       <div class="nav-icon">🏎</div><div class="nav-label">Rubber</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="sports" onclick="go('sports',this)" style="--nav-active:var(--sports)">
+    <div class="nav-item" data-panel="sports" onclick="go('sports',this)" role="button" tabindex="0" aria-label="Sports" title="Sports" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('sports',this)}" style="--nav-active:var(--sports)">
       <div class="nav-icon">📊</div><div class="nav-label" id="nav-lbl-sports">Sports</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="trading" onclick="go('trading',this)" style="--nav-active:var(--trading)">
+    <div class="nav-item" data-panel="trading" onclick="go('trading',this)" role="button" tabindex="0" aria-label="Trading" title="Trading" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('trading',this)}" style="--nav-active:var(--trading)">
       <div class="nav-icon">📈</div><div class="nav-label">Trading</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="knowledge" onclick="go('knowledge',this)" style="--nav-active:var(--knowledge)">
+    <div class="nav-item" data-panel="knowledge" onclick="go('knowledge',this)" role="button" tabindex="0" aria-label="Study" title="Study" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('knowledge',this)}" style="--nav-active:var(--knowledge)">
       <div class="nav-icon">📚</div><div class="nav-label">Study</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="calendar" onclick="go('calendar',this)" style="--nav-active:var(--calendar)">
+    <div class="nav-item" data-panel="calendar" onclick="go('calendar',this)" role="button" tabindex="0" aria-label="Day Plan" title="Day Plan" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('calendar',this)}" style="--nav-active:var(--calendar)">
       <div class="nav-icon">📅</div><div class="nav-label">Day Plan</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="brainstorm" onclick="go('brainstorm',this)" style="--nav-active:var(--brainstorm)">
+    <div class="nav-item" data-panel="brainstorm" onclick="go('brainstorm',this)" role="button" tabindex="0" aria-label="Think" title="Think" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('brainstorm',this)}" style="--nav-active:var(--brainstorm)">
       <div class="nav-icon">⚡</div><div class="nav-label">Think</div><div class="nav-pip"></div>
     </div>
-    <div class="nav-item" data-panel="settings" onclick="go('settings',this)" style="--nav-active:var(--settings)">
+    <div class="nav-item" data-panel="settings" onclick="go('settings',this)" role="button" tabindex="0" aria-label="Settings" title="Settings" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('settings',this)}" style="--nav-active:var(--settings)">
       <div class="nav-icon">⚙️</div><div class="nav-label">Settings</div><div class="nav-pip"></div>
     </div>
   </nav>
@@ -1424,10 +1657,15 @@ var calView='day';
 var DAYS_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 var DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONTHS_CAL=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var SLOT_HOURS=['5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm'];
+var SLOT_HOURS=['5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','12am','1am','2am','3am','4am'];
 
 /* ─── INIT ───────────────────────────────────────────────────────────── */
 (function init(){
+  // Restore calendar voice-alert preference
+  var voiceToggle=document.getElementById('toggle-voice-alerts');
+  if(voiceToggle) voiceToggle.classList.toggle('on',!!S.voiceAlertsEnabled);
+  if(S.voiceAlertsEnabled) startVoiceAlertMonitor();
+
   // Date chip
   var d = new Date();
   var DAYS=['SUN','MON','TUE','WED','THU','FRI','SAT'];
@@ -1980,52 +2218,282 @@ function pickCustomIcon(){
   closeIconPicker();
 }
 
+function calendarPxPerHour(){
+  var raw=getComputedStyle(document.documentElement).getPropertyValue('--cal-hour-px');
+  var px=parseFloat(raw);
+  return (isFinite(px)&&px>0)?px:72;
+}
+function calendarSlotStart(slot,idx){
+  var value=(slot&&Number.isFinite(Number(slot.startMin)))?Number(slot.startMin):idx*60;
+  return Math.max(0,Math.min(1440,value));
+}
+function calendarSlotDuration(slot){
+  if(slot&&Number.isFinite(Number(slot.durationMin))) return Math.max(5,Math.min(1440,Number(slot.durationMin)));
+  return Math.max(5,Math.min(1440,(parseInt(slot&&slot.duration,10)||1)*60));
+}
+function formatCalendarDuration(minutes){
+  var h=Math.floor(minutes/60),m=minutes%60;
+  return (h?h+'h':'')+(m?((h?' ':'')+m+'m'):'') || '0m';
+}
 function renderDayView(){
   if(!S.calendar) S.calendar={};
   var key=calKey(calDate);
   var dayData=S.calendar[key]||{};
-  var html='<div>';
-  SLOT_HOURS.forEach(function(hr,i){
-    var slotKey='h'+i;
-    var slot=dayData[slotKey]||{tasks:[]};
-    var tasks=slot.tasks||[];
-    var hasEvent=tasks.length>0||!!slot.label;
-    html+='<div class="time-block">';
-    html+='<div class="time-block-hour">'+hr+'</div>';
-    html+='<div class="time-block-slot'+(hasEvent?' has-event':'')+'" id="slot-'+key+'-'+i+'">';
-    // tasks list
-    tasks.forEach(function(t,ti){
-      html+='<div class="slot-task-item'+(t.done?' done':'')+'" onclick="toggleSlotTask(\''+key+'\','+i+','+ti+')">';
-      html+='<div class="slot-task-cb"></div>';
-      html+='<div class="slot-task-text" style="font-size:12px;color:var(--fg)">'+esc(t.text)+'</div>';
-      if(calEditMode){
-        html+='<div onclick="event.stopPropagation();delSlotTask(\''+key+'\','+i+','+ti+')" style="margin-left:auto;color:var(--rubber);font-size:16px;padding:0 6px;cursor:pointer;line-height:1;">×</div>';
-      }
-      html+='</div>';
-    });
-    // add row — only in edit mode
-    if(calEditMode){
-      html+='<div style="display:flex;gap:6px;margin-top:'+(tasks.length?'5px':'0')+'">';
+  var px=calendarPxPerHour();
+  var html='<div class="day-timeline" id="day-timeline" style="height:'+(24*px)+'px">';
+  var entries=[];
+  Object.keys(dayData).forEach(function(slotKey){
+    var match=slotKey.match(/^h(\d+)$/);
+    if(!match) return;
+    var idx=parseInt(match[1],10),slot=dayData[slotKey]||{};
+    if(!((slot.tasks||[]).length||slot.label)) return;
+    var start=calendarSlotStart(slot,idx),duration=calendarSlotDuration(slot);
+    if(start>=1440) return;
+    entries.push({idx:idx,slot:slot,start:start,duration:duration,key:slotKey});
+  });
+  entries.sort(function(a,b){return a.start-b.start||a.idx-b.idx;});
+
+  for(var i=0;i<SLOT_HOURS.length;i++){
+    var rowTop=i*px;
+    html+='<div class="timeline-hour-row" style="top:'+rowTop+'px;height:'+px+'px">';
+    html+='<div class="time-block-hour">'+SLOT_HOURS[i]+'</div><div class="timeline-hour-main">';
+    var occupied=entries.some(function(e){return e.start<(i+1)*60 && (e.start+e.duration)>i*60;});
+    if(calEditMode&&!occupied){
+      html+='<div class="timeline-add-inline">';
       html+='<button class="slot-icon-btn" onclick="openIconPicker(\''+key+'\','+i+')" title="Pick icon">＋🎨</button>';
-      html+='<input class="slot-add-inp" id="sinp-'+key+'-'+i+'" placeholder="Add task at '+hr+'…" onkeydown="if(event.key===\'Enter\'){addSlotTask(\''+key+'\','+i+',this.value);this.value=\'\'}">';
+      html+='<input class="slot-add-inp" id="sinp-'+key+'-'+i+'" placeholder="Add at '+SLOT_HOURS[i]+'…" onkeydown="if(event.key===\'Enter\'){addSlotTask(\''+key+'\','+i+',this.value);this.value=\'\'}">';
       html+='<button class="slot-add-btn" onclick="(function(){var el=document.getElementById(\'sinp-'+key+'-'+i+'\');addSlotTask(\''+key+'\','+i+',el.value);el.value=\'\'})()">+</button>';
       html+='</div>';
     }
     html+='</div></div>';
+  }
+
+  entries.forEach(function(entry){
+    var idx=entry.idx,slot=entry.slot,tasks=slot.tasks||[];
+    var top=(entry.start/60)*px;
+    var height=(entry.duration/60)*px;
+    var shortClass=height<34?' short-event':'';
+    var startLabel=formatCalendarTime(entry.start);
+    var endLabel=formatCalendarTime(entry.start+entry.duration);
+    html+='<div class="time-block-slot has-event timeline-event'+shortClass+'" id="slot-'+key+'-'+idx+'" data-slot-idx="'+idx+'" data-start-min="'+entry.start+'" data-duration-min="'+entry.duration+'" title="'+esc(startLabel+'–'+endLabel)+'" style="top:'+top+'px;height:'+height+'px">';
+    tasks.forEach(function(t,ti){
+      html+='<div class="slot-task-item'+(t.done?' done':'')+'" onclick="toggleSlotTask(\''+key+'\','+idx+','+ti+')">';
+      if(height>=24) html+='<div class="slot-task-cb"></div>';
+      html+='<div class="slot-task-text" style="font-size:'+(height<34?'9px':'12px')+';color:var(--fg)">'+esc(t.text)+'</div>';
+      if(calEditMode){
+        html+='<div onclick="event.stopPropagation();delSlotTask(\''+key+'\','+idx+','+ti+')" style="margin-left:auto;color:var(--rubber);font-size:16px;padding:0 5px;cursor:pointer;line-height:1;flex-shrink:0">×</div>';
+      }
+      html+='</div>';
+    });
+    if(slot.label && !tasks.length) html+='<div class="slot-task-text">'+esc(slot.label)+'</div>';
+    if(calEditMode){
+      html+='<div class="slot-duration-readout" id="duration-'+key+'-'+idx+'">'+formatCalendarDuration(entry.duration)+'</div>';
+      html+='<div class="slot-resize-handle" title="Drag up to remove time or down to add time (5-minute increments)" onpointerdown="startSlotResize(event,\''+key+'\','+idx+')"></div>';
+    }
+    html+='</div>';
   });
   html+='</div>';
   document.getElementById('cal-content').innerHTML=html;
 }
+function formatCalendarTime(offsetMinutes){
+  var total=(300+offsetMinutes)%1440;
+  var hour=Math.floor(total/60),minute=total%60;
+  var ampm=hour>=12?'pm':'am';
+  var h=hour%12||12;
+  return h+(minute?':'+String(minute).padStart(2,'0'):'')+ampm;
+}
+
+/* ─── LIVE 5-MINUTE CALENDAR BLOCK RESIZING ──────────────────────────── */
+var slotResizeState=null;
+function calendarEntriesForDay(day){
+  return Object.keys(day||{}).map(function(k){
+    var m=k.match(/^h(\d+)$/); if(!m) return null;
+    var idx=parseInt(m[1],10),slot=day[k];
+    if(!slot||!((slot.tasks||[]).length||slot.label)) return null;
+    return {idx:idx,slot:slot,start:calendarSlotStart(slot,idx),duration:calendarSlotDuration(slot)};
+  }).filter(Boolean);
+}
+function startSlotResize(ev,dayKey,slotIdx){
+  if(!calEditMode || slotResizeState) return;
+  ev.preventDefault(); ev.stopPropagation();
+  var day=S.calendar&&S.calendar[dayKey],block=day&&day['h'+slotIdx];
+  if(!block) return;
+  var start=calendarSlotStart(block,slotIdx),duration=calendarSlotDuration(block);
+  var entries=calendarEntriesForDay(day);
+  var later=entries.filter(function(e){return e.idx!==slotIdx&&e.start>=start+duration;});
+  var maxEnd=entries.reduce(function(max,e){return Math.max(max,e.start+e.duration);},start+duration);
+  var maxPositive=Math.max(0,1440-maxEnd);
+  var element=ev.currentTarget.closest('.timeline-event');
+  var timeline=document.getElementById('day-timeline');
+  if(!element||!timeline) return;
+  slotResizeState={dayKey:dayKey,slotIdx:slotIdx,startY:ev.clientY,delta:0,start,duration,px:calendarPxPerHour(),maxPositive,later:later.map(function(e){return e.idx;}),element:element,timeline:timeline,pointerId:ev.pointerId};
+  element.classList.add('resizing'); timeline.classList.add('is-resizing');
+  try{ev.currentTarget.setPointerCapture(ev.pointerId);}catch(e){}
+  document.addEventListener('pointermove',moveSlotResize,{passive:false});
+  document.addEventListener('pointerup',endSlotResize,{once:true});
+  document.addEventListener('pointercancel',endSlotResize,{once:true});
+}
+function moveSlotResize(ev){
+  var st=slotResizeState; if(!st) return;
+  ev.preventDefault();
+  // One snap step is exactly five minutes, scaled to the current responsive timeline.
+  var pxPerFive=st.px*5/60;
+  var delta=Math.round((ev.clientY-st.startY)/pxPerFive)*5;
+  delta=Math.max(-(st.duration-5),Math.min(st.maxPositive,delta));
+  st.delta=delta;
+  var newDuration=st.duration+delta;
+  st.element.style.height=(newDuration/60*st.px)+'px';
+  st.element.classList.toggle('short-event',(newDuration/60*st.px)<34);
+  var readout=document.getElementById('duration-'+st.dayKey+'-'+st.slotIdx);
+  if(readout) readout.textContent=formatCalendarDuration(newDuration)+'  '+(delta>0?'+':'')+(delta?delta+'m':'');
+  var shiftPx=delta/60*st.px;
+  st.later.forEach(function(idx){
+    var el=document.getElementById('slot-'+st.dayKey+'-'+idx);
+    if(!el) return;
+    var baseTopAttr=el.getAttribute('data-base-top');
+    var original=baseTopAttr===null?NaN:Number(baseTopAttr);
+    if(!Number.isFinite(original)){
+      original=parseFloat(el.style.top)||0;
+      el.setAttribute('data-base-top',String(original));
+    }
+    el.style.top=(original+shiftPx)+'px';
+  });
+}
+function endSlotResize(){
+  document.removeEventListener('pointermove',moveSlotResize);
+  document.removeEventListener('pointercancel',endSlotResize);
+  var st=slotResizeState; if(!st) return;
+  document.removeEventListener('pointerup',endSlotResize);
+  slotResizeState=null;
+  st.element.classList.remove('resizing'); st.timeline.classList.remove('is-resizing');
+  st.later.forEach(function(idx){var el=document.getElementById('slot-'+st.dayKey+'-'+idx);if(el)el.removeAttribute('data-base-top');});
+  if(st.delta) resizeCalendarBlock(st.dayKey,st.slotIdx,st.delta);
+  else renderDayView();
+}
+function resizeCalendarBlock(dayKey,slotIdx,delta){
+  var day=S.calendar&&S.calendar[dayKey],block=day&&day['h'+slotIdx];
+  if(!block) return;
+  var oldStart=calendarSlotStart(block,slotIdx),oldDuration=calendarSlotDuration(block);
+  delta=Math.round(delta/5)*5;
+  delta=Math.max(-(oldDuration-5),delta);
+  var entries=calendarEntriesForDay(day);
+  var maxEnd=entries.reduce(function(max,e){return Math.max(max,e.start+e.duration);},oldStart+oldDuration);
+  if(delta>0) delta=Math.min(delta,Math.max(0,1440-maxEnd));
+  if(!delta) {renderDayView();return;}
+  block.startMin=oldStart;
+  block.durationMin=oldDuration+delta;
+  // Keep stable hN IDs; move every later block by the same delta without altering its duration.
+  entries.forEach(function(entry){
+    if(entry.idx===slotIdx || entry.start<oldStart+oldDuration) return;
+    entry.slot.startMin=entry.start+delta;
+  });
+  persist();
+  renderDayView();
+}
+
+/* ─── CALENDAR TEXT-TO-SPEECH TRANSITIONS ─────────────────────────────── */
+var voiceAlertTimer=null;
+function voiceAlertsEnabled(){ return !!S.voiceAlertsEnabled; }
+function toggleVoiceAlerts(el){
+  var enabled=!voiceAlertsEnabled();
+  S.voiceAlertsEnabled=enabled;
+  el.classList.toggle('on',enabled);
+  persist();
+  if(enabled){
+    speakEmpire('Calendar voice alerts are on.');
+    startVoiceAlertMonitor();
+  } else {
+    stopVoiceAlertMonitor();
+  }
+}
+function speakEmpire(message){
+  if(!('speechSynthesis' in window) || !message) return;
+  try{
+    window.speechSynthesis.cancel();
+    var utterance=new SpeechSynthesisUtterance(message);
+    utterance.rate=1;
+    utterance.pitch=1;
+    utterance.volume=1;
+    window.speechSynthesis.speak(utterance);
+  }catch(e){}
+}
+function testVoiceAlerts(){
+  if(!('speechSynthesis' in window)){
+    alert('Text-to-speech is not supported by this browser.');
+    return;
+  }
+  speakEmpire('Empire OS voice alerts are working. I will tell you when it is time to move on to your next calendar block.');
+  if(!S.voiceAlertsEnabled){
+    S.voiceAlertsEnabled=true;
+    var toggle=document.getElementById('toggle-voice-alerts');
+    if(toggle) toggle.classList.add('on');
+    persist();
+  }
+  startVoiceAlertMonitor();
+}
+function getSlotStartMinutes(index){ return index*60; }
+function calendarTaskText(slot){
+  var tasks=(slot&&slot.tasks)||[];
+  var active=tasks.filter(function(t){return !t.done;});
+  var chosen=active.length?active:tasks;
+  return chosen.map(function(t){return t.text;}).filter(Boolean).join(', ') || (slot&&slot.label) || 'your next task';
+}
+function checkCalendarTransition(){
+  if(!voiceAlertsEnabled() || document.hidden) return;
+  var now=new Date();
+  var key=calKey(now);
+  var day=S.calendar&&S.calendar[key];
+  if(!day) return;
+  var timelineMinute=(now.getHours()*60+now.getMinutes()-300+1440)%1440;
+  var entries=calendarEntriesForDay(day).sort(function(a,b){return a.start-b.start;});
+  for(var i=0;i<entries.length;i++){
+    var entry=entries[i],endMinute=entry.start+entry.duration;
+    if(endMinute>=1440) continue;
+    if(timelineMinute!==endMinute) continue;
+    var alertKey=key+'-h'+entry.idx+'-end-'+entry.start+'-'+entry.duration;
+    if(S.lastVoiceAlert===alertKey) continue;
+    var next=null;
+    for(var j=i+1;j<entries.length;j++){if(entries[j].start>=endMinute){next=entries[j].slot;break;}}
+    var nextText=next?calendarTaskText(next):'your next planned activity';
+    speakEmpire('Time to move on. '+calendarTaskText(entry.slot)+' is complete. Next up: '+nextText+'.');
+    S.lastVoiceAlert=alertKey;
+    persist();
+    break;
+  }
+}
+function startVoiceAlertMonitor(){
+  if(voiceAlertTimer) return;
+  checkCalendarTransition();
+  voiceAlertTimer=setInterval(checkCalendarTransition,10000);
+}
+function stopVoiceAlertMonitor(){
+  if(voiceAlertTimer){clearInterval(voiceAlertTimer);voiceAlertTimer=null;}
+}
+document.addEventListener('visibilitychange',function(){
+  if(!document.hidden && voiceAlertsEnabled()) checkCalendarTransition();
+});
 
 function addSlotTask(dayKey,slotIdx,text){
   text=(text||'').trim();
   if(!text) return;
   if(!S.calendar) S.calendar={};
   if(!S.calendar[dayKey]) S.calendar[dayKey]={};
-  var slot=S.calendar[dayKey]['h'+slotIdx]||{tasks:[]};
+  var day=S.calendar[dayKey],targetStart=slotIdx*60;
+  var slotKey='h'+slotIdx,slot=day[slotKey];
+  // A prior resize may have moved this stable ID away from its original hour.
+  // In that case allocate another free ID for the newly requested clock time.
+  if(slot && calendarSlotStart(slot,slotIdx)!==targetStart){
+    var freeIdx=-1;
+    for(var n=0;n<24;n++){if(!day['h'+n]){freeIdx=n;break;}}
+    if(freeIdx<0){freeIdx=24;while(day['h'+freeIdx]) freeIdx++;}
+    slotKey='h'+freeIdx;
+    slot={tasks:[],startMin:targetStart,durationMin:60};
+  } else if(!slot){
+    slot={tasks:[],startMin:targetStart,durationMin:60};
+  }
   if(!slot.tasks) slot.tasks=[];
   slot.tasks.push({text:text,done:false});
-  S.calendar[dayKey]['h'+slotIdx]=slot;
+  day[slotKey]=slot;
   persist();
   renderDayView();
 }
@@ -2063,12 +2531,14 @@ function renderWeekView(){
     html+='<div class="week-day-hdr'+todayCls+'">'+DAYS_SHORT[day.getDay()]+'<br>'+day.getDate()+'</div>';
     // collect all tasks for this day
     var allTasks=[];
-    SLOT_HOURS.forEach(function(hr,i){
-      var slot=dayData['h'+i]||{};
+    Object.keys(dayData).forEach(function(slotKey){
+      var match=slotKey.match(/^h(\d+)$/); if(!match) return;
+      var i=parseInt(match[1],10),slot=dayData[slotKey]||{};
       (slot.tasks||[]).forEach(function(t){
-        allTasks.push({hr:hr,text:t.text,done:t.done});
+        allTasks.push({start:calendarSlotStart(slot,i),hr:formatCalendarTime(calendarSlotStart(slot,i)),text:t.text,done:t.done});
       });
     });
+    allTasks.sort(function(a,b){return a.start-b.start;});
     if(allTasks.length){
       allTasks.forEach(function(t){
         html+='<div class="week-task-item" style="'+(t.done?'opacity:0.4;text-decoration:line-through':'')+'" title="'+esc(t.hr)+': '+esc(t.text)+'">'+esc(t.text)+'</div>';
@@ -2105,8 +2575,9 @@ function renderMonthView(){
     var key=calKey(d);
     var dayData=S.calendar[key]||{};
     var taskCount=0;
-    SLOT_HOURS.forEach(function(hr,i){
-      var slot=dayData['h'+i]||{};
+    Object.keys(dayData).forEach(function(slotKey){
+      if(!/^h\d+$/.test(slotKey)) return;
+      var slot=dayData[slotKey]||{};
       taskCount+=(slot.tasks||[]).length;
     });
     var todayCls=isToday(d)?' today':'';
